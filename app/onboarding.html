@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ZandeBooks - Get Started</title>
+    <link rel="stylesheet" href="onboarding.css">
+</head>
+<body>
+    <div class="onboarding-container">
+        <header class="onboarding-header">
+            <div class="logo-section">
+                <h1 class="brand">ZandeBooks</h1>
+            </div>
+        </header>
+
+        <main class="onboarding-main">
+            <div class="content-wrapper">
+                <div class="text-content">
+                    <h2 class="main-heading">One place to run and grow your business</h2>
+                    <p class="subheading">Let's get your business set up in ZandeBooks. We'll guide you through the essentials.</p>
+                    <button class="cta-button" onclick="startOnboarding()">Get started</button>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Set up your chart of accounts</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Connect your bank accounts</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Create your first invoice</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="illustration-content">
+                    <div class="illustration-wrapper">
+                        <div class="floating-card card-1">
+                            <div class="mini-chart">
+                                <div class="chart-bar" style="height: 40%"></div>
+                                <div class="chart-bar" style="height: 70%"></div>
+                                <div class="chart-bar" style="height: 55%"></div>
+                                <div class="chart-bar" style="height: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="floating-card card-2">
+                            <div class="donut-chart">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#E5E7EB" stroke-width="12"/>
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#3DBE7D" stroke-width="12"
+                                            stroke-dasharray="188.5" stroke-dashoffset="47" transform="rotate(-90 50 50)"/>
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#8B5CF6" stroke-width="12"
+                                            stroke-dasharray="188.5" stroke-dashoffset="141.5" transform="rotate(-90 50 50)"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="character-illustration">
+                            <div class="character">
+                                <div class="laptop">
+                                    <div class="laptop-screen"></div>
+                                </div>
+                                <div class="person">
+                                    <div class="person-body"></div>
+                                    <div class="person-head"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="growth-arrow">
+                            <svg viewBox="0 0 100 100" fill="none">
+                                <path d="M10 80 Q 30 60, 50 50 T 90 20" stroke="#3DBE7D" stroke-width="4" fill="none"/>
+                                <path d="M90 20 L 80 18 M 90 20 L 88 30" stroke="#3DBE7D" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="onboarding-footer">
+            <div class="feedback-section">
+                <span>How's setup going?</span>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" data-rating="sad" title="Not great">😞</button>
+                    <button class="feedback-btn" data-rating="neutral" title="It's okay">😐</button>
+                    <button class="feedback-btn" data-rating="happy" title="Great!">😊</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="onboarding.js"></script>
+</body>
+</html>

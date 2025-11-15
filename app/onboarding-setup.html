@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup - ZandeBooks</title>
+    <link rel="stylesheet" href="onboarding-setup.css">
+</head>
+<body>
+    <div class="setup-container">
+        <header class="setup-header">
+            <div class="logo-section">
+                <h1 class="brand">ZandeBooks</h1>
+            </div>
+            <div class="header-right">
+                <span class="setup-title">Get started</span>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <main class="setup-main">
+            <!-- Step 1: Business Name -->
+            <div class="setup-step active" id="step1">
+                <div class="step-content">
+                    <h2 class="step-heading">For starters, what's your business called?</h2>
+                    <p class="step-subheading">With this, we'll make sure your legal business name shows up in the right places.</p>
+                    
+                    <div class="form-group">
+                        <label for="businessName">Your legal business name OR your own name if you are joining ZandeBooks for personal use</label>
+                        <input type="text" id="businessName" class="form-input" placeholder="Enter your business name" autocomplete="off">
+                        <span class="error-message" id="businessNameError"></span>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="goBack()">Back</button>
+                        <button class="btn-primary" onclick="nextStep(1)">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Industry -->
+            <div class="setup-step" id="step2">
+                <div class="step-content">
+                    <h2 class="step-heading">What industry is your business in?</h2>
+                    <p class="step-subheading">This helps us customize your chart of accounts and features for your specific needs.</p>
+                    
+                    <div class="form-group">
+                        <label for="industry">Select your industry</label>
+                        <select id="industry" class="form-select">
+                            <option value="">Choose an industry...</option>
+                            <option value="retail">Retail & E-commerce</option>
+                            <option value="restaurant">Restaurant & Food Service</option>
+                            <option value="construction">Construction & Trades</option>
+                            <option value="professional">Professional Services</option>
+                            <option value="healthcare">Healthcare & Medical</option>
+                            <option value="technology">Technology & IT</option>
+                            <option value="manufacturing">Manufacturing</option>
+                            <option value="real_estate">Real Estate</option>
+                            <option value="nonprofit">Non-Profit</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <span class="error-message" id="industryError"></span>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="prevStep(2)">Back</button>
+                        <button class="btn-primary" onclick="nextStep(2)">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Business Details -->
+            <div class="setup-step" id="step3">
+                <div class="step-content">
+                    <h2 class="step-heading">Tell us a bit more about your business</h2>
+                    <p class="step-subheading">This information will help us set up your accounting correctly.</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="businessType">Business Type</label>
+                            <select id="businessType" class="form-select">
+                                <option value="">Select type...</option>
+                                <option value="sole_proprietor">Sole Proprietor</option>
+                                <option value="partnership">Partnership</option>
+                                <option value="pty_ltd">Pty Ltd</option>
+                                <option value="cc">Close Corporation (CC)</option>
+                                <option value="trust">Trust</option>
+                                <option value="nonprofit">Non-Profit</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="vatRegistered">VAT Registration</label>
+                            <select id="vatRegistered" class="form-select">
+                                <option value="no">Not VAT Registered</option>
+                                <option value="yes">VAT Registered</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="vatNumberGroup" style="display: none;">
+                        <label for="vatNumber">VAT Number</label>
+                        <input type="text" id="vatNumber" class="form-input" placeholder="e.g., 4123456789">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registrationNumber">Company/Registration Number (Optional)</label>
+                        <input type="text" id="registrationNumber" class="form-input" placeholder="e.g., 2021/123456/07">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="prevStep(3)">Back</button>
+                        <button class="btn-primary" onclick="nextStep(3)">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Contact Information -->
+            <div class="setup-step" id="step4">
+                <div class="step-content">
+                    <h2 class="step-heading">How can customers reach you?</h2>
+                    <p class="step-subheading">This information will appear on your invoices and documents.</p>
+                    
+                    <div class="form-group">
+                        <label for="email">Business Email</label>
+                        <input type="email" id="email" class="form-input" placeholder="info@yourbusiness.co.za">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Business Phone</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="+27 11 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Physical Address</label>
+                        <textarea id="address" class="form-textarea" rows="3" placeholder="123 Main Street&#10;Sandton, Johannesburg&#10;2196"></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="prevStep(4)">Back</button>
+                        <button class="btn-primary" onclick="nextStep(4)">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Financial Year -->
+            <div class="setup-step" id="step5">
+                <div class="step-content">
+                    <h2 class="step-heading">When does your financial year end?</h2>
+                    <p class="step-subheading">This helps us set up your reporting periods correctly.</p>
+                    
+                    <div class="form-group">
+                        <label for="yearEnd">Financial Year End</label>
+                        <select id="yearEnd" class="form-select">
+                            <option value="02-28">28 February (Most common in SA)</option>
+                            <option value="12-31">31 December</option>
+                            <option value="03-31">31 March</option>
+                            <option value="06-30">30 June</option>
+                            <option value="09-30">30 September</option>
+                            <option value="custom">Custom date...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="customYearEndGroup" style="display: none;">
+                        <label for="customYearEnd">Custom Year End Date</label>
+                        <input type="date" id="customYearEnd" class="form-input">
+                    </div>
+
+                    <div class="info-box">
+                        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path d="M12 16v-4M12 8h.01" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <p>Most South African businesses use 28 February as their financial year end. You can change this later if needed.</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="prevStep(5)">Back</button>
+                        <button class="btn-primary" onclick="nextStep(5)">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 6: Chart of Accounts -->
+            <div class="setup-step" id="step6">
+                <div class="step-content">
+                    <h2 class="step-heading">Your chart of accounts is ready!</h2>
+                    <p class="step-subheading">We've set up a customized chart of accounts based on your industry. You can review and customize it anytime.</p>
+                    
+                    <div class="preview-box">
+                        <div class="preview-header">
+                            <h3>Your Chart of Accounts Preview</h3>
+                            <span class="badge" id="accountCountBadge">0 accounts</span>
+                        </div>
+                        <div class="preview-list" id="coaPreview">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-secondary" onclick="prevStep(6)">Back</button>
+                        <button class="btn-primary" onclick="completeSetup()">Complete Setup</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="setup-footer">
+            <div class="feedback-section">
+                <span>How's setup going?</span>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" data-rating="sad" title="Not great">😞</button>
+                    <button class="feedback-btn" data-rating="neutral" title="It's okay">😐</button>
+                    <button class="feedback-btn" data-rating="happy" title="Great!">😊</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="onboarding-setup.js"></script>
+</body>
+</html>
