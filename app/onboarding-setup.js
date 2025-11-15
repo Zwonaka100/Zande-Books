@@ -299,9 +299,9 @@ async function completeSetup() {
             localStorage.setItem('onboarding_complete', 'true');
             localStorage.removeItem('onboarding_step');
             
-            // Redirect to main app
+            // Redirect to next steps page (bank connection & invoice)
             setTimeout(() => {
-                window.location.href = 'app.html';
+                window.location.href = 'onboarding-next-steps.html';
             }, 500);
         } else {
             throw new Error('Failed to save data');

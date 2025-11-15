@@ -531,7 +531,7 @@ async function getOrCreateBankConnection(organizationId, bankId) {
     // Check if connection exists
     const { data: existing } = await supabase
         .from('bank_connections')
-        .select('id')
+        .select('id, default_gl_account_id')
         .eq('organization_id', organizationId)
         .eq('bank_code', bankId)
         .single();
@@ -539,6 +539,9 @@ async function getOrCreateBankConnection(organizationId, bankId) {
     if (existing) {
         return existing.id;
     }
+    
+    // Create bank account in Chart of Accounts first
+    const glAccountId = await createBankAccountInCOA(organizationId, bankName);
     
     // Create new connection
     const { data: newConnection, error } = await supabase
@@ -548,7 +551,8 @@ async function getOrCreateBankConnection(organizationId, bankId) {
             bank_name: bankName,
             bank_code: bankId,
             connection_type: 'manual',
-            connection_status: 'active'
+            connection_status: 'active',
+            default_gl_account_id: glAccountId
         }])
         .select()
         .single();
@@ -558,6 +562,54 @@ async function getOrCreateBankConnection(organizationId, bankId) {
     }
     
     return newConnection.id;
+}
+
+async function createBankAccountInCOA(organizationId, bankName) {
+    // Check if bank account already exists
+    const { data: existingAccount } = await supabase
+        .from('chart_of_accounts')
+        .select('id')
+        .eq('organization_id', organizationId)
+        .eq('account_name', `${bankName} - Current Account`)
+        .single();
+    
+    if (existingAccount) {
+        return existingAccount.id;
+    }
+    
+    // Get the Bank account type
+    const { data: bankAccountType } = await supabase
+        .from('account_types')
+        .select('id')
+        .eq('name', 'Bank')
+        .single();
+    
+    if (!bankAccountType) {
+        throw new Error('Bank account type not found in system');
+    }
+    
+    // Create bank account in COA
+    const { data: newAccount, error } = await supabase
+        .from('chart_of_accounts')
+        .insert([{
+            organization_id: organizationId,
+            account_type_id: bankAccountType.id,
+            account_code: '1000', // Bank accounts typically start at 1000
+            account_name: `${bankName} - Current Account`,
+            description: `Bank account for ${bankName}`,
+            is_active: true,
+            normal_balance: 'debit'
+        }])
+        .select()
+        .single();
+    
+    if (error) {
+        console.error('Error creating bank account in COA:', error);
+        throw error;
+    }
+    
+    console.log('Created bank account in COA:', newAccount);
+    return newAccount.id;
 }
 
 function showSuccessScreen(transactions) {

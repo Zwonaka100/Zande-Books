@@ -353,7 +353,35 @@ DECLARE
     v_failed INTEGER := 0;
     v_duplicates INTEGER := 0;
     v_result JSONB;
+    v_bank_gl_account_id UUID;
+    v_transaction_id UUID;
+    v_journal_entry_id UUID;
+    v_expense_account_id UUID;
+    v_income_account_id UUID;
 BEGIN
+    -- Get the bank's GL account
+    SELECT default_gl_account_id INTO v_bank_gl_account_id
+    FROM bank_connections
+    WHERE id = p_bank_connection_id;
+    
+    IF v_bank_gl_account_id IS NULL THEN
+        RAISE EXCEPTION 'Bank connection does not have a GL account assigned';
+    END IF;
+    
+    -- Get default income account (Sales Revenue)
+    SELECT id INTO v_income_account_id
+    FROM chart_of_accounts
+    WHERE organization_id = p_organization_id
+    AND account_name ILIKE '%revenue%'
+    LIMIT 1;
+    
+    -- Get default expense account (Operating Expenses)
+    SELECT id INTO v_expense_account_id
+    FROM chart_of_accounts
+    WHERE organization_id = p_organization_id
+    AND account_name ILIKE '%expense%'
+    LIMIT 1;
+    
     -- Create import batch
     INSERT INTO import_batches (
         organization_id,
@@ -375,6 +403,7 @@ BEGIN
     FOR v_transaction IN SELECT * FROM jsonb_array_elements(p_transactions)
     LOOP
         BEGIN
+            -- Insert bank transaction
             INSERT INTO bank_transactions (
                 organization_id,
                 bank_connection_id,
@@ -385,6 +414,7 @@ BEGIN
                 category,
                 transaction_type,
                 import_batch_id,
+                gl_account_id,
                 status
             ) VALUES (
                 p_organization_id,
@@ -396,8 +426,97 @@ BEGIN
                 v_transaction->>'category',
                 v_transaction->>'type',
                 v_batch_id,
+                v_bank_gl_account_id,
                 'categorized'
-            );
+            ) RETURNING id INTO v_transaction_id;
+            
+            -- Create journal entry for this transaction
+            INSERT INTO journal_entries (
+                organization_id,
+                entry_date,
+                description,
+                reference,
+                entry_type,
+                status,
+                created_by
+            ) VALUES (
+                p_organization_id,
+                (v_transaction->>'date')::DATE,
+                'Bank Transaction: ' || (v_transaction->>'description'),
+                'BANK-' || v_transaction_id::TEXT,
+                'bank_import',
+                'posted',
+                auth.uid()
+            ) RETURNING id INTO v_journal_entry_id;
+            
+            -- Update bank transaction with journal entry link
+            UPDATE bank_transactions 
+            SET journal_entry_id = v_journal_entry_id
+            WHERE id = v_transaction_id;
+            
+            -- Create journal entry lines (double-entry bookkeeping)
+            IF (v_transaction->>'type') = 'income' THEN
+                -- Debit: Bank Account (increase asset)
+                INSERT INTO journal_entry_lines (
+                    journal_entry_id,
+                    account_id,
+                    description,
+                    debit_amount,
+                    credit_amount
+                ) VALUES (
+                    v_journal_entry_id,
+                    v_bank_gl_account_id,
+                    v_transaction->>'description',
+                    (v_transaction->>'amount')::DECIMAL,
+                    0
+                );
+                
+                -- Credit: Income Account (increase income)
+                INSERT INTO journal_entry_lines (
+                    journal_entry_id,
+                    account_id,
+                    description,
+                    debit_amount,
+                    credit_amount
+                ) VALUES (
+                    v_journal_entry_id,
+                    COALESCE(v_income_account_id, v_bank_gl_account_id),
+                    v_transaction->>'description',
+                    0,
+                    (v_transaction->>'amount')::DECIMAL
+                );
+            ELSE
+                -- Expense transaction
+                -- Credit: Bank Account (decrease asset)
+                INSERT INTO journal_entry_lines (
+                    journal_entry_id,
+                    account_id,
+                    description,
+                    debit_amount,
+                    credit_amount
+                ) VALUES (
+                    v_journal_entry_id,
+                    v_bank_gl_account_id,
+                    v_transaction->>'description',
+                    0,
+                    ABS((v_transaction->>'amount')::DECIMAL)
+                );
+                
+                -- Debit: Expense Account (increase expense)
+                INSERT INTO journal_entry_lines (
+                    journal_entry_id,
+                    account_id,
+                    description,
+                    debit_amount,
+                    credit_amount
+                ) VALUES (
+                    v_journal_entry_id,
+                    COALESCE(v_expense_account_id, v_bank_gl_account_id),
+                    v_transaction->>'description',
+                    ABS((v_transaction->>'amount')::DECIMAL),
+                    0
+                );
+            END IF;
             
             v_successful := v_successful + 1;
             
@@ -406,6 +525,7 @@ BEGIN
                 v_duplicates := v_duplicates + 1;
             WHEN OTHERS THEN
                 v_failed := v_failed + 1;
+                RAISE WARNING 'Failed to import transaction: %', SQLERRM;
         END;
     END LOOP;
     
@@ -414,6 +534,7 @@ BEGIN
         successful_imports = v_successful,
         failed_imports = v_failed,
         duplicate_transactions = v_duplicates,
+        auto_categorized = v_successful,
         status = 'completed',
         completed_at = NOW()
     WHERE id = v_batch_id;
@@ -425,7 +546,8 @@ BEGIN
         'total', jsonb_array_length(p_transactions),
         'successful', v_successful,
         'failed', v_failed,
-        'duplicates', v_duplicates
+        'duplicates', v_duplicates,
+        'message', 'Transactions imported and posted to General Ledger'
     );
     
     RETURN v_result;
