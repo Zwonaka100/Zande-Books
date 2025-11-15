@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Your Bank - ZandeBooks</title>
+    <link rel="stylesheet" href="bank-connect.css">
+</head>
+<body>
+    <div class="bank-connect-container">
+        <header class="bank-header">
+            <div class="logo-section">
+                <h1 class="brand">ZandeBooks</h1>
+            </div>
+            <button class="skip-btn" onclick="skipBankConnection()">Skip for now</button>
+        </header>
+
+        <main class="bank-main">
+            <!-- Initial Bank Selection Screen -->
+            <div class="bank-screen active" id="bankSelectionScreen">
+                <div class="content-wrapper">
+                    <h2 class="main-heading">Let's get a picture of your profits</h2>
+                    <p class="subheading">Connect your bank to automatically import and categorize transactions.</p>
+
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                            <path d="M21 21l-4.35-4.35" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <input type="text" id="bankSearch" placeholder="Search by bank name" class="search-input">
+                    </div>
+
+                    <div class="banks-grid" id="banksGrid">
+                        <!-- Major SA Banks -->
+                        <div class="bank-card" data-bank="fnb" onclick="selectBank('fnb')">
+                            <div class="bank-logo fnb-logo">
+                                <span class="bank-initial">FNB</span>
+                            </div>
+                            <span class="bank-name">First National Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="standard" onclick="selectBank('standard')">
+                            <div class="bank-logo standard-logo">
+                                <span class="bank-initial">SB</span>
+                            </div>
+                            <span class="bank-name">Standard Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="absa" onclick="selectBank('absa')">
+                            <div class="bank-logo absa-logo">
+                                <span class="bank-initial">ABSA</span>
+                            </div>
+                            <span class="bank-name">ABSA Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="nedbank" onclick="selectBank('nedbank')">
+                            <div class="bank-logo nedbank-logo">
+                                <span class="bank-initial">N</span>
+                            </div>
+                            <span class="bank-name">Nedbank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="capitec" onclick="selectBank('capitec')">
+                            <div class="bank-logo capitec-logo">
+                                <span class="bank-initial">C</span>
+                            </div>
+                            <span class="bank-name">Capitec Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="investec" onclick="selectBank('investec')">
+                            <div class="bank-logo investec-logo">
+                                <span class="bank-initial">I</span>
+                            </div>
+                            <span class="bank-name">Investec</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="discovery" onclick="selectBank('discovery')">
+                            <div class="bank-logo discovery-logo">
+                                <span class="bank-initial">D</span>
+                            </div>
+                            <span class="bank-name">Discovery Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="tymebank" onclick="selectBank('tymebank')">
+                            <div class="bank-logo tymebank-logo">
+                                <span class="bank-initial">T</span>
+                            </div>
+                            <span class="bank-name">TymeBank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+
+                        <div class="bank-card" data-bank="other" onclick="selectBank('other')">
+                            <div class="bank-logo other-logo">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <rect x="3" y="6" width="18" height="12" rx="2" stroke-width="2"/>
+                                    <path d="M3 10h18M7 14h.01M11 14h.01" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="bank-name">Other Bank</span>
+                            <span class="coming-soon-badge">Upload CSV</span>
+                        </div>
+                    </div>
+
+                    <div class="info-banner">
+                        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path d="M12 16v-4M12 8h.01" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <div class="info-text">
+                            <strong>Bank statement upload</strong>
+                            <p>Download your bank statement as CSV from your online banking, then upload it here. We'll automatically import and categorize your transactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- CSV Upload Screen -->
+            <div class="bank-screen" id="uploadScreen">
+                <div class="content-wrapper upload-wrapper">
+                    <button class="back-link" onclick="backToSelection()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M19 12H5M12 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Back to bank selection
+                    </button>
+
+                    <h2 class="main-heading">Upload your <span id="selectedBankName">bank</span> statement</h2>
+                    <p class="subheading">We'll automatically process your transactions and categorize them for you.</p>
+
+                    <!-- Upload Area -->
+                    <div class="upload-zone" id="uploadZone">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3>Drag and drop your CSV file here</h3>
+                        <p>or</p>
+                        <label for="fileInput" class="upload-btn">Browse files</label>
+                        <input type="file" id="fileInput" accept=".csv,.txt" hidden>
+                        <p class="upload-hint">Supported formats: CSV, TXT</p>
+                    </div>
+
+                    <!-- How to Download Instructions -->
+                    <div class="instructions-card">
+                        <h3>How to download your statement from <span id="bankInstructionName">your bank</span></h3>
+                        <div class="instruction-steps" id="instructionSteps">
+                            <!-- Will be populated based on selected bank -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processing Screen -->
+            <div class="bank-screen" id="processingScreen">
+                <div class="content-wrapper processing-wrapper">
+                    <div class="processing-animation">
+                        <div class="spinner"></div>
+                    </div>
+                    <h2 class="main-heading">Processing your transactions...</h2>
+                    <p class="subheading" id="processingStatus">Analyzing your bank statement</p>
+                    
+                    <div class="processing-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="transactionsFound">0</div>
+                            <div class="stat-label">Transactions Found</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="transactionsCategorized">0</div>
+                            <div class="stat-label">Auto-Categorized</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="timesSaved">0 hrs</div>
+                            <div class="stat-label">Time Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review & Confirm Screen -->
+            <div class="bank-screen" id="reviewScreen">
+                <div class="content-wrapper review-wrapper">
+                    <h2 class="main-heading">Review your transactions</h2>
+                    <p class="subheading">We've automatically categorized <span id="reviewCount">0</span> transactions. Review and adjust if needed.</p>
+
+                    <div class="review-summary">
+                        <div class="summary-card">
+                            <div class="summary-label">Total Income</div>
+                            <div class="summary-amount income" id="totalIncome">R 0.00</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Total Expenses</div>
+                            <div class="summary-amount expense" id="totalExpenses">R 0.00</div>
+                        </div>
+                        <div class="summary-card">
+                            <div class="summary-label">Net Cash Flow</div>
+                            <div class="summary-amount" id="netCashFlow">R 0.00</div>
+                        </div>
+                    </div>
+
+                    <div class="transactions-table-wrapper">
+                        <table class="transactions-table" id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Account</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody">
+                                <!-- Will be populated with transactions -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-secondary" onclick="backToUpload()">Upload Different File</button>
+                        <button class="btn-primary" onclick="confirmTransactions()">
+                            Confirm & Import <span id="confirmCount">0</span> Transactions
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Screen -->
+            <div class="bank-screen" id="successScreen">
+                <div class="content-wrapper success-wrapper">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                            <path d="M9 12l2 2 4-4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="main-heading">All set! Your transactions are imported</h2>
+                    <p class="subheading">We've saved you approximately <span id="finalTimeSaved">2.5 hours</span> of manual data entry!</p>
+
+                    <div class="success-stats">
+                        <div class="stat-box">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value" id="successIncome">R 0.00</div>
+                            <div class="stat-desc">Total Income</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-value" id="successExpenses">R 0.00</div>
+                            <div class="stat-desc">Total Expenses</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-value" id="successCount">0</div>
+                            <div class="stat-desc">Transactions</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary large" onclick="goToDashboard()">
+                        Go to Dashboard
+                    </button>
+
+                    <button class="btn-link" onclick="uploadAnother()">
+                        Upload another statement
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="bank-connect.js"></script>
+</body>
+</html>
