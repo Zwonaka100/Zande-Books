@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Support | ZandeBooks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', Arial, sans-serif; background: #F9FAFB; color: #0B1F3A; margin: 0; }
+    .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 1px 8px rgba(11,31,58,0.04); padding: 2rem; }
+    h1 { font-size: 1.7rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .support-search { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+    .support-search input { flex: 1; padding: 0.7em 1em; border-radius: 8px; border: 1px solid #d1d5db; font-size: 1rem; }
+    .support-search button { background: #3DBE7D; color: #fff; border: none; border-radius: 8px; padding: 0.7em 1.5em; font-size: 1rem; cursor: pointer; }
+    .support-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
+    .support-card { background: #f6f8f7; border-radius: 10px; box-shadow: 0 1px 8px rgba(11,31,58,0.04); padding: 1.2rem; text-align: left; display: flex; flex-direction: column; }
+    .support-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .support-card p { font-size: 0.97rem; color: #3a4a5a; margin-bottom: 1rem; }
+    .support-card a { color: #3DBE7D; text-decoration: underline; font-weight: 500; }
+    .contact-box { background: #e8f5e9; border-left: 5px solid #3DBE7D; border-radius: 8px; padding: 1.2rem; margin: 2rem 0; }
+    .contact-box h4 { margin: 0 0 0.5rem 0; }
+    .contact-box p { margin: 0.2rem 0 0.7rem 0; }
+    .contact-box a { color: #0B1F3A; font-weight: 600; text-decoration: underline; }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; color: #3DBE7D; text-decoration: underline; }
+    @media (max-width: 700px) {
+      .container { padding: 1rem; }
+      .support-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<!-- Marketing Topbar -->
+<div id="marketingTopbar" class="marketing-topbar">
+  <a href="index.html" class="marketing-logo">
+    <img src="logo.png" alt="ZandeBooks Logo">
+    <span>Zande Books</span>
+  </a>
+  <nav class="marketing-nav">
+    <div class="dropdown">
+      <button class="dropbtn" type="button">For Business <span class="arrow">&#9662;</span></button>
+      <div class="dropdown-content">
+        <a href="business.html#overview">Overview</a>
+        <a href="business.html#invoicing">Invoicing</a>
+        <a href="business.html#vat">VAT & Compliance</a>
+        <a href="business.html#mobile">Mobile App</a>
+        <a href="plans.html" id="showPricing">Pricing</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="dropbtn" type="button">For Accountants <span class="arrow">&#9662;</span></button>
+      <div class="dropdown-content">
+        <a href="accountants.html#portal">Accountant Portal</a>
+        <a href="accountants.html#afs">AFS Builder</a>
+        <a href="accountants.html#collab">Client Collaboration</a>
+        <a href="accountants.html#partner">Partner Program</a>
+        <a href="accountants.html#resources">Resources</a>
+      </div>
+    </div>
+    <a href="plans.html" id="pricingNav">Pricing & Plans</a>
+    <a href="resources.html" id="resourcesNav">Resources</a>
+    <a href="support.html" id="supportNav">Support</a>
+    <a href="app.html?register=1" class="zande-btn">Get Started</a>
+    <a href="app.html?login=1" class="zande-btn secondary">Login</a>
+  </nav>
+</div>
+<body>
+  <div class="container">
+    <section>
+      <h1>Help & Support</h1>
+      <p>How can we help you? Browse our guides or contact support below.</p>
+      <form class="support-search" onsubmit="event.preventDefault();alert('Search coming soon!');">
+        <input type="text" placeholder="How can we help you? (e.g. VAT, invoices, login)">
+        <button type="submit">Search</button>
+      </form>
+    <div class="support-cards">
+      <div class="support-card">
+        <h3>Getting Started</h3>
+        <p>Step-by-step guides for setting up your ZandeBooks account, adding your business, and your first invoice.</p>
+        <a href="#">Read Guide</a>
+      </div>
+      <div class="support-card">
+        <h3>Managing VAT</h3>
+        <p>How to set up VAT, add VAT to invoices, and generate VAT reports for SARS.</p>
+        <a href="#">Learn More</a>
+      </div>
+      <div class="support-card">
+        <h3>Invoicing & Payments</h3>
+        <p>Everything you need to know about creating, sending, and tracking invoices and payments.</p>
+        <a href="#">See Details</a>
+      </div>
+      <div class="support-card">
+        <h3>Expenses & Receipts</h3>
+        <p>How to record expenses, upload receipts, and keep your books audit-ready.</p>
+        <a href="#">Read Article</a>
+      </div>
+      <div class="support-card">
+        <h3>Account & Security</h3>
+        <p>Update your profile, change your password, and keep your account secure.</p>
+        <a href="#">Account Help</a>
+      </div>
+      <div class="support-card">
+        <h3>Contact Support</h3>
+        <p>Need more help? Chat with us on WhatsApp or send us an email.</p>
+        <a href="#contact">Contact Us</a>
+      </div>
+    </div>
+    <div class="contact-box" id="contact">
+      <h4>Contact ZandeBooks Support</h4>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/27XXXXXXXXX" target="_blank">+27 X XXX XXXX</a></p>
+      <p><strong>Email:</strong> <a href="mailto:support@zandebooks.co.za">support@zandebooks.co.za</a></p>
+      <p><strong>Business Hours:</strong> Mon–Fri, 8:00–17:00</p>
+    </div>
+    </Section> 
+  </div>
+</body>
+</html>

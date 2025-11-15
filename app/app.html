@@ -1,0 +1,4386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZandeBooks - Financial Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="app-style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- Modern Topbar -->
+  <header class="modern-topbar">
+    <!-- Left Side: ZandeBooks Brand -->
+    <div class="topbar-left">
+      <div class="zandebooks-brand">
+        <div class="brand-logo-small">
+          <img src="logo.png" alt="ZandeBooks" class="brand-logo-img">
+        </div>
+        <div class="brand-info">
+          <div class="brand-name-topbar">Zande Books</div>
+          <div class="brand-edition">Professional</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Center: Global Search -->
+    <div class="topbar-center">
+      <div class="topbar-search">
+        <svg class="topbar-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" placeholder="Search anything... (⌘K)" id="globalSearch">
+      </div>
+    </div>
+    
+    <!-- Right Side: Actions & Profile -->
+    <div class="topbar-right">
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode" onclick="toggleTheme()">
+        <div class="theme-toggle-slider">
+          <svg class="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </div>
+      </button>
+      
+      <!-- Quick Actions -->
+      <button class="topbar-btn" id="quickAddBtn" title="Quick Add">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+      
+      <!-- Notifications -->
+      <div class="topbar-dropdown-container">
+        <button class="topbar-btn" id="notificationsBtn" title="Notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="notification-badge" id="notificationCount">3</span>
+        </button>
+        <div class="topbar-dropdown" id="notificationsDropdown">
+          <div class="dropdown-header">
+            <h4>Notifications</h4>
+            <button class="btn btn-sm">Mark all read</button>
+          </div>
+          <div class="dropdown-content">
+            <div class="notification-item unread">
+              <div class="notification-icon notification-success">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Payment received</div>
+                <div class="notification-desc">Invoice #INV-001 - R 2,500.00</div>
+                <div class="notification-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="notification-item unread">
+              <div class="notification-icon notification-warning">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Invoice overdue</div>
+                <div class="notification-desc">ABC Company - R 1,200.00</div>
+                <div class="notification-time">1 day ago</div>
+              </div>
+            </div>
+            <div class="notification-item">
+              <div class="notification-icon notification-info">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Monthly report ready</div>
+                <div class="notification-desc">September financial summary</div>
+                <div class="notification-time">2 days ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown-footer">
+            <button class="btn btn-sm btn-primary">View all notifications</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- User Profile Dropdown -->
+      <div class="topbar-dropdown-container">
+        <button class="profile-btn" id="profileBtn">
+          <div class="profile-avatar" id="userAvatar">
+            <span id="userInitials">ZM</span>
+          </div>
+          <div class="profile-info">
+            <div class="profile-name" id="userName">Zwonaka Mabege</div>
+            <div class="profile-plan" id="userPlan">Pro Plan</div>
+          </div>
+          <span class="profile-arrow">▼</span>
+        </button>
+        
+        <div class="topbar-dropdown profile-dropdown" id="profileDropdown">
+          <!-- User Info Section -->
+          <div class="dropdown-header profile-header">
+            <div class="profile-avatar-large">
+              <span id="userInitialsLarge">ZM</span>
+            </div>
+            <div class="profile-details">
+              <div class="profile-name-large" id="userNameLarge">Zwonaka Mabege</div>
+              <div class="profile-email" id="userEmail">zwonaka@zandetechnologies.com</div>
+              <div class="profile-plan-badge">
+                <span class="plan-badge pro" id="userPlanBadge">🟣 Pro Plan</span>
+                <span class="plan-users" id="planUsers">5/7 users</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Stats -->
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="stat-value" id="totalInvoices">24</span>
+              <span class="stat-label">Invoices</span>
+            </div>
+            <div class="profile-stat">
+              <span class="stat-value" id="totalCustomers">12</span>
+              <span class="stat-label">Customers</span>
+            </div>
+            <div class="profile-stat">
+              <span class="stat-value" id="monthlyRevenue">R 45.2K</span>
+              <span class="stat-label">This Month</span>
+            </div>
+          </div>
+          
+          <!-- Menu Items -->
+          <div class="dropdown-content profile-menu">
+            <button class="profile-menu-item" onclick="openProfileModal()">
+              <span class="menu-icon">👤</span>
+              <span>Profile Settings</span>
+            </button>
+            <button class="profile-menu-item" onclick="openUserManagement()">
+              <span class="menu-icon">�</span>
+              <span>Manage Users</span>
+              <span class="menu-badge" id="userCount">5</span>
+            </button>
+            <button class="profile-menu-item" onclick="openSubscriptionModal()">
+              <span class="menu-icon">💳</span>
+              <span>Subscription & Billing</span>
+            </button>
+            <button class="profile-menu-item" onclick="openCompanySettings()">
+              <span class="menu-icon">🏢</span>
+              <span>Company Settings</span>
+            </button>
+            <button class="profile-menu-item" onclick="openSecuritySettings()">
+              <span class="menu-icon">🔒</span>
+              <span>Security & Privacy</span>
+            </button>
+            <hr class="profile-divider">
+            <button class="profile-menu-item" onclick="openSupport()">
+              <span class="menu-icon">❓</span>
+              <span>Help & Support</span>
+            </button>
+            <button class="profile-menu-item" onclick="logout()">
+              <span class="menu-icon">🚪</span>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="zande-sidebar">
+    <!-- User's Business Context -->
+    <div class="sidebar-business">
+      <div class="business-avatar">
+        <span id="businessInitials">DC</span>
+      </div>
+      <div class="business-details">
+        <div class="business-name-sidebar" id="businessNameSidebar">Demo Company Pty Ltd</div>
+        <div class="business-type" id="businessType">Retail Business</div>
+        <div class="business-status">
+          <span class="status-indicator active"></span>
+          <span class="status-text">Active Subscription</span>
+        </div>
+      </div>
+    </div>
+    
+    <nav>
+      <ul>
+        <li data-module="dashboard" data-feature="dashboard" class="active" onclick="navigateToSection('dashboardSection', 'dashboard');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span class="menu-text">Dashboard</span>
+        </li>
+        <li data-module="customers" data-feature="customers" onclick="navigateToSection('customersSection', 'customers');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span class="menu-text">Customers</span>
+        </li>
+        <li data-module="suppliers" data-feature="suppliers" onclick="navigateToSection('suppliersSection', 'suppliers');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="menu-text">Suppliers</span>
+        </li>
+        <li data-module="products" data-feature="products" onclick="navigateToSection('productsSection', 'products');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          <span class="menu-text">Products</span>
+        </li>
+        <li data-module="banking" data-feature="banking" onclick="navigateToSection('bankingSection', 'banking');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+            <line x1="1" y1="10" x2="23" y2="10"></line>
+          </svg>
+          <span class="menu-text">Banking</span>
+        </li>
+        <li data-module="sales" data-feature="sales" onclick="navigateToSection('salesSection', 'sales');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span class="menu-text">Sales</span>
+        </li>
+        <li data-module="purchases" data-feature="purchases" onclick="navigateToSection('purchasesSection', 'purchases');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="menu-text">Purchases</span>
+        </li>
+        <li data-module="expenses" data-feature="expenses" onclick="navigateToSection('expensesSection', 'expenses');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            <line x1="19" y1="9" x2="5" y2="15"></line>
+          </svg>
+          <span class="menu-text">Expenses</span>
+        </li>
+        <li data-module="journals" data-feature="journals" onclick="navigateToSection('journalsSection', 'journals');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span class="menu-text">Journals</span>
+        </li>
+        <li data-module="general-ledger" data-feature="general-ledger" onclick="navigateToSection('general-ledgerSection', 'general-ledger');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span class="menu-text">General Ledger</span>
+        </li>
+        <li data-module="chart-of-accounts" data-feature="chart-of-accounts" onclick="navigateToSection('chart-of-accountsSection', 'chart-of-accounts');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <span class="menu-text">Chart of Accounts</span>
+        </li>
+        <li data-module="reports" data-feature="reports" onclick="navigateToSection('reportsSection', 'reports');">
+          <svg class="nav-icon menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <span class="menu-text">Reports</span>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <section id="dashboardSection" class="module-section">
+      <!-- MODERN ZANDEBOOKS DASHBOARD -->
+      <div class="modern-dashboard">
+        <!-- Dashboard Header -->
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Real-time insights powered by AI</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="refreshDashboard()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              Refresh
+            </button>
+            <button class="btn btn-primary" onclick="openQuickActions()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Quick Actions
+            </button>
+          </div>
+        </div>
+
+        <!-- Key Performance Indicators -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Total Revenue</span>
+              <div class="stat-card-icon bg-success-50">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="totalRevenue">R 0.00</div>
+            <div class="stat-card-change positive" id="revenueChange">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              +12.5% from last month
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Outstanding Invoices</span>
+              <div class="stat-card-icon bg-warning-50">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="outstandingInvoices">R 0.00</div>
+            <div class="stat-card-change" id="invoicesChange">
+              5 invoices pending
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Monthly Expenses</span>
+              <div class="stat-card-icon bg-error-50">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="monthlyExpenses">R 0.00</div>
+            <div class="stat-card-change negative" id="expensesChange">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline>
+                <polyline points="17 18 23 18 23 12"></polyline>
+              </svg>
+              +8.2% from last month
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-title">Net Profit</span>
+              <div class="stat-card-icon bg-info-50">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+              </div>
+            </div>
+            <div class="stat-card-value" id="netProfit">R 0.00</div>
+            <div class="stat-card-change positive" id="profitChange">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              +15.3% from last month
+            </div>
+          </div>
+        </div>
+
+        <!-- AI-Powered Insights -->
+        <div class="smart-insight">
+          <div class="smart-insight-title">
+            <span class="ai-badge">AI Insights</span>
+          </div>
+          <p style="color: #4C1D95; margin: 0;">Based on your recent activity, we predict your revenue will increase by 18% next month. Consider increasing inventory for your top 3 products.</p>
+        </div>
+
+        <!-- Dashboard Content Grid -->
+        <div class="dashboard-grid">
+          <!-- Quick Actions Panel -->
+          <div class="dashboard-panel">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Quick Actions</h3>
+              </div>
+              <div class="card-content">
+                <div class="quick-actions-grid">
+                  <button class="quick-action-btn" onclick="showSection('salesSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span>Create Invoice</span>
+                  </button>
+                  <button class="quick-action-btn" onclick="showSection('expensesSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                      <line x1="1" y1="10" x2="23" y2="10"></line>
+                    </svg>
+                    <span>Add Expense</span>
+                  </button>
+                  <button class="quick-action-btn" onclick="showSection('customersSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Add Customer</span>
+                  </button>
+                  <button class="quick-action-btn" onclick="showSection('productsSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                    <span>Add Product</span>
+                  </button>
+                  <button class="quick-action-btn" onclick="showSection('bankingSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span>Bank Transaction</span>
+                  </button>
+                  <button class="quick-action-btn" onclick="showSection('reportsSection')">
+                    <svg class="quick-action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="20" x2="18" y2="10"></line>
+                      <line x1="12" y1="20" x2="12" y2="4"></line>
+                      <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <span>View Reports</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="dashboard-panel">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Recent Activity</h3>
+                <button class="btn btn-sm btn-secondary">View All</button>
+              </div>
+              <div class="card-content">
+                <div class="activity-list" id="recentActivity">
+                  <div class="activity-item">
+                    <div class="activity-icon bg-success-50">📄</div>
+                    <div class="activity-content">
+                      <div class="activity-title">Invoice #INV-001 created</div>
+                      <div class="activity-meta">Customer: ABC Company • R 2,500.00</div>
+                      <div class="activity-time">2 hours ago</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-error-50">💳</div>
+                    <div class="activity-content">
+                      <div class="activity-title">Office supplies expense</div>
+                      <div class="activity-meta">Office Depot • R 450.00</div>
+                      <div class="activity-time">5 hours ago</div>
+                    </div>
+                  </div>
+                  <div class="activity-item">
+                    <div class="activity-icon bg-primary-50">🏦</div>
+                    <div class="activity-content">
+                      <div class="activity-title">Bank deposit received</div>
+                      <div class="activity-meta">FNB Cheque Account • R 5,000.00</div>
+                      <div class="activity-time">1 day ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cash Flow Chart -->
+          <div class="dashboard-panel dashboard-panel-wide">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Cash Flow Overview</h3>
+                <div class="card-header-actions">
+                  <select class="form-select" style="width: auto;">
+                    <option>Last 30 days</option>
+                    <option>Last 90 days</option>
+                    <option>Last 6 months</option>
+                    <option>Last year</option>
+                  </select>
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="chart-container" id="cashflowChart">
+                  <!-- Chart will be rendered here -->
+                  <div class="chart-placeholder">
+                    <div class="chart-placeholder-icon">📊</div>
+                    <div class="chart-placeholder-text">Cash flow chart will appear here</div>
+                    <button class="btn btn-sm btn-primary" onclick="loadCashflowChart()">Load Chart</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Outstanding Items -->
+          <div class="dashboard-panel">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Outstanding Items</h3>
+              </div>
+              <div class="card-content">
+                <div class="outstanding-tabs">
+                  <button class="outstanding-tab active" onclick="showOutstandingTab('invoices')">
+                    Invoices (5)
+                  </button>
+                  <button class="outstanding-tab" onclick="showOutstandingTab('bills')">
+                    Bills (3)
+                  </button>
+                </div>
+                
+                <div id="outstanding-invoices" class="outstanding-content">
+                  <div class="outstanding-item">
+                    <div class="outstanding-info">
+                      <div class="outstanding-title">INV-001 • ABC Company</div>
+                      <div class="outstanding-amount">R 2,500.00</div>
+                    </div>
+                    <div class="outstanding-status overdue">7 days overdue</div>
+                  </div>
+                  <div class="outstanding-item">
+                    <div class="outstanding-info">
+                      <div class="outstanding-title">INV-002 • XYZ Ltd</div>
+                      <div class="outstanding-amount">R 1,200.00</div>
+                    </div>
+                    <div class="outstanding-status due-soon">Due in 3 days</div>
+                  </div>
+                </div>
+                
+                <div id="outstanding-bills" class="outstanding-content" style="display: none;">
+                  <div class="outstanding-item">
+                    <div class="outstanding-info">
+                      <div class="outstanding-title">Office Rent • Property Co</div>
+                      <div class="outstanding-amount">R 8,500.00</div>
+                    </div>
+                    <div class="outstanding-status due-soon">Due tomorrow</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Customers -->
+          <div class="dashboard-panel">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Top Customers</h3>
+                <button class="btn btn-sm btn-secondary">View All</button>
+              </div>
+              <div class="card-content">
+                <div class="top-customers-list" id="topCustomers">
+                  <div class="top-customer-item">
+                    <div class="customer-avatar">AB</div>
+                    <div class="customer-info">
+                      <div class="customer-name">ABC Company</div>
+                      <div class="customer-revenue">R 25,000.00</div>
+                    </div>
+                  </div>
+                  <div class="top-customer-item">
+                    <div class="customer-avatar">XY</div>
+                    <div class="customer-info">
+                      <div class="customer-name">XYZ Ltd</div>
+                      <div class="customer-revenue">R 18,500.00</div>
+                    </div>
+                  </div>
+                  <div class="top-customer-item">
+                    <div class="customer-avatar">QR</div>
+                    <div class="customer-info">
+                      <div class="customer-name">QRS Corp</div>
+                      <div class="customer-revenue">R 15,200.00</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Financial Summary -->
+          <div class="dashboard-panel dashboard-panel-wide">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Financial Summary</h3>
+                <div class="card-header-actions">
+                  <button class="btn btn-sm btn-secondary">Export Report</button>
+                  <button class="btn btn-sm btn-primary" onclick="showSection('reportsSection')">
+                    View Detailed Reports
+                  </button>
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="financial-summary-grid">
+                  <div class="financial-summary-item">
+                    <div class="financial-summary-label">Total Assets</div>
+                    <div class="financial-summary-value" id="totalAssets">R 0.00</div>
+                  </div>
+                  <div class="financial-summary-item">
+                    <div class="financial-summary-label">Total Liabilities</div>
+                    <div class="financial-summary-value" id="totalLiabilities">R 0.00</div>
+                  </div>
+                  <div class="financial-summary-item">
+                    <div class="financial-summary-label">Owner's Equity</div>
+                    <div class="financial-summary-value" id="ownersEquity">R 0.00</div>
+                  </div>
+                  <div class="financial-summary-item">
+                    <div class="financial-summary-label">Working Capital</div>
+                    <div class="financial-summary-value" id="workingCapital">R 0.00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alerts & Notifications -->
+        <div class="dashboard-alerts" id="dashboardAlerts">
+          <!-- Alerts will be dynamically added here -->
+        </div>
+      </div>
+    </section>
+
+    <section id="customersSection" class="module-section" style="display:none;">
+  <h2>Customers</h2>
+  <button id="addCustomerBtn" class="zande-btn">Add Customer</button>
+  <div style="float:right;">
+    <button id="exportCustomersExcel" class="zande-btn">Export Excel</button>
+    <button id="exportCustomersPdf" class="zande-btn">Export PDF</button>
+    <button id="exportCustomersCsv" class="zande-btn">Export CSV</button>
+  </div>
+  <table id="customersTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+      <tr>
+        <th>Customer Code</th>
+        <th>Customer Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>VAT Number</th>
+        <th>Credit Period (days)</th>
+        <th>Credit Limit</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Customers will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Add/Edit Customer Modal -->
+  <div id="customerModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closeCustomerModal">&times;</span>
+      <h3 id="customerModalTitle">Add Customer</h3>
+      <form id="customerForm">
+        <input type="hidden" id="customerId">
+        <div>
+          <label>Customer Code:</label>
+          <input type="text" id="customerCode" required>
+        </div>
+        <div>
+          <label>Customer Name:</label>
+          <input type="text" id="customerName" required>
+        </div>
+        <div>
+          <label>Email:</label>
+          <input type="email" id="customerEmail">
+        </div>
+        <div>
+          <label>Phone:</label>
+          <input type="tel" id="customerPhone">
+        </div>
+        <div>
+          <label>Address:</label>
+          <input type="text" id="customerAddress">
+        </div>
+        <div>
+          <label>VAT Number:</label>
+          <input type="text" id="customerVat">
+        </div>
+        <div>
+          <label>Credit Period (days):</label>
+          <input type="number" id="customerCreditPeriod" min="0" value="0">
+        </div>
+        <div>
+          <label>Credit Limit:</label>
+          <input type="number" id="customerCreditLimit" min="0" step="0.01" value="0.00">
+        </div>
+        <button type="submit" class="zande-btn">Save</button>
+      </form>
+    </div>
+  </div>
+    </section>
+
+
+    <section id="suppliersSection" class="module-section" style="display:none;">
+  <h2>Suppliers</h2>
+  <button id="addSupplierBtn" class="zande-btn">Add Supplier</button>
+  <div style="float:right;">
+    <button id="exportSuppliersExcel" class="zande-btn">Export Excel</button>
+    <button id="exportSuppliersPdf" class="zande-btn">Export PDF</button>
+    <button id="exportSuppliersCsv" class="zande-btn">Export CSV</button>
+  </div>
+  <table id="suppliersTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+      <tr>
+        <th>Supplier Code</th>
+        <th>Supplier Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>VAT Number</th>
+        <th>Payment Terms (days)</th>
+        <th>Credit Limit</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Suppliers will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Add/Edit Supplier Modal -->
+  <div id="supplierModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closeSupplierModal">&times;</span>
+      <h3 id="supplierModalTitle">Add Supplier</h3>
+      <form id="supplierForm">
+        <input type="hidden" id="supplierId">
+        <div>
+          <label>Supplier Code:</label>
+          <input type="text" id="supplierCode" required>
+        </div>
+        <div>
+          <label>Supplier Name:</label>
+          <input type="text" id="supplierName" required>
+        </div>
+        <div>
+          <label>Email:</label>
+          <input type="email" id="supplierEmail">
+        </div>
+        <div>
+          <label>Phone:</label>
+          <input type="tel" id="supplierPhone">
+        </div>
+        <div>
+          <label>Address:</label>
+          <input type="text" id="supplierAddress">
+        </div>
+        <div>
+          <label>VAT Number:</label>
+          <input type="text" id="supplierVat">
+        </div>
+        <div>
+          <label>Payment Terms (days):</label>
+          <input type="number" id="supplierPaymentTerms" min="0" value="30">
+        </div>
+        <div>
+          <label>Credit Limit:</label>
+          <input type="number" id="supplierCreditLimit" min="0" step="0.01" value="0.00">
+        </div>
+        <div>
+          <label>Bank Name:</label>
+          <input type="text" id="supplierBankName" placeholder="e.g., Standard Bank">
+        </div>
+        <div>
+          <label>Account Number:</label>
+          <input type="text" id="supplierAccountNumber" placeholder="Account number">
+        </div>
+        <div>
+          <label>Branch Code:</label>
+          <input type="text" id="supplierBranchCode" placeholder="Branch code">
+        </div>
+        <div>
+          <label>Account Type:</label>
+          <select id="supplierAccountType">
+            <option value="">Select Account Type</option>
+            <option value="Cheque">Cheque Account</option>
+            <option value="Savings">Savings Account</option>
+            <option value="Business">Business Account</option>
+          </select>
+        </div>
+        <div>
+          <label>SWIFT Code (for international):</label>
+          <input type="text" id="supplierSwiftCode" placeholder="SWIFT/BIC code">
+        </div>
+        <!-- Add these fields after the existing supplier fields in your supplier modal -->
+<!-- Add this section after the banking details in your supplier modal -->
+
+<!-- Supplier Documents Section -->
+<div class="sales-field-group" style="grid-column: 1/-1;">
+  <label style="font-weight: 600; color: #059669; margin-bottom: 10px; display: block;">
+    📄 Supplier Documents & Agreements
+  </label>
+  
+  <!-- Document Upload -->
+  <div style="border: 2px dashed #d1d5db; border-radius: 8px; padding: 20px; margin-bottom: 15px; background: #f9fafb;">
+    <div style="text-align: center; margin-bottom: 15px;">
+      <svg width="48" height="48" fill="none" stroke="#6b7280" stroke-width="1.5" viewBox="0 0 24 24" style="margin: 0 auto 10px;">
+        <path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+      </svg>
+      <p style="color: #6b7280; margin-bottom: 10px;">Upload supplier agreements and documents</p>
+      <input type="file" id="supplierDocuments" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xls,.xlsx,.txt" 
+             style="margin-bottom: 10px;">
+      <div style="font-size: 0.8em; color: #6b7280;">
+        Accepted: PDF, Word, Excel, Images, Text files (Max 10MB each)
+      </div>
+    </div>
+    
+    <!-- Upload Progress -->
+    <div id="supplierUploadProgress" style="display: none; margin-top: 15px;">
+      <div style="background: #e5e7eb; border-radius: 10px; overflow: hidden; height: 8px; margin-bottom: 5px;">
+        <div id="supplierProgressBar" style="height: 100%; background: #059669; width: 0%; transition: width 0.3s ease;"></div>
+      </div>
+      <div id="supplierUploadStatus" style="font-size: 0.9em; color: #6b7280;">Ready to upload...</div>
+    </div>
+  </div>
+  
+  <!-- Document Categories -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px;">
+    <div>
+      <label style="font-size: 0.9em; font-weight: 500; color: #374151;">Document Category:</label>
+      <select id="supplierDocumentCategory" style="width: 100%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px; margin-top: 4px;">
+        <option value="">Select Category</option>
+        <option value="rental_agreement">🏢 Rental Agreement</option>
+        <option value="insurance_policy">🛡️ Insurance Policy</option>
+        <option value="terms_conditions">📋 Terms & Conditions</option>
+        <option value="service_agreement">🤝 Service Agreement</option>
+        <option value="tax_documents">🧾 Tax Documents</option>
+        <option value="banking_details">🏦 Banking Details</option>
+        <option value="business_registration">📄 Business Registration</option>
+        <option value="compliance_certificates">✅ Compliance Certificates</option>
+        <option value="other">📎 Other Documents</option>
+      </select>
+    </div>
+    <div>
+      <label style="font-size: 0.9em; font-weight: 500; color: #374151;">Expiry Date (if applicable):</label>
+      <input type="date" id="supplierDocumentExpiry" style="width: 100%; padding: 6px; border: 1px solid #d1d5db; border-radius: 4px; margin-top: 4px;">
+    </div>
+  </div>
+  
+  <!-- File Preview Area -->
+  <div id="supplierDocumentPreview" style="display: none;">
+    <h4 style="margin: 15px 0 10px; color: #374151;">📋 Uploaded Documents</h4>
+    <div id="supplierDocumentList" style="max-height: 200px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; background: white;"></div>
+  </div>
+</div>
+
+<!-- Default Expense Account Field -->
+<div class="sales-field-group">
+  <label>Default Expense Account:</label>
+  <select id="supplierDefaultExpenseAccount">
+    <option value="">Select Default Account</option>
+  </select>
+  <small style="color: #666; display: block; margin-top: 4px;">
+    This account will be pre-selected when creating purchases from this supplier
+  </small>
+</div>
+
+<!-- Currency Field -->
+<div class="sales-field-group">
+  <label>Currency:</label>
+  <select id="supplierCurrency">
+    <option value="ZAR">ZAR - South African Rand</option>
+    <option value="USD">USD - US Dollar</option>
+    <option value="EUR">EUR - Euro</option>
+    <option value="GBP">GBP - British Pound</option>
+  </select>
+</div>
+
+<!-- Preferred Supplier Checkbox -->
+<div class="sales-field-group">
+  <label style="display: flex; align-items: center; gap: 8px;">
+    <input type="checkbox" id="supplierIsPreferred">
+    <span>Preferred Supplier</span>
+  </label>
+  <small style="color: #666; display: block; margin-top: 4px;">
+    Preferred suppliers appear first in purchase dropdowns
+  </small>
+</div>
+
+<!-- Supplier Statistics (Read-only) -->
+<div class="sales-field-group">
+  <label>Supplier Statistics:</label>
+  <div style="background: #f8fafc; padding: 12px; border-radius: 6px; font-size: 0.9em;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <div>
+        <strong>Total Spent (YTD):</strong><br>
+        <span id="supplierTotalSpent" style="color: #059669;">R0.00</span>
+      </div>
+      <div>
+        <strong>Average Order:</strong><br>
+        <span id="supplierAverageOrder" style="color: #059669;">R0.00</span>
+      </div>
+    </div>
+    <div style="margin-top: 8px;">
+      <strong>Last Order Date:</strong>
+      <span id="supplierLastOrder" style="color: #666;">Never</span>
+    </div>
+  </div>
+</div>
+        <button type="submit" class="zande-btn">Save</button>
+      </form>
+    </div>
+  </div>
+
+<!-- View Supplier Details Modal -->
+<div id="viewSupplierModal" class="zande-modal" style="display:none;">
+  <div class="zande-modal-content">
+    <span class="zande-modal-close" id="closeViewSupplierModal">&times;</span>
+    <h3>Supplier Details</h3>
+    <div class="supplier-details">
+      <div class="details-section">
+        <h4>Basic Information</h4>
+        <div class="detail-row">
+          <strong>Supplier Code:</strong> <span id="viewSupplierCode"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Name:</strong> <span id="viewSupplierName"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Email:</strong> <span id="viewSupplierEmail"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Phone:</strong> <span id="viewSupplierPhone"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Address:</strong> <span id="viewSupplierAddress"></span>
+        </div>
+        <div class="detail-row">
+          <strong>VAT Number:</strong> <span id="viewSupplierVat"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Payment Terms:</strong> <span id="viewSupplierPaymentTerms"></span> days
+        </div>
+        <div class="detail-row">
+          <strong>Credit Limit:</strong> <span id="viewSupplierCreditLimit"></span>
+        </div>
+      </div>
+      
+      <div class="details-section">
+        <h4>Banking Details</h4>
+        <div class="detail-row">
+          <strong>Bank Name:</strong> <span id="viewBankName"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Account Number:</strong> <span id="viewAccountNumber"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Branch Code:</strong> <span id="viewBranchCode"></span>
+        </div>
+        <div class="detail-row">
+          <strong>Account Type:</strong> <span id="viewAccountType"></span>
+        </div>
+        <div class="detail-row">
+          <strong>SWIFT Code:</strong> <span id="viewSwiftCode"></span>
+        </div>
+      </div>
+    </div>
+    <button class="zande-btn" onclick="closeViewSupplierModal()">Close</button>
+  </div>
+</div>
+</section>
+
+<section id="productsSection" class="module-section" style="display:none;">
+  <h2>Products & Services</h2>
+  <button id="addProductBtn" class="zande-btn">Add Product/Service</button>
+  <div style="float:right;">
+    <button id="exportProductsExcel" class="zande-btn">Export Excel</button>
+    <button id="exportProductsPdf" class="zande-btn">Export PDF</button>
+    <button id="exportProductsCsv" class="zande-btn">Export CSV</button>
+  </div>
+  <table id="productsTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Unit</th>
+        <th>Tax Code</th> 
+        <th>Cost Price</th>
+        <th>Sell Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Products will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Add/Edit Product Modal -->
+  <div id="productModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closeProductModal">&times;</span>
+      <h3 id="productModalTitle">Add Product/Service</h3>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+        <div>
+          <label>Product/Service Code:</label>
+          <input type="text" id="productCode" required>
+        </div>
+        <div>
+          <label>Name:</label>
+          <input type="text" id="productName" required>
+        </div>
+        <div>
+          <label>Description:</label>
+          <textarea id="productDescription" rows="3" placeholder="Optional description"></textarea>
+        </div>
+        <div>
+          <label>Category:</label>
+          <select id="productCategory" required>
+            <option value="">Select Category</option>
+            <option value="Product">Product</option>
+            <option value="Service">Service</option>
+          </select>
+        </div>
+        <div>
+          <label>Unit of Measure:</label>
+          <select id="productUnit">
+            <option value="Each">Each</option>
+            <option value="kg">Kilogram</option>
+            <option value="g">Gram</option>
+            <option value="L">Liter</option>
+            <option value="m">Meter</option>
+            <option value="m²">Square Meter</option>
+            <option value="Hour">Hour</option>
+            <option value="Day">Day</option>
+            <option value="Month">Month</option>
+            <option value="Box">Box</option>
+            <option value="Pack">Pack</option>
+          </select>
+        </div>
+        <div>
+          <label>Tax Code:</label>
+          <select id="productTaxCode">
+            <option value="Standard">Standard VAT (15%)</option>
+            <option value="Zero">Zero Rated (0%)</option>
+            <option value="Exempt">VAT Exempt</option>
+            <option value="Reduced">Reduced Rate (5%)</option>
+            <option value="Import">Import VAT</option>
+            <option value="None">No VAT</option>
+          </select>
+        </div>
+        <div>
+          <label>Cost Price:</label>
+          <input type="number" id="productCostPrice" min="0" step="0.01" value="0.00">
+        </div>
+        <div>
+          <label>Sell Price:</label>
+          <input type="number" id="productSellPrice" min="0" step="0.01" value="0.00">
+        </div>
+        <div id="stockFields" style="display:none;">
+          <div>
+            <label>Current Stock:</label>
+            <input type="number" id="productStock" min="0" step="0.01" value="0">
+          </div>
+          <div>
+            <label>Reorder Level:</label>
+            <input type="number" id="productReorderLevel" min="0" step="0.01" value="0">
+          </div>
+        </div>
+        <div>
+          <label>Status:</label>
+          <select id="productStatus">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <button type="submit" class="zande-btn">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Product Details Modal -->
+  <div id="viewProductModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closeViewProductModal">&times;</span>
+      <h3>Product/Service Details</h3>
+      <div class="product-details">
+        <div class="details-section">
+          <h4>Basic Information</h4>
+          <div class="detail-row">
+            <strong>Code:</strong> <span id="viewProductCode"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Name:</strong> <span id="viewProductName"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Description:</strong> <span id="viewProductDescription"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Category:</strong> <span id="viewProductCategory"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Unit of Measure:</strong> <span id="viewProductUnit"></span>
+          </div>
+    
+          <div class="detail-row">
+            <strong>Tax Code:</strong> <span id="viewProductTaxCode"></span>
+          </div>
+        </div>
+        
+        <div class="details-section">
+          <h4>Pricing & Stock</h4>
+          
+          <div class="detail-row">
+            <strong>Cost Price:</strong> <span id="viewProductCostPrice"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Sell Price:</strong> <span id="viewProductSellPrice"></span>
+          </div>
+          <div class="detail-row" id="viewStockSection">
+            <strong>Current Stock:</strong> <span id="viewProductStock"></span>
+          </div>
+          <div class="detail-row" id="viewReorderSection">
+            <strong>Reorder Level:</strong> <span id="viewProductReorderLevel"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Status:</strong> <span id="viewProductStatus"></span>
+          </div>
+        </div>
+      </div>
+      <button class="zande-btn" onclick="closeViewProductModal()">Close</button>
+    </div>
+  </div>
+</section>  
+
+
+   <!-- Banking Section -->
+<section id="bankingSection" class="module-section" style="display:none;">
+  <div class="banking-header">
+    <h2>🏦 Banking</h2>
+    <div class="banking-nav">
+      <button id="accountsTab" class="banking-tab active" onclick="showBankingTab('accounts')">
+        📊 Accounts
+      </button>
+      <button id="transactionsTab" class="banking-tab" onclick="showBankingTab('transactions')">
+        💳 Transactions
+      </button>
+      <button id="transfersTab" class="banking-tab" onclick="showBankingTab('transfers')">
+        🔄 Transfers
+      </button>
+      <button id="reconciliationTab" class="banking-tab" onclick="showBankingTab('reconciliation')">
+        ✅ Reconciliation
+      </button>
+    </div>
+  </div>
+
+  <!-- Accounts Tab -->
+  <div id="accountsTabContent" class="banking-tab-content active">
+    <div class="accounts-header">
+      <h3>Bank Accounts</h3>
+      <div class="accounts-actions">
+        <button id="addBankAccountBtn" class="zande-btn">Add Account</button>
+        <button id="refreshBalancesBtn" class="zande-btn secondary">Refresh Balances</button>
+      </div>
+    </div>
+
+    <!-- Accounts Summary Cards -->
+    <div class="accounts-summary">
+      <div class="summary-card total-cash">
+        <h4>💰 Total Cash</h4>
+        <div class="amount" id="totalCashAmount">R0.00</div>
+        <small>Checking + Savings + Petty Cash</small>
+      </div>
+      <div class="summary-card total-debt">
+        <h4>💳 Total Debt</h4>
+        <div class="amount debt" id="totalDebtAmount">R0.00</div>
+        <small>Credit Cards & Loans</small>
+      </div>
+      <div class="summary-card net-worth">
+        <h4>📈 Net Position</h4>
+        <div class="amount" id="netWorthAmount">R0.00</div>
+        <small>Cash minus Debt</small>
+      </div>
+    </div>
+
+    <!-- Accounts Table -->
+    <table id="bankAccountsTable" class="zande-table" style="width:100%;margin-top:2em;">
+      <thead>
+        <tr>
+          <th>Account Name</th>
+          <th>Type</th>
+          <th>Bank</th>
+          <th>Account Number</th>
+          <th>Current Balance</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Bank accounts will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Transactions Tab -->
+  <div id="transactionsTabContent" class="banking-tab-content">
+    <div class="transactions-header">
+      <h3>Bank Transactions</h3>
+      <div class="transactions-actions">
+        <button id="addTransactionBtn" class="zande-btn">Record Transaction</button>
+        <button id="importStatementsBtn" class="zande-btn secondary">Import Statement</button>
+      </div>
+    </div>
+
+    <!-- Transaction Filters -->
+    <div class="transaction-filters">
+      <div class="filter-row">
+        <select id="filterBankAccount">
+          <option value="">All Accounts</option>
+        </select>
+        <select id="filterTransactionType">
+          <option value="">All Types</option>
+          <option value="Deposit">Deposits</option>
+          <option value="Withdrawal">Withdrawals</option>
+          <option value="Transfer In">Transfers In</option>
+          <option value="Transfer Out">Transfers Out</option>
+        </select>
+        <input type="date" id="filterTransactionDateFrom" placeholder="From Date">
+        <input type="date" id="filterTransactionDateTo" placeholder="To Date">
+        <button id="applyTransactionFilters" class="zande-btn">Apply</button>
+        <button id="clearTransactionFilters" class="zande-btn secondary">Clear</button>
+      </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <table id="bankTransactionsTable" class="zande-table" style="width:100%;margin-top:1em;">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Account</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Balance</th>
+          <th>Reconciled</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Transactions will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Transfers Tab -->
+  <div id="transfersTabContent" class="banking-tab-content">
+    <div class="transfers-header">
+      <h3>Money Transfers</h3>
+      <button id="addTransferBtn" class="zande-btn">Transfer Money</button>
+    </div>
+
+    <!-- Transfers Table -->
+    <table id="bankTransfersTable" class="zande-table" style="width:100%;margin-top:1em;">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>From Account</th>
+          <th>To Account</th>
+          <th>Amount</th>
+          <th>Description</th>
+          <th>Reference</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Transfers will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Reconciliation Tab -->
+  <div id="reconciliationTabContent" class="banking-tab-content">
+    <div class="reconciliation-header">
+      <h3>Bank Reconciliation</h3>
+      <select id="reconcileAccountSelect">
+        <option value="">Select Account to Reconcile</option>
+      </select>
+      <button id="startReconciliationBtn" class="zande-btn">Start Reconciliation</button>
+    </div>
+
+    <div id="reconciliationArea" style="display:none;">
+      <div class="reconciliation-summary">
+        <div class="recon-card">
+          <h4>Statement Balance</h4>
+          <input type="number" id="statementBalance" step="0.01" placeholder="Enter statement balance">
+        </div>
+        <div class="recon-card">
+          <h4>Book Balance</h4>
+          <div id="bookBalance">R0.00</div>
+        </div>
+        <div class="recon-card">
+          <h4>Difference</h4>
+          <div id="reconciliationDifference">R0.00</div>
+        </div>
+      </div>
+
+      <!-- Unreconciled Transactions -->
+      <h4>Unreconciled Transactions</h4>
+      <table id="unreconciledTransactionsTable" class="zande-table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Unreconciled transactions will be loaded here -->
+        </tbody>
+      </table>
+
+      <div class="reconciliation-actions">
+        <button id="reconcileSelectedBtn" class="zande-btn">Reconcile Selected</button>
+        <button id="finishReconciliationBtn" class="zande-btn secondary">Finish Reconciliation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Bank Account Modal -->
+  <div id="bankAccountModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <div class="modal-header">
+        <h3 id="bankAccountModalTitle">Add Bank Account</h3>
+        <span class="close" onclick="closeBankAccountModal()">&times;</span>
+      </div>
+      
+      <form id="bankAccountForm">
+        <input type="hidden" id="bankAccountId">
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Account Name:</label>
+            <input type="text" id="accountName" required placeholder="e.g., Main Business Checking">
+          </div>
+          
+          <div class="form-field">
+            <label>Account Type:</label>
+            <select id="accountType" required>
+              <option value="">Select Type</option>
+              <option value="Checking">Checking Account</option>
+              <option value="Savings">Savings Account</option>
+              <option value="Credit Card">Credit Card</option>
+              <option value="Petty Cash">Petty Cash</option>
+              <option value="Money Market">Money Market</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Bank Name:</label>
+            <input type="text" id="bankName" placeholder="e.g., Standard Bank">
+          </div>
+          
+          <div class="form-field">
+            <label>Account Number:</label>
+            <input type="text" id="accountNumber" placeholder="Account number">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Branch Code:</label>
+            <input type="text" id="branchCode" placeholder="Branch code">
+          </div>
+          
+          <div class="form-field">
+            <label>Opening Date:</label>
+            <input type="date" id="openingDate">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Opening Balance:</label>
+            <input type="number" id="openingBalance" step="0.01" value="0.00">
+          </div>
+          
+          <div class="form-field">
+            <label>Current Balance:</label>
+            <input type="number" id="currentBalance" step="0.01" value="0.00">
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label>Description:</label>
+          <textarea id="accountDescription" rows="2" placeholder="Optional description"></textarea>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="submit" class="zande-btn">Save Account</button>
+          <button type="button" class="zande-btn secondary" onclick="closeBankAccountModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Transaction Modal -->
+  <div id="transactionModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <div class="modal-header">
+        <h3 id="transactionModalTitle">Record Transaction</h3>
+        <span class="close" onclick="closeTransactionModal()">&times;</span>
+      </div>
+      
+      <form id="transactionForm">
+        <input type="hidden" id="transactionId">
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Account:</label>
+            <select id="transactionBankAccount" required>
+              <option value="">Select Account</option>
+            </select>
+          </div>
+          
+          <div class="form-field">
+            <label>Date:</label>
+            <input type="date" id="transactionDate" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Type:</label>
+            <select id="transactionType" required onchange="handleTransactionTypeChange()">
+              <option value="">Select Type</option>
+              <option value="Deposit">💰 Deposit (Money In)</option>
+              <option value="Withdrawal">💸 Withdrawal (Money Out)</option>
+            </select>
+          </div>
+          
+          <div class="form-field">
+            <label>Amount:</label>
+            <input type="number" id="transactionAmount" step="0.01" required min="0.01">
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label>Description:</label>
+          <input type="text" id="transactionDescription" required placeholder="What was this transaction for?">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Reference:</label>
+            <input type="text" id="transactionReference" placeholder="Check number, transfer ref, etc.">
+          </div>
+          
+          <div class="form-field">
+            <label>Category:</label>
+            <select id="transactionCategory">
+              <option value="">Select Category</option>
+              <option value="Sales">Sales Revenue</option>
+              <option value="Expenses">Business Expenses</option>
+              <option value="Owner Investment">Owner Investment</option>
+              <option value="Loan Payment">Loan Payment</option>
+              <option value="Bank Fees">Bank Fees</option>
+              <option value="Interest">Interest</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="submit" class="zande-btn">Record Transaction</button>
+          <button type="button" class="zande-btn secondary" onclick="closeTransactionModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Transfer Money Modal -->
+  <div id="transferModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <div class="modal-header">
+        <h3>Transfer Money</h3>
+        <span class="close" onclick="closeTransferModal()">&times;</span>
+      </div>
+      
+      <form id="transferForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label>From Account:</label>
+            <select id="fromAccount" required onchange="updateTransferBalances()">
+              <option value="">Select Account</option>
+            </select>
+            <small id="fromAccountBalance">Balance: R0.00</small>
+          </div>
+          
+          <div class="form-field">
+            <label>To Account:</label>
+            <select id="toAccount" required onchange="updateTransferBalances()">
+              <option value="">Select Account</option>
+            </select>
+            <small id="toAccountBalance">Balance: R0.00</small>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Amount:</label>
+            <input type="number" id="transferAmount" step="0.01" required min="0.01">
+          </div>
+          
+          <div class="form-field">
+            <label>Date:</label>
+            <input type="date" id="transferDate" required>
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label>Description:</label>
+          <input type="text" id="transferDescription" required placeholder="What is this transfer for?">
+        </div>
+        
+        <div class="form-field">
+          <label>Reference:</label>
+          <input type="text" id="transferReference" placeholder="Transfer reference number">
+        </div>
+        
+        <div class="modal-footer">
+          <button type="submit" class="zande-btn">Transfer Money</button>
+          <button type="button" class="zande-btn secondary" onclick="closeTransferModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+    <section id="salesSection" class="module-section" style="display:none;">
+  <h2>Sales</h2>
+  <div class="sales-header">
+    <button id="addInvoiceBtn" class="zande-btn">Create Invoice</button>
+    <button id="addQuoteBtn" class="zande-btn">Create Quote</button>
+    <button id="addCreditNoteBtn" class="zande-btn">Create Credit Note</button>
+    <div style="float:right;">
+      <button id="exportSalesExcel" class="zande-btn">Export Excel</button>
+      <button id="exportSalesPdf" class="zande-btn">Export PDF</button>
+    </div>
+  </div>
+  
+  <table id="salesTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+      <tr>
+        <th>Doc #</th>
+        <th>Type</th>
+        <th>Customer</th>
+        <th>Date</th>
+        <th>Due Date</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Sales documents will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Sales Document Modal -->
+  <div id="salesModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content sales-modal-wide">
+      <span class="zande-modal-close" id="closeSalesModal">&times;</span>
+      <h3 id="salesModalTitle">Create Invoice</h3>
+      
+      <form id="salesForm">
+        <input type="hidden" id="salesDocumentId">
+        
+        <div class="sales-header-section">
+          <div class="sales-field-group">
+            <label>Document Type:</label>
+            <select id="salesDocumentType" required>
+              <option value="Invoice">Invoice</option>
+              <option value="Quote">Quote</option>
+              <option value="Credit Note">Credit Note</option>
+            </select>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Document Number:</label>
+            <input type="text" id="salesDocumentNumber" required readonly>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Customer:</label>
+            <select id="salesCustomer" required>
+              <option value="">Select Customer</option>
+            </select>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Document Date:</label>
+            <input type="date" id="salesDocumentDate" required>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Due Date:</label>
+            <input type="date" id="salesDueDate">
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Reference:</label>
+            <input type="text" id="salesReference" placeholder="Optional reference">
+          </div>
+        </div>
+
+        <!-- Line Items Section -->
+        <div class="line-items-section">
+          <h4>Line Items</h4>
+          <table class="line-items-table">
+            <thead>
+              <tr>
+                <th>Product/Service</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Tax</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="lineItemsContainer">
+              <!-- Line items will be added here -->
+            </tbody>
+          </table>
+          <button type="button" id="addLineItemBtn" class="zande-btn">Add Line Item</button>
+        </div>
+
+        <!-- Totals Section -->
+        <div class="totals-section">
+          <div class="totals-display">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span id="salesSubtotal">0.00</span>
+            </div>
+            <div class="total-row">
+              <span>Tax Amount:</span>
+              <span id="salesTaxAmount">0.00</span>
+            </div>
+            <div class="total-row total-final">
+              <span>Total Amount:</span>
+              <span id="salesTotalAmount">0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+          <label>Notes:</label>
+          <textarea id="salesNotes" rows="3" placeholder="Optional notes for this document"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="submit" class="zande-btn">Save</button>
+          <button type="button" class="zande-btn" onclick="closeSalesModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+    <section id="purchasesSection" class="module-section" style="display:none;">
+  <h2>Purchases</h2>
+  <div class="sales-header">
+    <button id="addPurchaseOrderBtn" class="zande-btn">Create Purchase Order</button>
+    <button id="addBillBtn" class="zande-btn">Create Bill</button>
+    <button id="addPurchaseCreditNoteBtn" class="zande-btn">Create Credit Note</button>
+    <p style="color: #666; font-size: 12px; margin-top: 10px;">
+    💡 <strong>Bills:</strong> Money you owe suppliers | 
+        <strong>Purchase Orders:</strong> Orders placed | 
+        <strong>Direct Expenses:</strong> Use the Expenses section →
+    </p>
+    <div style="float: right;">
+      <button id="exportPurchasesExcel" class="zande-btn">Export Excel</button>
+      <button id="exportPurchasesPdf" class="zande-btn">Export PDF</button>
+      <button id="exportPurchasesCsv" class="zande-btn">Export CSV</button>
+    </div>
+  </div>
+  
+  <!-- Purchase Status Filter -->
+<div class="purchases-filters" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+    <div>
+      <label for="filterStatus">Status:</label>
+      <select id="filterStatus" class="filter-select">
+        <option value="">All Statuses</option>
+        <option value="Draft">Draft</option>
+        <option value="Sent">Sent</option>
+        <option value="Received">Received</option>
+        <option value="Outstanding">Outstanding</option>
+        <option value="Paid">Paid</option>
+      </select>
+    </div>
+    
+    <div>
+      <label for="filterDocumentType">Document Type:</label>
+      <select id="filterDocumentType" class="filter-select">
+        <option value="">All Types</option>
+        <option value="Purchase Order">Purchase Order</option>
+        <option value="Bill">Bill</option>
+        <option value="Credit Note">Credit Note</option>
+      </select>
+    </div>
+    
+    <div>
+      <label for="filterDateFrom">Date From:</label>
+      <input type="date" id="filterDateFrom" class="filter-input">
+    </div>
+    
+    <div>
+      <label for="filterDateTo">Date To:</label>
+      <input type="date" id="filterDateTo" class="filter-input">
+    </div>
+    
+    <div style="grid-column: 1 / -1;">
+      <label for="filterSearch">Search Document # or Supplier Name:</label>
+      <input type="text" id="filterSearch" class="filter-input" 
+             placeholder="Type document number or supplier name..." 
+             style="width: 100%; font-size: 16px; padding: 10px;">
+    </div>
+  </div>
+  
+  <div style="text-align: center;">
+    <button id="applyFilters" class="zande-btn" style="margin-right: 10px;">Apply Filters</button>
+    <button id="clearFilters" class="zande-btn secondary">Clear All</button>
+    <span id="filterResults" style="margin-left: 20px; color: #666; font-style: italic;"></span>
+  </div>
+</div>
+  
+  <table id="purchasesTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+      <tr>
+        <th>Doc #</th>
+        <th>Type</th>
+        <th>Supplier</th>
+        <th>Date</th>
+        <th>Due Date</th>
+        <th>Total</th>
+        <th>Purchase Type</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Purchase documents will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Create/Edit Purchase Document Modal -->
+  <div id="purchaseModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content sales-modal-wide">
+      <span class="zande-modal-close" id="closePurchaseModal">&times;</span>
+      <h3 id="purchaseModalTitle">Create Purchase Order</h3>
+      
+      <form id="purchaseForm">
+        <input type="hidden" id="purchaseDocumentId">
+        
+        <div class="sales-header-section">
+          <div class="sales-field-group">
+            <label>Document Type:</label>
+            <select id="purchaseDocumentType" required>
+              <option value="Purchase Order">Purchase Order</option>
+              <option value="Bill">Bill</option>
+              <option value="Credit Note">Credit Note</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="purchaseType">Purchase Type:</label>
+            <select id="purchaseType" required onchange="handlePurchaseTypeChange()">
+              <option value="">Select Purchase Type</option>
+              <option value="Inventory">Inventory (Stock Items)</option>
+              <option value="Expenditure">Expenditure (Expenses)</option>
+           </select>
+          </div>
+
+          <div id="purchaseTypeHelper" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+            • <strong>Inventory:</strong> Items you buy to resell (updates stock levels)<br>
+            • <strong>Expenditure:</strong> Business expenses (office supplies, utilities, etc.)
+          </div>
+          
+          <div class="sales-field-group">
+           <label for="purchaseStatus">Status:</label>
+           <select id="purchaseStatus" required>
+             <option value="Draft">Draft</option>
+             <option value="Ordered">Ordered</option>
+             <option value="Received">Received</option>
+             <option value="Paid">Paid</option>
+           </select>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Document Number:</label>
+            <input type="text" id="purchaseDocumentNumber" required readonly>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Supplier:</label>
+            <select id="purchaseSupplier" required>
+              <option value="">Select Supplier</option>
+            </select>
+          </div>
+
+          <!-- 🆕 ADD LOW STOCK ALERT CONTAINER HERE -->
+          <div id="lowStockAlertContainer" style="grid-column: 1/-1;">
+            <!-- Low stock alerts will be dynamically populated here -->
+          </div>
+
+          <div class="form-field" id="purchaseExpenseAccountField" style="display: none;">
+            <label for="purchaseExpenseAccount">Expense Account: <span style="color: red;">*</span></label>
+            <select id="purchaseExpenseAccount">
+              <option value="">Select Expense Account</option>
+            </select>
+            <small style="color: #666; display: block; margin-top: 4px;">
+              This determines which General Ledger account will be debited
+            </small>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Document Date:</label>
+            <input type="date" id="purchaseDocumentDate" required>
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Due Date:</label>
+            <input type="date" id="purchaseDueDate">
+          </div>
+          
+          <div class="sales-field-group">
+            <label>Supplier Reference:</label>
+            <input type="text" id="purchaseReference" placeholder="Supplier invoice/order number">
+          </div>
+        </div>
+
+        <!-- Line Items Section -->
+        <div class="line-items-section">
+          <h4>Line Items</h4>
+          <table class="line-items-table">
+            <thead>
+              <tr>
+                <th>Product/Service</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Cost</th>
+                <th>Tax</th>
+                <th>Total</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="purchaseLineItemsContainer">
+              <!-- Line items will be added here -->
+            </tbody>
+          </table>
+          <button type="button" id="addPurchaseLineItemBtn" class="zande-btn">Add Line Item</button>
+        </div>
+
+        <!-- Totals Section -->
+        <div class="totals-section">
+          <div class="totals-display">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>R<span id="purchaseSubtotal">0.00</span></span>
+            </div>
+            <div class="total-row">
+              <span>VAT Amount:</span>
+              <span>R<span id="purchaseVatAmount">0.00</span></span>
+            </div>
+            <div class="total-row total-final">
+              <span>Total Amount:</span>
+              <span>R<span id="purchaseTotalAmount">0.00</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="notes-section">
+          <label>Notes:</label>
+          <textarea id="purchaseNotes" rows="3" placeholder="Optional notes for this purchase document"></textarea>
+        </div>
+        <!-- Document Upload Section -->
+        <div class="modal-section">
+          <h4 style="color: #059669; margin-bottom: 15px;">📎 Supporting Documents</h4>
+  
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+            <div>
+              <label for="purchaseDocuments">Upload Documents:</label>
+              <input type="file" 
+                     id="purchaseDocuments" 
+                     multiple 
+                     accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.txt,.csv"
+                     style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <small style="color: #666; display: block; margin-top: 4px;">
+                Supported: PDF, Word, Excel, Images, Text files (Max 10MB each)
+              </small>
+            </div>
+            <div>
+              <label for="purchaseDocumentCategory">Document Category:</label>
+              <select id="purchaseDocumentCategory" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                <option value="invoice">Invoice</option>
+                <option value="receipt">Receipt</option>
+                <option value="purchase_order">Purchase Order</option>
+                <option value="delivery_note">Delivery Note</option>
+                <option value="quote">Quote</option>
+                <option value="contract">Contract</option>
+                <option value="other">Other Documents</option>
+              </select>
+            </div>
+          </div>
+  
+          <!-- Upload Progress -->
+          <div id="purchaseUploadProgress" style="display: none; margin-bottom: 15px;">
+            <div style="background: #f3f4f6; border-radius: 8px; padding: 10px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <span id="purchaseUploadStatus">Uploading...</span>
+                <span style="font-size: 0.9em; color: #666;">📁</span>
+              </div>
+              <div style="background: #e5e7eb; height: 6px; border-radius: 3px; overflow: hidden;">
+                <div id="purchaseProgressBar" style="background: #059669; height: 100%; width: 0%; transition: width 0.3s ease;"></div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Document Preview -->
+          <div id="purchaseDocumentPreview" style="display: none;">
+            <h5 style="margin-bottom: 10px; color: #374151;">📄 Uploaded Documents:</h5>
+            <div id="purchaseDocumentList" style="max-height: 200px; overflow-y: auto;"></div>
+          </div>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="submit" class="zande-btn">Save</button>
+          <button type="button" class="zande-btn" onclick="closePurchaseModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Purchase Document Modal -->
+  <div id="viewPurchaseModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closeViewPurchaseModal">&times;</span>
+      <h3 id="viewPurchaseTitle">Purchase Document Details</h3>
+      
+      <div class="purchase-details">
+        <div class="details-section">
+          <h4>Document Information</h4>
+          <div class="detail-row">
+            <strong>Document Type:</strong> <span id="viewPurchaseType"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Document Number:</strong> <span id="viewPurchaseNumber"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Supplier:</strong> <span id="viewPurchaseSupplier"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Date:</strong> <span id="viewPurchaseDate"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Due Date:</strong> <span id="viewPurchaseDueDate"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Reference:</strong> <span id="viewPurchaseReference"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Status:</strong> <span id="viewPurchaseStatus"></span>
+          </div>
+        </div>
+        
+        <div class="details-section">
+          <h4>Financial Summary</h4>
+          <div class="detail-row">
+            <strong>Subtotal:</strong> R<span id="viewPurchaseSubtotal"></span>
+          </div>
+          <div class="detail-row">
+            <strong>VAT Amount:</strong> R<span id="viewPurchaseVat"></span>
+          </div>
+          <div class="detail-row">
+            <strong>Total Amount:</strong> R<span id="viewPurchaseTotal"></span>
+          </div>
+        </div>
+        
+        <div class="details-section">
+          <h4>Line Items</h4>
+          <table class="line-items-view-table">
+            <thead>
+              <tr>
+                <th>Product/Service</th>
+                <th>Qty</th>
+                <th>Unit Cost</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="viewPurchaseLineItems">
+              <!-- Line items will be displayed here -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="details-section" id="viewPurchaseNotesSection">
+          <h4>Notes</h4>
+          <p id="viewPurchaseNotes"></p>
+        </div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="zande-btn" onclick="editPurchaseDocument()">Edit</button>
+        <button class="zande-btn" onclick="printPurchaseDocument()">Print</button>
+        <button class="zande-btn" onclick="emailPurchaseDocument()">Email</button>
+        <button class="zande-btn" onclick="closeViewPurchaseModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Payment Modal -->
+  <div id="paymentModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <span class="zande-modal-close" id="closePaymentModal">&times;</span>
+      <h3>Record Payment</h3>
+      
+      <form id="paymentForm">
+        <input type="hidden" id="paymentPurchaseId">
+        
+        <div>
+          <label>Bill Number:</label>
+          <input type="text" id="paymentDocumentNumber" readonly>
+        </div>
+        
+        <div>
+          <label>Supplier:</label>
+          <input type="text" id="paymentSupplier" readonly>
+        </div>
+        
+        <div>
+          <label>Total Amount Due:</label>
+          <input type="text" id="paymentAmountDue" readonly>
+        </div>
+        
+        <div>
+          <label>Payment Amount:</label>
+          <input type="number" id="paymentAmount" step="0.01" required>
+        </div>
+        
+        <div>
+          <label>Payment Date:</label>
+          <input type="date" id="paymentDate" required>
+        </div>
+        
+        <div>
+          <label>Payment Method:</label>
+          <select id="paymentMethod" required>
+            <option value="">Select Method</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+            <option value="Credit Card">Credit Card</option>
+            <option value="EFT">EFT</option>
+          </select>
+        </div>
+        
+        <div>
+          <label>Reference:</label>
+          <input type="text" id="paymentReference" placeholder="Payment reference/cheque number">
+        </div>
+        
+        <div>
+          <label>Notes:</label>
+          <textarea id="paymentNotes" rows="2" placeholder="Optional payment notes"></textarea>
+        </div>
+        
+        <div class="modal-buttons">
+          <button type="submit" class="zande-btn">Record Payment</button>
+          <button type="button" class="zande-btn" onclick="closePaymentModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- Expenses Section - For DIRECT/IMMEDIATE expenses only -->
+<section id="expensesSection" class="module-section" style="display:none;">
+  <div class="section-header">
+    <h2>💳 Direct Expenses</h2>
+    <p style="color: #666; font-size: 14px;">Record expenses you've already paid (cash, card, bank transfer)</p>
+    <div class="header-actions">
+      <button id="addExpenseBtn" class="zande-btn">Record Expense</button>
+      <button id="exportExpensesExcel" class="zande-btn secondary">Export Excel</button>
+    </div>
+  </div>
+
+  <!-- Expense Filters -->
+  <div class="expenses-filters" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+      <div>
+        <label for="filterExpenseAccount">Expense Account:</label>
+        <select id="filterExpenseAccount" class="filter-select">
+          <option value="">All Expense Accounts</option>
+          <!-- Will be populated from Chart of Accounts -->
+       </select>
+      </div>
+      
+      <div>
+        <label for="filterExpenseDateFrom">Date From:</label>
+        <input type="date" id="filterExpenseDateFrom" class="filter-input">
+      </div>
+      
+      <div>
+        <label for="filterExpenseDateTo">Date To:</label>
+        <input type="date" id="filterExpenseDateTo" class="filter-input">
+      </div>
+      
+      <div style="grid-column: 1 / -1;">
+        <label for="filterExpenseSearch">Search Description:</label>
+        <input type="text" id="filterExpenseSearch" class="filter-input" 
+               placeholder="Type description..." 
+               style="width: 100%; font-size: 16px; padding: 10px;">
+      </div>
+    </div>
+    
+    <div style="text-align: center;">
+      <button id="applyExpenseFilters" class="zande-btn" style="margin-right: 10px;">Apply Filters</button>
+      <button id="clearExpenseFilters" class="zande-btn secondary">Clear All</button>
+      <span id="expenseFilterResults" style="margin-left: 20px; color: #666; font-style: italic;"></span>
+    </div>
+  </div>
+
+  <!-- Expenses Table -->
+  <table id="expensesTable" class="zande-table" style="width:100%;margin-top:1em;">
+    <thead>
+     <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Expense Account</th>
+      <th>Amount</th>
+      <th>Paid From</th>
+      <th>Supplier</th>
+      <th>Actions</th>
+     </tr>
+    </thead>
+    <tbody>
+      <!-- Expenses will be loaded here -->
+    </tbody>
+  </table>
+
+  <!-- Simplified Expense Modal -->
+  <div id="expenseModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content">
+      <div class="modal-header">
+        <h3 id="expenseModalTitle">Record Direct Expense</h3>
+        <span class="close" onclick="closeExpenseModal()">&times;</span>
+      </div>
+      
+      <form id="expenseForm">
+        <input type="hidden" id="expenseId">
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Date Paid:</label>
+            <input type="date" id="expenseDate" required>
+          </div>
+          
+          <div class="form-field">
+            <label>Amount (Excl. VAT):</label>
+            <input type="number" id="expenseAmount" step="0.01" required oninput="calculateExpenseVAT()">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>VAT Rate:</label>
+            <select id="expenseVATRate" onchange="calculateExpenseVAT()">
+              <option value="15">15% (Standard)</option>
+              <option value="0">0% (Zero Rated)</option>
+            </select>
+          </div>
+          
+          <div class="form-field">
+            <label>VAT Amount:</label>
+            <input type="number" id="expenseVATAmount" step="0.01" readonly>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Total Amount:</label>
+            <input type="number" id="expenseTotalAmount" step="0.01" readonly style="font-weight: bold; background: #f8f9fa;">
+          </div>
+          
+          <div class="form-field">
+            <label>Paid From:</label>
+            <select id="expensePaidFrom" required>
+              <option value="">Select Bank Account</option>
+             <!-- Will be populated from bank accounts -->
+            </select>
+          </div>
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label>Expense Account:</label>
+            <select id="expenseAccount" required>
+             <option value="">Select Expense Account</option>
+             <!-- Will be populated from Chart of Accounts -->
+           </select>
+         </div>
+          
+          <div class="form-field">
+            <label>Supplier (Optional):</label>
+            <select id="expenseSupplier">
+              <option value="">Not from a supplier</option>
+              <!-- Load suppliers here -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label>Description:</label>
+          <input type="text" id="expenseDescription" required placeholder="What was this expense for?">
+        </div>
+        
+        <div class="form-field">
+          <label>Reference (Optional):</label>
+          <input type="text" id="expenseReference" placeholder="Receipt number, reference, etc.">
+        </div>
+        
+        <!-- Add this new field after the reference field -->
+        <div class="form-field">
+          <label>Supporting Documents:</label>
+          <div class="file-upload-area" style="border: 2px dashed #ddd; border-radius: 8px; padding: 20px; text-align: center; background: #fafafa;">
+            <input type="file" id="expenseFiles" multiple 
+                   accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.txt,.csv"
+                   style="display: none;">
+            <div class="upload-prompt" onclick="document.getElementById('expenseFiles').click()" style="cursor: pointer;">
+              <div style="font-size: 24px; color: #059669; margin-bottom: 10px;">📎</div>
+              <p style="margin: 0; color: #666;">Click to upload supporting documents</p>
+              <small style="color: #999;">PDF, Word, Excel, Images (Max 10MB each)</small>
+            </div>
+            <div id="filePreview" style="margin-top: 15px; display: none;">
+              <h4 style="color: #059669; margin-bottom: 10px;">Uploaded Files:</h4>
+              <div id="fileList" style="text-align: left;"></div>
+            </div>
+          </div>
+          <div id="uploadProgress" style="display: none; margin-top: 10px;">
+            <div style="background: #e5e7eb; border-radius: 10px; overflow: hidden;">
+              <div id="progressBar" style="height: 20px; background: #059669; width: 0%; transition: width 0.3s;"></div>
+            </div>
+            <p id="uploadStatus" style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;"></p>
+          </div>
+        </div>
+        
+        
+        <div class="modal-footer">
+          <button type="submit" class="zande-btn">Record Expense</button>
+          <button type="button" class="zande-btn secondary" onclick="closeExpenseModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+    <section id="journalsSection" class="module-section" style="display:none;">
+  <div class="module-header">
+    <h2>📋 Manual Journals</h2>
+    <div class="header-actions">
+      <button id="addJournalBtn" class="zande-btn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"></path>
+        </svg>
+        New Journal Entry
+      </button>
+      <div class="export-buttons">
+        <button id="exportJournalsExcel" class="zande-btn secondary">📊 Excel</button>
+        <button id="exportJournalsPdf" class="zande-btn secondary">📄 PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <h3>🔍 Filter Journal Entries</h3>
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label>Date From:</label>
+        <input type="date" id="filterJournalDateFrom">
+      </div>
+      <div class="filter-group">
+        <label>Date To:</label>
+        <input type="date" id="filterJournalDateTo">
+      </div>
+      <div class="filter-group">
+        <label>Reference:</label>
+        <input type="text" id="filterJournalReference" placeholder="Search by reference...">
+      </div>
+      <div class="filter-group">
+        <label>Status:</label>
+        <select id="filterJournalStatus">
+          <option value="">All Statuses</option>
+          <option value="Draft">Draft</option>
+          <option value="Posted">Posted</option>
+          <option value="Reversed">Reversed</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button id="applyJournalFilters" class="zande-btn secondary">Apply Filters</button>
+      <button id="clearJournalFilters" class="zande-btn secondary">Clear</button>
+      <span id="journalFilterResults" class="filter-results"></span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="card-icon">📝</div>
+      <div class="card-content">
+        <h3 id="totalJournalsCount">0</h3>
+        <p>Total Journals</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="card-icon">✅</div>
+      <div class="card-content">
+        <h3 id="postedJournalsCount">0</h3>
+        <p>Posted</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="card-icon">📋</div>
+      <div class="card-content">
+        <h3 id="draftJournalsCount">0</h3>
+        <p>Drafts</p>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="card-icon">💰</div>
+      <div class="card-content">
+        <h3 id="totalJournalAmount">R0.00</h3>
+        <p>Total Amount</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journals Table -->
+  <div class="table-container">
+    <table id="journalsTable" class="zande-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Reference</th>
+          <th>Description</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Created By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Journal Entry Modal -->
+  <div id="journalModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content" style="max-width: 1000px;">
+      <div class="modal-header">
+        <h3 id="journalModalTitle">New Journal Entry</h3>
+        <span class="close" id="closeJournalModal">&times;</span>
+      </div>
+
+      <form id="journalForm">
+        <input type="hidden" id="journalId">
+        
+        <!-- Header Information -->
+        <div class="form-section">
+          <h4>📋 Journal Header</h4>
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Journal Date: <span class="required">*</span></label>
+              <input type="date" id="journalDate" required>
+            </div>
+            <div class="form-field">
+              <label>Reference: <span class="required">*</span></label>
+              <input type="text" id="journalReference" required placeholder="JE001">
+            </div>
+            <div class="form-field">
+              <label>Description: <span class="required">*</span></label>
+              <input type="text" id="journalDescription" required placeholder="Brief description of journal entry">
+            </div>
+            <div class="form-field">
+              <label>Status:</label>
+              <select id="journalStatus">
+                <option value="Draft">Draft</option>
+                <option value="Posted">Posted</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Journal Lines -->
+        <div class="form-section">
+          <div class="section-header">
+            <h4>📊 Journal Lines</h4>
+            <button type="button" id="addJournalLineBtn" class="zande-btn secondary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              Add Line
+            </button>
+          </div>
+          
+          <div class="journal-lines-container">
+            <table id="journalLinesTable" class="zande-table">
+              <thead>
+                <tr>
+                  <th>Account</th>
+                  <th>Description</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="journalLinesContainer">
+                <!-- Dynamic journal lines -->
+              </tbody>
+              <tfoot>
+                <tr class="totals-row">
+                  <td colspan="2"><strong>Totals:</strong></td>
+                  <td><strong id="totalDebits">R0.00</strong></td>
+                  <td><strong id="totalCredits">R0.00</strong></td>
+                  <td>
+                    <span id="balanceStatus" class="balance-status">⚖️ Balanced</span>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          
+          <div class="balance-info">
+            <p><strong>Difference:</strong> <span id="journalDifference">R0.00</span></p>
+            <p class="balance-note">📝 <em>Debits must equal Credits for the journal to be valid</em></p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="zande-btn">💾 Save Journal</button>
+          <button type="button" id="postJournalBtn" class="zande-btn" style="background: #059669;">✅ Save & Post</button>
+          <button type="button" class="zande-btn secondary" onclick="closeJournalModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Journal Modal -->
+  <div id="viewJournalModal" class="zande-modal" style="display:none;">
+    <div class="zande-modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3>📋 Journal Entry Details</h3>
+        <span class="close" id="closeViewJournalModal">&times;</span>
+      </div>
+
+      <div class="journal-view-content">
+        <div class="journal-header-info">
+          <div class="info-grid">
+            <div><strong>Reference:</strong> <span id="viewJournalReference"></span></div>
+            <div><strong>Date:</strong> <span id="viewJournalDate"></span></div>
+            <div><strong>Status:</strong> <span id="viewJournalStatus"></span></div>
+            <div><strong>Description:</strong> <span id="viewJournalDescription"></span></div>
+          </div>
+        </div>
+
+        <div class="journal-lines-view">
+          <h4>Journal Lines</h4>
+          <table class="zande-table">
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Description</th>
+                <th>Debit</th>
+                <th>Credit</th>
+              </tr>
+            </thead>
+            <tbody id="viewJournalLines">
+              <!-- Dynamic content -->
+            </tbody>
+            <tfoot>
+              <tr class="totals-row">
+                <td colspan="2"><strong>Totals:</strong></td>
+                <td><strong id="viewTotalDebits">R0.00</strong></td>
+                <td><strong id="viewTotalCredits">R0.00</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button onclick="printJournal()" class="zande-btn secondary">🖨️ Print</button>
+        <button onclick="closeViewJournalModal()" class="zande-btn secondary">Close</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- GENERAL LEDGER SECTION -->
+<div id="general-ledgerSection" class="module-section" style="display: none;">
+  <div class="gl-section-header">
+    <h2>📈 General Ledger</h2>
+    <p>Complete record of all financial transactions</p>
+  </div>
+
+  <!-- GL Summary Cards -->
+  <div class="gl-summary-cards">
+    <div class="gl-summary-card">
+      <div class="card-icon">💰</div>
+      <div class="card-content">
+        <h3 id="totalGLEntries">0</h3>
+        <p>Total Entries</p>
+      </div>
+    </div>
+    <div class="gl-summary-card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-content">
+        <h3 id="totalGLDebits">R0.00</h3>
+        <p>Total Debits</p>
+      </div>
+    </div>
+    <div class="gl-summary-card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-content">
+        <h3 id="totalGLCredits">R0.00</h3>
+        <p>Total Credits</p>
+      </div>
+    </div>
+    <div class="gl-summary-card">
+      <div class="card-icon">📊</div>
+      <div class="card-content">
+        <h3 id="activeAccounts">0</h3>
+        <p>Active Accounts</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GL Filters -->
+<div class="gl-filters" style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+  <h4 style="margin-bottom: 15px; color: #374151;">Filter General Ledger</h4>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+    <!-- Account Filter -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Account:</label>
+      <select id="glAccountFilter" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+        <option value="">All Accounts</option>
+      </select>
+    </div>
+    
+    <!-- Account Type Filter -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Account Type:</label>
+      <select id="glAccountTypeFilter" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+        <option value="">All Types</option>
+        <option value="Asset">Assets</option>
+        <option value="Liability">Liabilities</option>
+        <option value="Equity">Equity</option>
+        <option value="Revenue">Revenue</option>
+        <option value="Expense">Expenses</option>
+      </select>
+    </div>
+    
+    <!-- Date From -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Date From:</label>
+      <input type="date" id="glDateFromFilter" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+    </div>
+    
+    <!-- Date To -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Date To:</label>
+      <input type="date" id="glDateToFilter" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+    </div>
+    
+    <!-- Source Module Filter -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Source:</label>
+      <select id="glSourceFilter" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+        <option value="">All Sources</option>
+        <option value="journal">Journals</option>
+        <option value="sales">Sales</option>
+        <option value="purchases">Purchases</option>
+        <option value="banking">Banking</option>
+        <option value="expenses">Expenses</option>
+      </select>
+    </div>
+    
+    <!-- Search -->
+    <div>
+      <label style="display: block; margin-bottom: 5px; font-weight: 500;">Search:</label>
+      <input type="text" id="glSearchFilter" placeholder="Description or Reference..." style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;">
+    </div>
+  </div>
+  
+  <div class="gl-filter-actions" style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+    <button onclick="applyGLFilters()" class="zande-btn" style="background: #059669;">Apply Filters</button>
+    <button onclick="clearGLFilters()" class="zande-btn secondary">Clear All</button>
+    <span id="glFilterResults" style="margin-left: 15px; color: #666; font-size: 0.9em;"></span>
+  </div>
+</div>
+
+  <!-- GL Actions -->
+  <div class="gl-section-actions">
+  <div class="gl-action-buttons-left">
+    <button id="refreshGLBtn" class="zande-btn">
+      🔄 Refresh
+    </button>
+  </div>
+  <div class="gl-action-buttons-right">
+    <button id="exportGLExcel" class="zande-btn">
+      📊 Export Excel
+    </button>
+    <button id="exportGLPdf" class="zande-btn">
+      📄 Export PDF
+    </button>
+  </div>
+</div>
+
+  <!-- GL Table -->
+  <div class="gl-table-container">
+    <table id="generalLedgerTable" class="gl-data-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Account</th>
+          <th>Description</th>
+          <th>Reference</th>
+          <th>Debit</th>
+          <th>Credit</th>
+          <th>Balance</th>
+          <th>Source</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 40px;">
+            <div style="color: #666;">
+              <p>General Ledger entries will appear here</p>
+              <small>Start creating transactions to populate the General Ledger</small>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CHART OF ACCOUNTS SECTION -->
+<div id="chart-of-accountsSection" class="module-section" style="display: none;">
+  <div class="coa-section-header">
+    <h2>🗂️ Chart of Accounts</h2>
+    <p>Manage your account structure and categories</p>
+  </div>
+
+  <!-- COA Summary Cards -->
+  <div class="coa-summary-cards">
+    <div class="coa-summary-card">
+      <div class="card-icon">🏦</div>
+      <div class="card-content">
+        <h3 id="totalAssets">0</h3>
+        <p>Asset Accounts</p>
+      </div>
+    </div>
+    <div class="coa-summary-card">
+      <div class="card-icon">💳</div>
+      <div class="card-content">
+        <h3 id="totalLiabilities">0</h3>
+        <p>Liability Accounts</p>
+      </div>
+    </div>
+    <div class="coa-summary-card">
+      <div class="card-icon">💰</div>
+      <div class="card-content">
+        <h3 id="totalRevenue">0</h3>
+        <p>Revenue Accounts</p>
+      </div>
+    </div>
+    <div class="coa-summary-card">
+      <div class="card-icon">💸</div>
+      <div class="card-content">
+        <h3 id="totalExpense">0</h3>
+        <p>Expense Accounts</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="coa-filters-section">
+  <div class="coa-filters-grid">
+    <div class="coa-filter-group">
+      <label>Account Type</label>
+      <select id="coaAccountTypeFilter">
+        <option value="">All Types</option>
+        <option value="Asset">Assets</option>
+        <option value="Liability">Liabilities</option>
+        <option value="Equity">Equity</option>
+        <option value="Revenue">Revenue</option>
+        <option value="Expense">Expenses</option>
+      </select>
+    </div>
+    <div class="coa-filter-group">
+      <label>Status</label>
+      <select id="coaStatusFilter">
+        <option value="">All Status</option>
+        <option value="active">Active Only</option>
+        <option value="inactive">Inactive Only</option>
+      </select>
+    </div>
+    <div class="coa-filter-group">
+      <label>Search</label>
+      <input type="text" id="coaSearchFilter" placeholder="Search accounts...">
+    </div>
+  </div>
+  <div class="coa-filter-actions">
+    <button class="zande-btn" onclick="applyCOAFilters()">Apply Filters</button>
+    <button class="zande-btn secondary" onclick="clearCOAFilters()">Clear</button>
+    <span class="filter-results" id="coaFilterResults"></span>
+  </div>
+</div>
+
+  <!-- COA Actions -->
+  <div class="coa-section-actions">
+    <div class="coa-action-buttons-left">
+      <button id="addAccountBtn" class="zande-btn primary">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        Add Account
+      </button>
+      <button id="importAccountsBtn" class="zande-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+          <polyline points="7,10 12,15 17,10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Import Accounts
+      </button>
+    </div>
+    <div class="coa-action-buttons-right">
+      <button id="exportCOAExcel" class="zande-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+        </svg>
+        Export Excel
+      </button>
+      <button id="exportCOAPdf" class="zande-btn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+        </svg>
+        Export PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- Update the COA Table in your app.html -->
+  <div class="coa-table-container">
+    <table id="chartOfAccountsTable" class="coa-data-table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Account Name</th>
+          <th>Type</th>
+          <th>Category</th>
+          <th>Normal Balance</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- COA loads automatically via JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+<!-- Add Account Modal -->
+<div id="accountModal" class="zande-modal">
+  <div class="zande-modal-content">
+    <div class="modal-header">
+      <h3 id="accountModalTitle">Add New Account</h3>
+      <span class="close" id="closeAccountModal">&times;</span>
+    </div>
+    
+    <form id="accountForm">
+      <input type="hidden" id="accountId">
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="accountCode">Account Code *</label>
+          <input type="text" id="accountCode" required maxlength="10" placeholder="e.g., 1100">
+          <small>Unique account code (4-10 characters)</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="accountName">Account Name *</label>
+          <input type="text" id="accountName" required maxlength="255" placeholder="e.g., Cash and Cash Equivalents">
+        </div>
+        
+        <div class="form-group">
+          <label for="accountType">Account Type *</label>
+          <select id="accountType" required>
+            <option value="">Select Type</option>
+            <option value="Asset">Asset</option>
+            <option value="Liability">Liability</option>
+            <option value="Equity">Equity</option>
+            <option value="Revenue">Revenue</option>
+            <option value="Expense">Expense</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="accountCategory">Category</label>
+          <input type="text" id="accountCategory" maxlength="100" placeholder="e.g., Current Assets">
+        </div>
+        
+        <div class="form-group">
+          <label for="normalBalance">Normal Balance *</label>
+          <select id="normalBalance" required>
+            <option value="">Select Balance</option>
+            <option value="Debit">Debit</option>
+            <option value="Credit">Credit</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="financialStatement">Financial Statement</label>
+          <select id="financialStatement">
+            <option value="">Select Statement</option>
+            <option value="Balance Sheet">Balance Sheet</option>
+            <option value="Income Statement">Income Statement</option>
+            <option value="Cash Flow">Cash Flow</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="parentAccount">Parent Account</label>
+          <select id="parentAccount">
+            <option value="">No Parent (Top Level)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="displayOrder">Display Order</label>
+          <input type="number" id="displayOrder" min="0" placeholder="1000">
+          <small>Order for reports (lower numbers appear first)</small>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="isActive" checked>
+          Account is active
+        </label>
+      </div>
+      
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="allowManualEntries" checked>
+          Allow manual journal entries
+        </label>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="submit" class="modern-btn primary">Save Account</button>
+        <button type="button" class="modern-btn secondary" id="cancelAccount">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- REPORTS SECTION -->
+<div id="reportsSection" class="module-section" style="display: none;">
+  <div class="module-header">
+    <h2>📊 Reports & Analytics</h2>
+    <div class="module-header-actions">
+      <button id="dashboardBtn" class="zande-btn">📊 Dashboard</button>
+      <button id="reportBuilderBtn" class="zande-btn">🛠️ Report Builder</button>
+    </div>
+  </div>
+
+  <!-- Reports Navigation Tabs -->
+  <div class="reports-nav">
+    <button class="reports-tab active" data-tab="financial-reports">💰 Financial</button>
+    <button class="reports-tab" data-tab="operational-reports">📋 Operational</button>
+    <button class="reports-tab" data-tab="banking-reports">🏦 Banking</button>
+    <button class="reports-tab" data-tab="management-reports">📑 Management</button>
+  </div>
+
+  <!-- FINANCIAL REPORTS TAB -->
+  <div id="financial-reports" class="reports-tab-content active">
+    <div class="reports-category-header">
+      <h3>💰 Financial Reports</h3>
+      <p>Core financial statements and analysis</p>
+    </div>
+    
+    <div class="reports-grid">
+      <div class="report-card" onclick="generateReport('profit-loss')">
+        <div class="report-icon">📈</div>
+        <h4>Profit & Loss</h4>
+        <p>Income Statement - Revenue, expenses, and profit analysis</p>
+        <span class="report-badge financial">Financial</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('balance-sheet')">
+        <div class="report-icon">📋</div>
+        <h4>Balance Sheet</h4>
+        <p>Statement of Financial Position - Assets, liabilities, equity</p>
+        <span class="report-badge financial">Financial</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('cash-flow')">
+        <div class="report-icon">💰</div>
+        <h4>Cash Flow Statement</h4>
+        <p>Operating, investing, and financing cash flows</p>
+        <span class="report-badge financial">Financial</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('trial-balance')">
+        <div class="report-icon">🧮</div>
+        <h4>Trial Balance</h4>
+        <p>All account balances - debits and credits verification</p>
+        <span class="report-badge financial">Financial</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('equity-changes')">
+        <div class="report-icon">📊</div>
+        <h4>Statement of Changes in Equity</h4>
+        <p>Changes in owner's equity over time</p>
+        <span class="report-badge financial">Financial</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATIONAL REPORTS TAB -->
+  <div id="operational-reports" class="reports-tab-content">
+    <div class="reports-category-header">
+      <h3>📋 Operational Reports</h3>
+      <p>Sales, purchases, and inventory analysis</p>
+    </div>
+
+    <!-- Sales Reports Section -->
+    <div class="report-subcategory">
+      <h4>🧾 Sales Reports</h4>
+      <div class="reports-grid">
+        <div class="report-card" onclick="generateReport('sales-summary')">
+          <div class="report-icon">📊</div>
+          <h4>Sales Summary by Period</h4>
+          <p>Monthly, quarterly, and yearly sales analysis</p>
+          <span class="report-badge sales">Sales</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('customer-analysis')">
+          <div class="report-icon">👥</div>
+          <h4>Customer Sales Analysis</h4>
+          <p>Top customers, sales by customer, trends</p>
+          <span class="report-badge sales">Sales</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('product-performance')">
+          <div class="report-icon">📦</div>
+          <h4>Product/Service Performance</h4>
+          <p>Best sellers, product profitability</p>
+          <span class="report-badge sales">Sales</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('ar-aging')">
+          <div class="report-icon">⏰</div>
+          <h4>Outstanding Invoices (A/R Aging)</h4>
+          <p>Customer aging analysis - who owes what</p>
+          <span class="report-badge sales">A/R</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purchase Reports Section -->
+    <div class="report-subcategory">
+      <h4>🛒 Purchase Reports</h4>
+      <div class="reports-grid">
+        <div class="report-card" onclick="generateReport('purchase-summary')">
+          <div class="report-icon">📊</div>
+          <h4>Purchase Summary by Period</h4>
+          <p>Spending analysis by month, quarter, year</p>
+          <span class="report-badge purchase">Purchase</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('supplier-analysis')">
+          <div class="report-icon">🏪</div>
+          <h4>Supplier Analysis</h4>
+          <p>Top suppliers, spending patterns</p>
+          <span class="report-badge purchase">Purchase</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('inventory-valuation')">
+          <div class="report-icon">💰</div>
+          <h4>Inventory Valuation</h4>
+          <p>Current stock value, costing methods</p>
+          <span class="report-badge purchase">Purchase</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('ap-aging')">
+          <div class="report-icon">📋</div>
+          <h4>Outstanding Bills (A/P Aging)</h4>
+          <p>Supplier aging analysis - what you owe</p>
+          <span class="report-badge purchase">A/P</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Reports Section -->
+    <div class="report-subcategory">
+      <h4>📦 Inventory Reports</h4>
+      <div class="reports-grid">
+        <div class="report-card" onclick="generateReport('stock-on-hand')">
+          <div class="report-icon">📦</div>
+          <h4>Stock on Hand</h4>
+          <p>Current inventory levels and quantities</p>
+          <span class="report-badge inventory">Inventory</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('low-stock-alert')">
+          <div class="report-icon">⚠️</div>
+          <h4>Low Stock Alert</h4>
+          <p>Items below reorder level</p>
+          <span class="report-badge inventory">Inventory</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('inventory-movement')">
+          <div class="report-icon">🔄</div>
+          <h4>Inventory Movement</h4>
+          <p>Stock in, stock out, transfers</p>
+          <span class="report-badge inventory">Inventory</span>
+        </div>
+
+        <div class="report-card" onclick="generateReport('costing-analysis')">
+          <div class="report-icon">💹</div>
+          <h4>FIFO/Weighted Average Costing</h4>
+          <p>Cost analysis by costing method</p>
+          <span class="report-badge inventory">Inventory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BANKING REPORTS TAB -->
+  <div id="banking-reports" class="reports-tab-content">
+    <div class="reports-category-header">
+      <h3>🏦 Banking Reports</h3>
+      <p>Cash management and banking analysis</p>
+    </div>
+    
+    <div class="reports-grid">
+      <div class="report-card" onclick="generateReport('bank-reconciliation')">
+        <div class="report-icon">✅</div>
+        <h4>Bank Reconciliation Report</h4>
+        <p>Reconciled vs unreconciled transactions</p>
+        <span class="report-badge banking">Banking</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('cash-position')">
+        <div class="report-icon">💰</div>
+        <h4>Cash Position Summary</h4>
+        <p>Current cash balances across all accounts</p>
+        <span class="report-badge banking">Banking</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('transaction-analysis')">
+        <div class="report-icon">📈</div>
+        <h4>Transaction Analysis</h4>
+        <p>Banking transaction trends and patterns</p>
+        <span class="report-badge banking">Banking</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGEMENT REPORTS TAB -->
+  <div id="management-reports" class="reports-tab-content">
+    <div class="reports-category-header">
+      <h3>📑 Management Reports</h3>
+      <p>Executive dashboards and KPI analysis</p>
+    </div>
+    
+    <div class="reports-grid">
+      <div class="report-card" onclick="generateReport('executive-dashboard')">
+        <div class="report-icon">📊</div>
+        <h4>Executive Dashboard</h4>
+        <p>Key metrics and performance indicators</p>
+        <span class="report-badge management">Management</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('kpi-scorecards')">
+        <div class="report-icon">🎯</div>
+        <h4>KPI Scorecards</h4>
+        <p>Key performance indicators tracking</p>
+        <span class="report-badge management">Management</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('trend-analysis')">
+        <div class="report-icon">📈</div>
+        <h4>Trend Analysis</h4>
+        <p>Business trends and growth analysis</p>
+        <span class="report-badge management">Management</span>
+      </div>
+
+      <div class="report-card" onclick="generateReport('variance-reports')">
+        <div class="report-icon">🔍</div>
+        <h4>Variance Reports (Budget vs Actual)</h4>
+        <p>Budget comparison and variance analysis</p>
+        <span class="report-badge management">Management</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORT DISPLAY AREA -->
+  <div id="reportDisplayArea" class="report-display" style="display: none;">
+    <div class="report-header">
+      <div class="report-title">
+        <h2 id="reportTitle">Report Title</h2>
+        <div class="report-meta">
+          <span id="reportPeriod">Period</span>
+          <span id="reportGenerated">Generated</span>
+        </div>
+      </div>
+      <div class="report-actions">
+        <button id="exportReportPdf" class="zande-btn">📄 PDF</button>
+        <button id="exportReportExcel" class="zande-btn">📊 Excel</button>
+        <button id="printReport" class="zande-btn">🖨️ Print</button>
+        <button id="closeReport" class="zande-btn secondary">✕ Close</button>
+      </div>
+    </div>
+
+    <!-- Report Filters -->
+    <div class="report-filters">
+      <div class="filter-group">
+        <label>Period:</label>
+        <select id="reportPeriodFilter">
+          <option value="current-month">This Month</option>
+          <option value="last-month">Last Month</option>
+          <option value="current-quarter">This Quarter</option>
+          <option value="last-quarter">Last Quarter</option>
+          <option value="current-year">This Year</option>
+          <option value="last-year">Last Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      <div class="filter-group" id="customDateRange" style="display: none;">
+        <input type="date" id="reportDateFrom" placeholder="From">
+        <input type="date" id="reportDateTo" placeholder="To">
+      </div>
+      <div class="filter-group">
+        <label>Compare:</label>
+        <select id="reportCompareFilter">
+          <option value="none">No Comparison</option>
+          <option value="previous-period">Previous Period</option>
+          <option value="same-period-last-year">Same Period Last Year</option>
+        </select>
+      </div>
+      <button id="applyReportFilters" class="zande-btn">Apply</button>
+    </div>
+
+    <!-- Report Content -->
+    <div id="reportContent" class="report-content">
+      <!-- Dynamic report content will be inserted here -->
+    </div>
+  </div>
+</div>
+
+  </main>
+
+<!-- PDF.js Library for PDF Statement Import -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  // Configure PDF.js worker
+  if (typeof pdfjsLib !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
+
+<!-- Export Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+<!-- ========================================
+     USER PROFILE MODALS
+     ======================================== -->
+
+<!-- Profile Settings Modal -->
+<div id="profileModal" class="modern-modal" style="display: none;">
+  <div class="modern-modal-content" style="max-width: 800px;">
+    <div class="modern-modal-header">
+      <h3 class="modern-modal-title">Profile Settings</h3>
+      <button class="modern-modal-close" onclick="closeProfileModal()">&times;</button>
+    </div>
+    <div class="modern-modal-body">
+      <div class="profile-settings-tabs">
+        <button class="profile-tab active" data-tab="personal">👤 Personal Info</button>
+        <button class="profile-tab" data-tab="preferences">⚙️ Preferences</button>
+        <button class="profile-tab" data-tab="security">🔒 Security</button>
+        <button class="profile-tab" data-tab="notifications">🔔 Notifications</button>
+      </div>
+      
+      <!-- Personal Info Tab -->
+      <div id="personal-tab" class="profile-tab-content active">
+        <form id="profileForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Profile Picture</label>
+              <div class="profile-picture-upload">
+                <div class="current-avatar" id="currentAvatar">
+                  <span id="avatarInitials">ZM</span>
+                </div>
+                <div class="upload-controls">
+                  <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                  <button type="button" class="btn btn-secondary" onclick="document.getElementById('profilePictureInput').click()">
+                    Change Picture
+                  </button>
+                  <button type="button" class="btn btn-sm btn-secondary" onclick="removeProfilePicture()">
+                    Remove
+                  </button>
+                  <small class="form-help">JPG, PNG up to 2MB</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-input" id="profileFullName" value="Zwonaka Mabege" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address *</label>
+              <input type="email" class="form-input" id="profileEmail" value="zwonaka@zandetechnologies.com" required>
+              <small class="form-help">This is your login email</small>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-input" id="profilePhone" value="+27 82 123 4567">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Job Title</label>
+              <input type="text" class="form-input" id="profileJobTitle" value="CEO & Founder">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Bio</label>
+            <textarea class="form-textarea" id="profileBio" rows="3" placeholder="Tell us about yourself...">Entrepreneur and business owner focused on helping SMEs grow through better financial management.</textarea>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Time Zone</label>
+              <select class="form-select" id="profileTimezone">
+                <option value="Africa/Johannesburg" selected>South Africa (GMT+2)</option>
+                <option value="UTC">UTC (GMT+0)</option>
+                <option value="Europe/London">London (GMT+1)</option>
+                <option value="America/New_York">New York (GMT-5)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Language</label>
+              <select class="form-select" id="profileLanguage">
+                <option value="en" selected>English</option>
+                <option value="af">Afrikaans</option>
+                <option value="zu">Zulu</option>
+                <option value="xh">Xhosa</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Preferences Tab -->
+      <div id="preferences-tab" class="profile-tab-content">
+        <div class="preference-section">
+          <h4>Display Preferences</h4>
+          <div class="preference-item">
+            <label class="preference-label">
+              <input type="checkbox" checked> Use dark mode
+            </label>
+            <small>Switch to dark theme for better viewing in low light</small>
+          </div>
+          <div class="preference-item">
+            <label class="preference-label">
+              <input type="checkbox" checked> Compact view
+            </label>
+            <small>Show more data in less space</small>
+          </div>
+          <div class="preference-item">
+            <label class="form-label">Default dashboard view</label>
+            <select class="form-select">
+              <option selected>Financial Overview</option>
+              <option>Sales Dashboard</option>
+              <option>Expenses Dashboard</option>
+              <option>Reports Dashboard</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="preference-section">
+          <h4>Number & Currency Format</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Currency</label>
+              <select class="form-select">
+                <option value="ZAR" selected>South African Rand (R)</option>
+                <option value="USD">US Dollar ($)</option>
+                <option value="EUR">Euro (€)</option>
+                <option value="GBP">British Pound (£)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date Format</label>
+              <select class="form-select">
+                <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
+                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Security Tab -->
+      <div id="security-tab" class="profile-tab-content">
+        <div class="security-section">
+          <h4>Password & Authentication</h4>
+          <div class="security-item">
+            <div class="security-info">
+              <strong>Password</strong>
+              <small>Last changed 3 months ago</small>
+            </div>
+            <button class="btn btn-secondary" onclick="openChangePasswordModal()">Change Password</button>
+          </div>
+          <div class="security-item">
+            <div class="security-info">
+              <strong>Two-Factor Authentication</strong>
+              <small>Add an extra layer of security to your account</small>
+            </div>
+            <button class="btn btn-primary" onclick="setup2FA()">Enable 2FA</button>
+          </div>
+        </div>
+        
+        <div class="security-section">
+          <h4>Active Sessions</h4>
+          <div class="session-item">
+            <div class="session-info">
+              <strong>Windows Desktop - Chrome</strong>
+              <small>Current session • Johannesburg, South Africa</small>
+            </div>
+            <span class="session-status active">Active Now</span>
+          </div>
+          <div class="session-item">
+            <div class="session-info">
+              <strong>Mobile - Safari</strong>
+              <small>2 hours ago • Johannesburg, South Africa</small>
+            </div>
+            <button class="btn btn-sm btn-secondary">Revoke</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Notifications Tab -->
+      <div id="notifications-tab" class="profile-tab-content">
+        <div class="notification-section">
+          <h4>Email Notifications</h4>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox" checked> Invoice payments received
+            </label>
+          </div>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox" checked> Overdue invoice reminders
+            </label>
+          </div>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox"> Weekly financial summary
+            </label>
+          </div>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox"> Low stock alerts
+            </label>
+          </div>
+        </div>
+        
+        <div class="notification-section">
+          <h4>Push Notifications</h4>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox" checked> Real-time payment notifications
+            </label>
+          </div>
+          <div class="notification-item">
+            <label class="notification-label">
+              <input type="checkbox"> Daily summary at 9:00 AM
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modern-modal-footer">
+      <button class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProfileSettings()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- User Management Modal -->
+<div id="userManagementModal" class="modern-modal" style="display: none;">
+  <div class="modern-modal-content" style="max-width: 900px;">
+    <div class="modern-modal-header">
+      <h3 class="modern-modal-title">Manage Users</h3>
+      <button class="modern-modal-close" onclick="closeUserManagement()">&times;</button>
+    </div>
+    <div class="modern-modal-body">
+      <!-- Plan Limits Info -->
+      <div class="plan-info-card">
+        <div class="plan-info-content">
+          <h4>Pro Plan - User Management</h4>
+          <p>You can have up to <strong>7 users</strong> on your Pro plan. Currently using <strong>5 of 7</strong> slots.</p>
+        </div>
+        <div class="plan-info-actions">
+          <button class="btn btn-secondary" onclick="openSubscriptionModal()">Upgrade Plan</button>
+          <button class="btn btn-primary" onclick="openInviteUserModal()">Invite User</button>
+        </div>
+      </div>
+      
+      <!-- Users List -->
+      <div class="users-list">
+        <div class="user-item owner">
+          <div class="user-avatar">
+            <span>ZM</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Zwonaka Mabege</div>
+            <div class="user-email">zwonaka@zandetechnologies.com</div>
+            <div class="user-role-badge owner">Owner</div>
+          </div>
+          <div class="user-status">
+            <span class="status-badge active">Active</span>
+            <span class="last-login">Active now</span>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-sm btn-secondary" disabled>Cannot remove owner</button>
+          </div>
+        </div>
+        
+        <div class="user-item">
+          <div class="user-avatar">
+            <span>TM</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Thabo Molefe</div>
+            <div class="user-email">thabo@zandetechnologies.com</div>
+            <div class="user-role-badge admin">Admin</div>
+          </div>
+          <div class="user-status">
+            <span class="status-badge active">Active</span>
+            <span class="last-login">2 hours ago</span>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-sm btn-secondary" onclick="editUser('user-2')">Edit</button>
+            <button class="btn btn-sm btn-error" onclick="removeUser('user-2')">Remove</button>
+          </div>
+        </div>
+        
+        <div class="user-item">
+          <div class="user-avatar">
+            <span>SM</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Sarah Matsimela</div>
+            <div class="user-email">sarah@zandetechnologies.com</div>
+            <div class="user-role-badge user">User</div>
+          </div>
+          <div class="user-status">
+            <span class="status-badge active">Active</span>
+            <span class="last-login">1 day ago</span>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-sm btn-secondary" onclick="editUser('user-3')">Edit</button>
+            <button class="btn btn-sm btn-error" onclick="removeUser('user-3')">Remove</button>
+          </div>
+        </div>
+        
+        <div class="user-item">
+          <div class="user-avatar">
+            <span>LN</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Lerato Nkomo</div>
+            <div class="user-email">lerato@zandetechnologies.com</div>
+            <div class="user-role-badge accountant">Accountant</div>
+          </div>
+          <div class="user-status">
+            <span class="status-badge pending">Pending</span>
+            <span class="last-login">Invitation sent</span>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-sm btn-secondary" onclick="resendInvite('user-4')">Resend Invite</button>
+            <button class="btn btn-sm btn-error" onclick="removeUser('user-4')">Cancel</button>
+          </div>
+        </div>
+        
+        <div class="user-item">
+          <div class="user-avatar">
+            <span>PM</span>
+          </div>
+          <div class="user-info">
+            <div class="user-name">Piet Marais</div>
+            <div class="user-email">piet@auditors.co.za</div>
+            <div class="user-role-badge auditor">Auditor</div>
+          </div>
+          <div class="user-status">
+            <span class="status-badge active">Active</span>
+            <span class="last-login">3 days ago</span>
+          </div>
+          <div class="user-actions">
+            <button class="btn btn-sm btn-secondary" onclick="editUser('user-5')">Edit</button>
+            <button class="btn btn-sm btn-error" onclick="removeUser('user-5')">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Invite User Modal -->
+<div id="inviteUserModal" class="modern-modal" style="display: none;">
+  <div class="modern-modal-content" style="max-width: 500px;">
+    <div class="modern-modal-header">
+      <h3 class="modern-modal-title">Invite New User</h3>
+      <button class="modern-modal-close" onclick="closeInviteUserModal()">&times;</button>
+    </div>
+    <div class="modern-modal-body">
+      <form id="inviteUserForm">
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input type="email" class="form-input" id="inviteEmail" required placeholder="user@company.com">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-input" id="inviteName" required placeholder="John Doe">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Role *</label>
+          <select class="form-select" id="inviteRole" required>
+            <option value="">Select a role</option>
+            <option value="admin">Admin - Full access to all features</option>
+            <option value="user">User - Standard access to core features</option>
+            <option value="accountant">Accountant - Financial reports and entries</option>
+            <option value="auditor">Auditor - Read-only access for auditing</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Welcome Message (Optional)</label>
+          <textarea class="form-textarea" id="inviteMessage" rows="3" placeholder="Welcome to our team! You now have access to our ZandeBooks account."></textarea>
+        </div>
+        
+        <div class="invite-permissions">
+          <h4>Permissions Preview</h4>
+          <div id="permissionsPreview">
+            <p class="text-gray-500">Select a role to see permissions</p>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modern-modal-footer">
+      <button class="btn btn-secondary" onclick="closeInviteUserModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="sendInvitation()">Send Invitation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Subscription Modal -->
+<div id="subscriptionModal" class="modern-modal" style="display: none;">
+  <div class="modern-modal-content" style="max-width: 700px;">
+    <div class="modern-modal-header">
+      <h3 class="modern-modal-title">Subscription & Billing</h3>
+      <button class="modern-modal-close" onclick="closeSubscriptionModal()">&times;</button>
+    </div>
+    <div class="modern-modal-body">
+      <!-- Current Plan -->
+      <div class="current-plan-card">
+        <div class="plan-header">
+          <div class="plan-badge pro">🟣 Pro Plan</div>
+          <div class="plan-price">R 249.50<span>/month</span></div>
+        </div>
+        <div class="plan-details">
+          <p>Next billing date: <strong>November 9, 2025</strong></p>
+          <p>Users: <strong>5 of 7 used</strong></p>
+          <p>Storage: <strong>2.1GB of 10GB used</strong></p>
+        </div>
+        <div class="plan-actions">
+          <button class="btn btn-secondary">Change Plan</button>
+          <button class="btn btn-secondary">Cancel Subscription</button>
+        </div>
+      </div>
+      
+      <!-- Billing History -->
+      <div class="billing-section">
+        <h4>Billing History</h4>
+        <div class="billing-list">
+          <div class="billing-item">
+            <div class="billing-info">
+              <strong>October 2025</strong>
+              <span>Pro Plan</span>
+            </div>
+            <div class="billing-amount">R 249.50</div>
+            <div class="billing-status paid">Paid</div>
+            <button class="btn btn-sm btn-secondary">Download</button>
+          </div>
+          <div class="billing-item">
+            <div class="billing-info">
+              <strong>September 2025</strong>
+              <span>Pro Plan</span>
+            </div>
+            <div class="billing-amount">R 249.50</div>
+            <div class="billing-status paid">Paid</div>
+            <button class="btn btn-sm btn-secondary">Download</button>
+          </div>
+          <div class="billing-item">
+            <div class="billing-info">
+              <strong>August 2025</strong>
+              <span>Business Plan</span>
+            </div>
+            <div class="billing-amount">R 124.50</div>
+            <div class="billing-status paid">Paid</div>
+            <button class="btn btn-sm btn-secondary">Download</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Payment Method -->
+      <div class="payment-section">
+        <h4>Payment Method</h4>
+        <div class="payment-method-card">
+          <div class="payment-icon">💳</div>
+          <div class="payment-info">
+            <strong>•••• •••• •••• 4567</strong>
+            <span>Expires 12/26</span>
+          </div>
+          <button class="btn btn-sm btn-secondary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile & User Management JavaScript -->
+<script>
+// ========================================
+// PROFILE & USER MANAGEMENT SYSTEM
+// ========================================
+
+// User data and subscription plans
+const SUBSCRIPTION_PLANS = {
+  starter: { name: '🟢 Starter', maxUsers: 1, price: 49.50, features: ['Basic features', '1 user', 'Basic reports'] },
+  business: { name: '🔵 Business', maxUsers: 3, price: 124.50, features: ['Advanced features', '3 users', 'Advanced reports'] },
+  pro: { name: '🟣 Pro', maxUsers: 7, price: 249.50, features: ['All features', '7 users', 'Premium support'] }
+};
+
+// Current user data (this would come from Supabase)
+let currentUser = {
+  id: 'user-1',
+  fullName: 'Zwonaka Mabege',
+  email: 'zwonaka@zandetechnologies.com',
+  phone: '+27 82 123 4567',
+  jobTitle: 'CEO & Founder',
+  avatar: null,
+  plan: 'pro',
+  company: {
+    name: 'Zande Technologies',
+    users: 5
+  }
+};
+
+// Initialize profile system
+document.addEventListener('DOMContentLoaded', async function() {
+  // Initialize industry-specific UI first
+  if (window.industryConfig && window.industryUI) {
+    await window.industryConfig.loadConfig();
+    await window.industryUI.applyAdaptations();
+    // Optional: Show industry badge for debugging
+    // window.industryUI.showIndustryBadge();
+  }
+  
+  initializeProfile();
+  setupProfileEventListeners();
+  loadUserData();
+});
+
+// Initialize profile display
+function initializeProfile() {
+  updateProfileDisplay();
+  updateUserStats();
+}
+
+// Setup event listeners for profile interactions
+function setupProfileEventListeners() {
+  // Profile dropdown toggle
+  const profileBtn = document.getElementById('profileBtn');
+  const profileDropdown = document.getElementById('profileDropdown');
+  
+  if (profileBtn && profileDropdown) {
+    profileBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleDropdown(profileDropdown);
+    });
+  }
+  
+  // Notifications dropdown toggle
+  const notificationsBtn = document.getElementById('notificationsBtn');
+  const notificationsDropdown = document.getElementById('notificationsDropdown');
+  
+  if (notificationsBtn && notificationsDropdown) {
+    notificationsBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleDropdown(notificationsDropdown);
+    });
+  }
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function() {
+    closeAllDropdowns();
+  });
+  
+  // Profile tab switching
+  const profileTabs = document.querySelectorAll('.profile-tab');
+  profileTabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      const tabName = this.getAttribute('data-tab');
+      switchProfileTab(tabName);
+    });
+  });
+  
+  // Role selection for invite form
+  const inviteRoleSelect = document.getElementById('inviteRole');
+  if (inviteRoleSelect) {
+    inviteRoleSelect.addEventListener('change', function() {
+      updatePermissionsPreview(this.value);
+    });
+  }
+  
+  // Profile picture upload
+  const profilePictureInput = document.getElementById('profilePictureInput');
+  if (profilePictureInput) {
+    profilePictureInput.addEventListener('change', handleProfilePictureUpload);
+  }
+}
+
+// Toggle dropdown visibility
+function toggleDropdown(dropdown) {
+  const isVisible = dropdown.classList.contains('show');
+  closeAllDropdowns();
+  
+  if (!isVisible) {
+    dropdown.classList.add('show');
+    const button = dropdown.previousElementSibling;
+    if (button) {
+      button.setAttribute('aria-expanded', 'true');
+    }
+  }
+}
+
+// Close all dropdowns
+function closeAllDropdowns() {
+  const dropdowns = document.querySelectorAll('.topbar-dropdown');
+  dropdowns.forEach(dropdown => {
+    dropdown.classList.remove('show');
+    const button = dropdown.previousElementSibling;
+    if (button) {
+      button.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+// Update profile display in topbar
+function updateProfileDisplay() {
+  const plan = SUBSCRIPTION_PLANS[currentUser.plan];
+  
+  // Update user initials
+  const initials = getInitials(currentUser.fullName);
+  document.getElementById('userInitials').textContent = initials;
+  document.getElementById('userInitialsLarge').textContent = initials;
+  document.getElementById('avatarInitials').textContent = initials;
+  
+  // Update user name and email
+  document.getElementById('userName').textContent = currentUser.fullName;
+  document.getElementById('userNameLarge').textContent = currentUser.fullName;
+  document.getElementById('userEmail').textContent = currentUser.email;
+  
+  // Update plan information
+  document.getElementById('userPlan').textContent = plan.name;
+  document.getElementById('userPlanBadge').textContent = plan.name;
+  document.getElementById('planUsers').textContent = `${currentUser.company.users}/${plan.maxUsers} users`;
+  document.getElementById('userCount').textContent = currentUser.company.users;
+  
+  // Update form fields
+  if (document.getElementById('profileFullName')) {
+    document.getElementById('profileFullName').value = currentUser.fullName;
+    document.getElementById('profileEmail').value = currentUser.email;
+    document.getElementById('profilePhone').value = currentUser.phone || '';
+    document.getElementById('profileJobTitle').value = currentUser.jobTitle || '';
+  }
+}
+
+// Get initials from full name
+function getInitials(fullName) {
+  return fullName
+    .split(' ')
+    .map(name => name.charAt(0).toUpperCase())
+    .join('')
+    .substring(0, 2);
+}
+
+// Update user statistics
+function updateUserStats() {
+  // These would come from actual data queries
+  document.getElementById('totalInvoices').textContent = '24';
+  document.getElementById('totalCustomers').textContent = '12';
+  document.getElementById('monthlyRevenue').textContent = 'R 45.2K';
+}
+
+// Load user data from Supabase
+async function loadUserData() {
+  try {
+    // This would be an actual Supabase query
+    console.log('Loading user data from Supabase...');
+    // const { data, error } = await supabase.from('users').select('*').eq('id', userId);
+    // if (error) throw error;
+    // currentUser = data[0];
+    // updateProfileDisplay();
+  } catch (error) {
+    console.error('Error loading user data:', error);
+  }
+}
+
+// ========================================
+// PROFILE MODAL FUNCTIONS
+// ========================================
+
+// Open profile modal
+function openProfileModal() {
+  document.getElementById('profileModal').style.display = 'flex';
+  closeAllDropdowns();
+}
+
+// Close profile modal
+function closeProfileModal() {
+  document.getElementById('profileModal').style.display = 'none';
+}
+
+// Switch profile tabs
+function switchProfileTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.profile-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+  
+  // Update tab content
+  document.querySelectorAll('.profile-tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  document.getElementById(`${tabName}-tab`).classList.add('active');
+}
+
+// Handle profile picture upload
+function handleProfilePictureUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    // Validate file size (2MB max)
+    if (file.size > 2 * 1024 * 1024) {
+      alert('File size must be less than 2MB');
+      return;
+    }
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const imageUrl = e.target.result;
+      updateProfilePicture(imageUrl);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Update profile picture display
+function updateProfilePicture(imageUrl) {
+  const avatars = document.querySelectorAll('.profile-avatar, .profile-avatar-large, .current-avatar');
+  avatars.forEach(avatar => {
+    avatar.style.backgroundImage = `url(${imageUrl})`;
+    avatar.style.backgroundSize = 'cover';
+    avatar.style.backgroundPosition = 'center';
+    avatar.innerHTML = ''; // Remove initials
+  });
+}
+
+// Remove profile picture
+function removeProfilePicture() {
+  const avatars = document.querySelectorAll('.profile-avatar, .profile-avatar-large, .current-avatar');
+  const initials = getInitials(currentUser.fullName);
+  
+  avatars.forEach(avatar => {
+    avatar.style.backgroundImage = '';
+    avatar.innerHTML = `<span>${initials}</span>`;
+  });
+}
+
+// Save profile settings
+async function saveProfileSettings() {
+  try {
+    const formData = {
+      fullName: document.getElementById('profileFullName').value,
+      email: document.getElementById('profileEmail').value,
+      phone: document.getElementById('profilePhone').value,
+      jobTitle: document.getElementById('profileJobTitle').value,
+      bio: document.getElementById('profileBio').value,
+      timezone: document.getElementById('profileTimezone').value,
+      language: document.getElementById('profileLanguage').value
+    };
+    
+    // Update local user object
+    Object.assign(currentUser, formData);
+    
+    // Save to Supabase
+    console.log('Saving profile settings:', formData);
+    // const { error } = await supabase.from('users').update(formData).eq('id', currentUser.id);
+    // if (error) throw error;
+    
+    updateProfileDisplay();
+    closeProfileModal();
+    
+    // Show success message
+    showNotification('Profile updated successfully!', 'success');
+  } catch (error) {
+    console.error('Error saving profile:', error);
+    showNotification('Error updating profile. Please try again.', 'error');
+  }
+}
+
+// ========================================
+// USER MANAGEMENT FUNCTIONS
+// ========================================
+
+// Open user management modal
+function openUserManagement() {
+  document.getElementById('userManagementModal').style.display = 'flex';
+  closeAllDropdowns();
+  loadCompanyUsers();
+}
+
+// Close user management modal
+function closeUserManagement() {
+  document.getElementById('userManagementModal').style.display = 'none';
+}
+
+// Load company users
+async function loadCompanyUsers() {
+  try {
+    console.log('Loading company users...');
+    // This would load actual user data from Supabase
+    // const { data, error } = await supabase.from('users').select('*').eq('company_id', currentUser.companyId);
+    // if (error) throw error;
+    // renderUsersList(data);
+  } catch (error) {
+    console.error('Error loading users:', error);
+  }
+}
+
+// Open invite user modal
+function openInviteUserModal() {
+  const plan = SUBSCRIPTION_PLANS[currentUser.plan];
+  
+  // Check if user limit reached
+  if (currentUser.company.users >= plan.maxUsers) {
+    showNotification(`You've reached the user limit for your ${plan.name} plan. Please upgrade to add more users.`, 'warning');
+    return;
+  }
+  
+  document.getElementById('inviteUserModal').style.display = 'flex';
+}
+
+// Close invite user modal
+function closeInviteUserModal() {
+  document.getElementById('inviteUserModal').style.display = 'none';
+  document.getElementById('inviteUserForm').reset();
+  document.getElementById('permissionsPreview').innerHTML = '<p class="text-gray-500">Select a role to see permissions</p>';
+}
+
+// Update permissions preview based on selected role
+function updatePermissionsPreview(role) {
+  const permissions = {
+    admin: [
+      '✅ Full access to all features',
+      '✅ Manage users and permissions',
+      '✅ Access to all financial data',
+      '✅ System configuration',
+      '✅ Export and backup data'
+    ],
+    user: [
+      '✅ Create and manage transactions',
+      '✅ View financial reports',
+      '✅ Manage customers and suppliers',
+      '❌ User management',
+      '❌ System configuration'
+    ],
+    accountant: [
+      '✅ Full access to financial data',
+      '✅ Create journal entries',
+      '✅ Generate all reports',
+      '✅ Reconcile accounts',
+      '❌ User management'
+    ],
+    auditor: [
+      '👁️ Read-only access to all data',
+      '👁️ View all financial reports',
+      '👁️ Access audit trails',
+      '❌ Cannot modify any data',
+      '❌ Cannot create transactions'
+    ]
+  };
+  
+  const preview = document.getElementById('permissionsPreview');
+  if (permissions[role]) {
+    preview.innerHTML = `
+      <ul style="margin: 0; padding-left: 1rem;">
+        ${permissions[role].map(perm => `<li style="margin-bottom: 0.5rem;">${perm}</li>`).join('')}
+      </ul>
+    `;
+  } else {
+    preview.innerHTML = '<p class="text-gray-500">Select a role to see permissions</p>';
+  }
+}
+
+// Send user invitation
+async function sendInvitation() {
+  try {
+    const formData = {
+      email: document.getElementById('inviteEmail').value,
+      name: document.getElementById('inviteName').value,
+      role: document.getElementById('inviteRole').value,
+      message: document.getElementById('inviteMessage').value
+    };
+    
+    // Validate required fields
+    if (!formData.email || !formData.name || !formData.role) {
+      showNotification('Please fill in all required fields.', 'error');
+      return;
+    }
+    
+    // Check user limit
+    const plan = SUBSCRIPTION_PLANS[currentUser.plan];
+    if (currentUser.company.users >= plan.maxUsers) {
+      showNotification(`You've reached the user limit for your ${plan.name} plan.`, 'error');
+      return;
+    }
+    
+    console.log('Sending invitation:', formData);
+    
+    // Send invitation via Supabase
+    // const { error } = await supabase.functions.invoke('send-user-invitation', {
+    //   body: { ...formData, companyId: currentUser.companyId }
+    // });
+    // if (error) throw error;
+    
+    closeInviteUserModal();
+    showNotification(`Invitation sent to ${formData.email}!`, 'success');
+    
+    // Reload users list
+    loadCompanyUsers();
+  } catch (error) {
+    console.error('Error sending invitation:', error);
+    showNotification('Error sending invitation. Please try again.', 'error');
+  }
+}
+
+// Edit user
+function editUser(userId) {
+  console.log('Editing user:', userId);
+  // Implementation for editing user roles and permissions
+}
+
+// Remove user
+function removeUser(userId) {
+  if (confirm('Are you sure you want to remove this user? They will lose access to the system.')) {
+    console.log('Removing user:', userId);
+    // Implementation for removing user
+  }
+}
+
+// Resend invitation
+function resendInvite(userId) {
+  console.log('Resending invitation to user:', userId);
+  // Implementation for resending invitation
+}
+
+// ========================================
+// SUBSCRIPTION MODAL FUNCTIONS
+// ========================================
+
+// Open subscription modal
+function openSubscriptionModal() {
+  document.getElementById('subscriptionModal').style.display = 'flex';
+  closeAllDropdowns();
+}
+
+// Close subscription modal
+function closeSubscriptionModal() {
+  document.getElementById('subscriptionModal').style.display = 'none';
+}
+
+// ========================================
+// OTHER PROFILE FUNCTIONS
+// ========================================
+
+// Open company settings
+function openCompanySettings() {
+  console.log('Opening company settings...');
+  closeAllDropdowns();
+  // Implementation for company settings modal
+}
+
+// Open security settings
+function openSecuritySettings() {
+  console.log('Opening security settings...');
+  closeAllDropdowns();
+  // Implementation for security settings
+}
+
+// Open change password modal
+function openChangePasswordModal() {
+  console.log('Opening change password modal...');
+  // Implementation for change password
+}
+
+// Setup 2FA
+function setup2FA() {
+  console.log('Setting up 2FA...');
+  // Implementation for 2FA setup
+}
+
+// Open support
+function openSupport() {
+  console.log('Opening support...');
+  closeAllDropdowns();
+  // Implementation for support/help system
+}
+
+// Logout function
+function logout() {
+  if (confirm('Are you sure you want to sign out?')) {
+    console.log('Logging out...');
+    // Clear session and redirect to login
+    // await supabase.auth.signOut();
+    window.location.href = '../login.html';
+  }
+}
+
+// ========================================
+// UTILITY FUNCTIONS
+// ========================================
+
+// Show notification
+function showNotification(message, type = 'info') {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    background: ${type === 'success' ? 'var(--success-50)' : type === 'error' ? 'var(--error-50)' : 'var(--primary-50)'};
+    color: ${type === 'success' ? 'var(--success-700)' : type === 'error' ? 'var(--error-700)' : 'var(--primary-700)'};
+    border: 1px solid ${type === 'success' ? 'var(--success-200)' : type === 'error' ? 'var(--error-200)' : 'var(--primary-200)'};
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+  `;
+  notification.textContent = message;
+  
+  document.body.appendChild(notification);
+  
+  // Remove after 5 seconds
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 5000);
+}
+
+// Make functions globally available
+window.openProfileModal = openProfileModal;
+window.closeProfileModal = closeProfileModal;
+window.saveProfileSettings = saveProfileSettings;
+window.openUserManagement = openUserManagement;
+window.closeUserManagement = closeUserManagement;
+window.openInviteUserModal = openInviteUserModal;
+window.closeInviteUserModal = closeInviteUserModal;
+window.sendInvitation = sendInvitation;
+window.editUser = editUser;
+window.removeUser = removeUser;
+window.resendInvite = resendInvite;
+window.openSubscriptionModal = openSubscriptionModal;
+window.closeSubscriptionModal = closeSubscriptionModal;
+window.openCompanySettings = openCompanySettings;
+window.openSecuritySettings = openSecuritySettings;
+window.openChangePasswordModal = openChangePasswordModal;
+window.setup2FA = setup2FA;
+window.openSupport = openSupport;
+window.logout = logout;
+window.removeProfilePicture = removeProfilePicture;
+</script>
+
+<!-- Load Supabase directly from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Initialize Supabase client globally
+  const { createClient } = supabase;
+  const SUPABASE_URL = 'https://xfimvzdadqtlzwvlesrx.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmaW12emRhZHF0bHp3dmxlc3J4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NDM4NTcsImV4cCI6MjA2NTQxOTg1N30.E5saIeM0tF02g-jnMYlU0F5mCRCYM-UFWeHybHgu0y4';
+  
+  window.supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true
+    }
+  });
+  
+  console.log('✅ Supabase client initialized:', window.supabase);
+</script>
+
+<!-- Theme Toggle Script -->
+<script>
+  // Theme Management
+  function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('zandebooks-theme', newTheme);
+    
+    // Update toggle icon
+    updateThemeIcon(newTheme);
+    
+    console.log('Theme switched to:', newTheme);
+  }
+  
+  function updateThemeIcon(theme) {
+    const icon = document.querySelector('.theme-toggle-icon');
+    if (!icon) return;
+    
+    if (theme === 'light') {
+      // Sun icon for light mode
+      icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+    } else {
+      // Moon icon for dark mode
+      icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+    }
+  }
+  
+  // Initialize theme on page load
+  (function initTheme() {
+    const savedTheme = localStorage.getItem('zandebooks-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+  })();
+</script>
+
+<!-- Load app scripts -->
+<script src="access-control.js"></script>
+<script src="../scripts/auth.js"></script>
+<!-- Industry adaptation system -->
+<script src="../Scripts/industry-config.js"></script>
+<script src="../Scripts/industry-ui-adapter.js"></script>
+<!-- COA & Journal engines - PRODUCTION READY -->
+<script src="../Scripts/coa-engine.js"></script>
+<script src="../Scripts/journal-engine.js"></script>
+<script src="app.js"></script>
+<script src="profile-manager.js"></script>
+</body>
+</html>

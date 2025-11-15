@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sidebar Test</title>
+    <style>
+        .test-sidebar {
+            width: 200px;
+            background: #1a365d;
+            color: white;
+            padding: 20px;
+        }
+        .test-nav li {
+            padding: 10px;
+            cursor: pointer;
+            list-style: none;
+            border: 1px solid transparent;
+        }
+        .test-nav li:hover {
+            background: #2d3748;
+        }
+        .test-nav li.active {
+            background: #4299e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-sidebar">
+        <ul class="test-nav">
+            <li data-module="dashboard">Dashboard</li>
+            <li data-module="customers">Customers</li>
+            <li data-module="reports">Reports</li>
+        </ul>
+    </div>
+    
+    <div id="output"></div>
+    
+    <script>
+        console.log('Test script loading...');
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            
+            const navItems = document.querySelectorAll('[data-module]');
+            console.log('Found nav items:', navItems.length);
+            
+            navItems.forEach((item, index) => {
+                console.log(`Adding handler to item ${index}:`, item.getAttribute('data-module'));
+                
+                item.addEventListener('click', function() {
+                    const module = this.getAttribute('data-module');
+                    console.log('Clicked:', module);
+                    
+                    // Remove active from all
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    // Add active to clicked
+                    this.classList.add('active');
+                    
+                    // Update output
+                    document.getElementById('output').innerHTML = 'Clicked: ' + module;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

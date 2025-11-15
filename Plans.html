@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ZandeBooks Plans & Comparison</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <style>
+    /* Custom styles for Plans page */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: #3DBE7D;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .pricing-cards {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin: 3.5rem 0 2.5rem 0;
+      flex-wrap: wrap;
+    }
+    
+    .pricing-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(11,31,58,0.06);
+      padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+      min-width: 220px;
+      flex: 1 1 300px;
+      text-align: center;
+      border: 2px solid transparent;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    
+    .pricing-card.featured {
+      border-color: #3DBE7D;
+      box-shadow: 0 6px 24px rgba(61,190,125,0.13);
+    }
+    
+    .pricing-card .badge {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #F5A623;
+      color: #0B1F3A;
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 0.3em 1.1em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(245,166,35,0.08);
+    }
+    
+    .pricing-card h4 {
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: #0B1F3A;
+      margin-bottom: 0.5em;
+    }
+    
+    .pricing-card .price {
+      margin: 0.7em 0 0.7em 0;
+      display: flex;
+      align-items: baseline;
+      gap: 0.4em;
+      justify-content: center;
+    }
+    
+    .price-original {
+      text-decoration: line-through;
+      color: #888;
+      font-size: 1.1rem;
+      font-weight: 500;
+      vertical-align: middle;
+      margin-right: 0.5em;
+      opacity: 0.85;
+    }
+    
+    .price-discounted {
+      color: #3DBE7D;
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-right: 0.2em;
+      vertical-align: middle;
+      letter-spacing: -1px;
+    }
+    
+    .per-month {
+      font-size: 1rem;
+      color: #6B7280;
+      vertical-align: baseline;
+    }
+    
+    .plan-desc {
+      color: #3DBE7D;
+      font-size: 1em;
+      margin-bottom: 1em;
+      font-weight: 500;
+    }
+    
+    .pricing-card ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1.01rem;
+      color: #3a4a5a;
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+    
+    .pricing-card ul li {
+      margin-bottom: 0.5em;
+      padding-left: 1.5em;
+      position: relative;
+    }
+    
+    .pricing-card ul li:before {
+      content: "•";
+      position: absolute;
+      left: 0.5em;
+      color: #3DBE7D;
+    }
+    
+    .pricing-card a.zande-btn {
+      margin-top: 1em;
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: #3DBE7D;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .pricing-card a.zande-btn:hover {
+      background-color: #2fa369;
+      transform: translateY(-2px);
+    }
+    
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 3rem 0;
+      background: #F9FAFB;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .comparison-table th, .comparison-table td {
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    
+    .comparison-table th {
+      background: #3DBE7D;
+      color: #fff;
+      font-weight: 700;
+    }
+    
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    @media (max-width: 900px) {
+      .pricing-cards {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .pricing-card {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Marketing Topbar -->
+  <div id="marketingTopbar" class="marketing-topbar">
+    <a href="index.html" class="marketing-logo" style="display: flex; align-items: center; gap: 0.5em; text-decoration: none;">
+      <img src="logo.png" alt="ZandeBooks Logo" style="height:36px; width:auto; display:block;">
+      <span style="font-size:1.25rem; font-weight:700; color:#0B1F3A;">Zande Books</span>
+    </a>
+    <nav class="marketing-nav">
+      <div class="dropdown">
+        <button class="dropbtn" type="button">For Business <span class="arrow">&#9662;</span></button>
+        <div class="dropdown-content">
+          <a href="business.html#overview">Overview</a>
+          <a href="business.html#invoicing">Invoicing</a>
+          <a href="business.html#vat">VAT & Compliance</a>
+          <a href="business.html#mobile">Mobile App</a>
+          <a href="plans.html" id="showPricing">Pricing</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" type="button">For Accountants <span class="arrow">&#9662;</span></button>
+        <div class="dropdown-content">
+          <a href="accountants.html#portal">Accountant Portal</a>
+          <a href="accountants.html#afs">AFS Builder</a>
+          <a href="accountants.html#collab">Client Collaboration</a>
+          <a href="accountants.html#partner">Partner Program</a>
+          <a href="accountants.html#resources">Resources</a>
+        </div>
+      </div>
+      <a href="plans.html" id="pricingNav">Pricing & Plans</a>
+      <a href="resources.html" id="resourcesNav">Resources</a>
+      <a href="support.html" id="supportNav">Support</a>
+      <a href="signup.html" class="zande-btn">Get Started</a> <!-- Changed to signup.html -->
+      <a href="login.html" class="zande-btn secondary">Login</a> <!-- Changed to login.html -->
+    </nav>
+  </div>
+
+  <div class="container">
+    <a href="index.html" class="back-link">&larr; Back to Home</a>
+    <h1>ZandeBooks Plans & Comparison</h1>
+    
+    <div class="pricing-cards">
+      <!-- STARTER PLAN -->
+      <div class="pricing-card">
+        <div class="badge">Power Up Offer</div>
+        <h4>🟢 Starter</h4>
+        <div class="price">
+          <span class="price-original">R99</span>
+          <span class="price-discounted">R49.50</span>
+          <span class="per-month">/month</span>
+        </div>
+        <p class="plan-desc">1 user + accountant</p>
+        <ul>
+          <li>Track income & expenses</li>
+          <li>Send unlimited invoices & quotes</li>
+          <li>Connect 1 bank account</li>
+          <li>Auto-VAT calculations (incl. 15% rules)</li>
+          <li>50 accounts in Chart of Accounts</li>
+          <li>Download reports (P&amp;L, TB, BS)</li>
+          <li>Upload receipts (20/month)</li>
+        </ul>
+        <a href="signup.html?plan=starter" class="zande-btn">Choose Plan</a>
+      </div>
+      
+      <!-- BUSINESS PLAN -->
+      <div class="pricing-card featured">
+        <div class="badge">Most Popular</div>
+        <h4>🔵 Business</h4>
+        <div class="price">
+          <span class="price-original">R249</span>
+          <span class="price-discounted">R124.50</span>
+          <span class="per-month">/month</span>
+        </div>
+        <p class="plan-desc">3 users + accountant</p>
+        <ul>
+          <li>Everything in Starter, plus:</li>
+          <li>3 bank accounts</li>
+          <li>Recurring invoices & bills</li>
+          <li>Inventory tracking</li>
+          <li>150 Chart of Accounts items</li>
+          <li>Multi-user access (up to 3 users)</li>
+          <li>Roles & permissions</li>
+          <li>Smart reports (Cash Flow, Budgeting)</li>
+          <li>Export full AFS &amp; audit reports</li>
+          <li>Connect your accountant with write access</li>
+        </ul>
+        <a href="signup.html?plan=business" class="zande-btn">Choose Plan</a>
+      </div>
+      
+      <!-- PRO PLAN -->
+      <div class="pricing-card">
+        <div class="badge">Power Up Offer</div>
+        <h4>🟡 Pro</h4>
+        <div class="price">
+          <span class="price-original">R499</span>
+          <span class="price-discounted">R249.50</span>
+          <span class="per-month">/month</span>
+        </div>
+        <p class="plan-desc">5 users + accountant &amp; auditor</p>
+        <ul>
+          <li>Everything in Business, plus:</li>
+          <li>UNLIMITED accounts in Chart of Accounts</li>
+          <li>Multi-currency support</li>
+          <li>Payroll integration</li>
+          <li>Custom dashboards & reports</li>
+          <li>Data sync with Excel/Google Sheets</li>
+          <li>Approvals workflow</li>
+          <li>Audit log &amp; history</li>
+          <li>Document storage (up to 10GB)</li>
+          <li>AI assistant (beta)</li>
+          <li>Dedicated support</li>
+          <li>🛡️ Auditor Mode – Invite auditors, provide view-only access, track audit trail, upload supporting docs</li>
+        </ul>
+        <a href="signup.html?plan=pro" class="zande-btn">Choose Plan</a>
+      </div>
+    </div>
+    
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Starter</th>
+          <th>Business</th>
+          <th>Pro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Users</td>
+          <td>1</td>
+          <td>3</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Transactions</td>
+          <td>10/mo</td>
+          <td>Unlimited</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td>VAT & B-BBEE Tools</td>
+          <td>–</td>
+          <td>✔️</td>
+          <td>✔️</td>
+        </tr>
+        <tr>
+          <td>AFS Builder & AI Insights</td>
+          <td>–</td>
+          <td>–</td>
+          <td>✔️</td>
+        </tr>
+        <tr>
+          <td>Support</td>
+          <td>Email</td>
+          <td>Priority</td>
+          <td>Dedicated</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <footer class="zande-footer">
+    <div class="container">
+      <div class="zande-footer-content">
+        <div class="zande-footer-brand">
+          <img src="logo.png" alt="ZandeBooks Logo">
+          <span>ZandeBooks</span>
+        </div>
+        <nav class="zande-footer-links">
+          <a href="plans.html">Plans</a>
+          <a href="resources.html">Resources</a>
+          <a href="support.html">Support</a>
+          <a href="mailto:support@zandebooks.co.za">Contact</a>
+        </nav>
+      </div>
+      <div class="zande-footer-bottom">
+        <span>&copy; 2025 Zande Technologies. Built in South Africa.</span>
+        <span>Made with <span style="color:#F5A623;">❤️</span> for SA SMEs</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

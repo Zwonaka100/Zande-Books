@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up – ZandeBooks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .signup-stage { max-width: 420px; margin: 3rem auto; background: #fff; border-radius: 14px; box-shadow: var(--box-shadow); padding: 2.5rem 2rem; }
+    .signup-stage h2 { font-size: 2rem; margin-bottom: 1rem; color: var(--zande-navy);}
+    .plan-summary { background: var(--zande-light); border-radius: 10px; padding: 1.2rem; margin-bottom: 1.5rem; }
+    .plan-summary .price-original { text-decoration: line-through; color: #888; font-size: 1.1rem; margin-right: 0.5em; }
+    .plan-summary .price-discounted { color: #3DBE7D; font-size: 2rem; font-weight: 800; }
+    .plan-summary .per-month { font-size: 1rem; color: var(--zande-gray);}
+    .plan-options { margin: 1.5rem 0; }
+    .plan-options label { display: block; margin-bottom: 1rem; cursor: pointer; }
+    .plan-options input[type="radio"] { margin-right: 0.7em; }
+    .signup-form { display: flex; flex-direction: column; gap: 1rem; }
+    .signup-form .zande-input { padding: 0.85rem 1rem; border-radius: 8px; border: 1.5px solid var(--zande-light-gray); font-size: 1rem; background: #f9fafb; color: var(--zande-navy);}
+    .signup-form .zande-btn { margin-top: 0.7rem; font-size: 1.1rem; padding: 0.9rem 0;}
+    .signup-note { margin-top: 1.2rem; font-size: 0.98rem; color: var(--zande-gray);}
+    .signup-note a { color: var(--zande-green); font-weight: 600; margin-left: 0.4em; text-decoration: underline;}
+    @media (max-width: 600px) { .signup-stage { padding: 1.5rem 0.7rem; } }
+  </style>
+  <script type="module">
+  // Import Supabase client
+  import { supabase } from './scripts/supabase.js'
+  
+  // Make available globally for non-module scripts
+  window.supabase = supabase
+  </script>
+</head>
+<body>
+  <div class="signup-stage">
+    <h2>Customize Your ZandeBooks Plan</h2>
+    <div class="plan-summary" id="planSummary">
+      <!-- Plan details will be filled by JS -->
+    </div>
+    <form class="plan-options" id="planOptions">
+      <label>
+        <input type="radio" name="trial" value="trial" checked>
+        30-day Free Trial (no credit card required)
+      </label>
+      <label>
+        <input type="radio" name="trial" value="discount">
+        Continue now at <span class="price-discounted" id="discountedPrice"></span> <span class="per-month">/month</span>
+        <span class="price-original" id="originalPrice"></span> (Save 50% for 3 months)
+      </label>
+    </form>
+    <form class="signup-form" id="signupForm" autocomplete="on">
+      <input type="text" name="name" placeholder="Full Name" required class="zande-input">
+      <input type="email" name="email" placeholder="Email Address" required class="zande-input">
+      <input type="text" name="business" placeholder="Business Name" required class="zande-input">
+      <input type="tel" name="cell" id="cellInput" placeholder="Cellphone +27 XX XXX XXXX" required class="zande-input" pattern="^(\+27|\(\+27\))\s?\d{2}\s?\d{3}\s?\d{4}$" maxlength="15">
+      <input type="password" name="password" placeholder="Password" required class="zande-input">
+      <input type="password" name="passwordConfirm" placeholder="Confirm Password" required class="zande-input">
+      <button type="submit" class="zande-btn">Sign up</button>
+    </form>
+
+    <div class="signup-note">
+      <span>Already use QuickBooks or Xero?</span>
+      <a href="mailto:support@zandebooks.co.za?subject=Switch%20from%20QuickBooks%20or%20Xero">We’ll help you import your data</a>
+    </div>
+  </div>
+  <script>
+ // Plan data - must be available before form handler
+  window.plans = {
+    starter: {
+      name: "🟢 Starter",
+      original: "R99",
+      discounted: "R49.50",
+      features: [
+        "Track income & expenses",
+        "Send invoices & quotes (unlimited)",
+        "Connect 1 bank account",
+        "Auto-VAT calculations (incl. 15% rules)",
+        "150 accounts in Chart of Accounts",
+        "Download reports (P&L, TB, BS)",
+        "1 user + your accountant (view-only)",
+        "Upload receipts"
+      ]
+    },
+    business: {
+      name: "🔵 Business",
+      original: "R249",
+      discounted: "R124.50",
+      features: [
+        "Everything in Starter, plus:",
+        "3 bank accounts",
+        "Recurring invoices & bills",
+        "Inventory tracking",
+        "250 Chart of Accounts items",
+        "Multi-user access (up to 5 users)",
+        "Roles & permissions",
+        "Smart reports (Cash Flow, Budgeting)",
+        "Export full AFS & audit reports",
+        "Connect your accountant with write access"
+      ]
+    },
+    pro: {
+      name: "🟡 Pro",
+      original: "R499",
+      discounted: "R249.50",
+      features: [
+        "Everything in Business, plus:",
+        "UNLIMITED users",
+        "UNLIMITED accounts in Chart of Accounts",
+        "Multi-currency support",
+        "Payroll integration",
+        "Custom dashboards & reports",
+        "Data sync with Excel/Google Sheets",
+        "Approvals workflow",
+        "Audit log & history",
+        "Document storage (up to 10GB)",
+        "AI assistant (beta)",
+        "Dedicated support",
+        "🛡️ Auditor Mode – Invite auditors, provide view-only access, track audit trail, upload supporting docs"
+      ]
+    }
+  }
+
+  // Update button text based on selection
+document.querySelectorAll('input[name="trial"]').forEach(radio => {
+
+  radio.addEventListener('change', function() {
+    const isTrial = this.value === 'trial';
+    document.querySelector('#signupForm button[type="submit"]').textContent = 
+      isTrial ? 'Sign up' : 'Continue to Checkout';
+  });
+});
+    // Get selected plan from URL
+    function getPlanFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('plan') || 'starter';
+    }
+
+    // Render plan summary and prices
+    function renderPlan() {
+      const planKey = getPlanFromURL();
+      const plan = plans[planKey];
+      document.getElementById('planSummary').innerHTML = `
+        <div style="font-size:1.2rem;font-weight:600;margin-bottom:0.5em;">${plan.name}</div>
+        <div>
+          <span class="price-discounted">${plan.discounted}</span>
+          <span class="per-month">/month</span>
+          <span class="price-original">${plan.original}</span>
+        </div>
+        <ul style="text-align:left;margin:1em 0 0 0.5em;">
+          ${plan.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+      `;
+      document.getElementById('discountedPrice').textContent = plan.discounted;
+      document.getElementById('originalPrice').textContent = plan.original;
+    }
+
+    renderPlan();
+
+    // --- Cellphone auto-formatting for South African numbers ---
+   document.getElementById('cellInput').addEventListener('input', function(e) {
+     let v = e.target.value.replace(/[^\d]/g, '');
+  
+      // Remove country code if user types it
+     if (v.startsWith('27')) v = v.slice(2);
+     if (v.length > 9) v = v.slice(0, 9);
+
+     // Format as +27 XX XXX XXXX
+     let formatted = '+27';
+     if (v.length > 0) {
+        formatted += ' ' + v.slice(0, 2);
+        if (v.length > 2) {
+          formatted += ' ' + v.slice(2, 5);
+          if (v.length > 5) {
+           formatted += ' ' + v.slice(5, 9);
+         }
+      }
+     }
+  
+     e.target.value = formatted;
+    });
+
+    // Handle form submission
+document.getElementById('signupForm').onsubmit = async function(e) {
+  e.preventDefault();
+  
+  // Get form values
+  const formData = new FormData(this);
+  const name = formData.get('name');
+  const email = formData.get('email');
+  const business = formData.get('business');
+  const cell = formData.get('cell');
+  const password = formData.get('password');
+  const passwordConfirm = formData.get('passwordConfirm');
+  const plan = getPlanFromURL();
+  const isTrial = document.querySelector('input[name="trial"]:checked').value === 'trial';
+
+  // Calculate trial end date (30 days from now)
+  const trialEnds = new Date();
+  trialEnds.setDate(trialEnds.getDate() + 30);
+
+  // Validate inputs
+  const cellRegex = /^\+27\s\d{2}\s\d{3}\s\d{4}$/;
+  if (!cellRegex.test(cell)) {
+    alert("Please enter a valid South African cell number in format: +27 XX XXX XXXX");
+    return;
+  }
+
+  if (password !== passwordConfirm) {
+    alert("Passwords don't match");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  try {
+    // Sign up with Supabase Auth
+    // The `redirectTo` URL here is crucial. Replace `YOUR_SUPABASE_PROJECT_REF` with your actual Supabase project reference.
+    // Example: `https://your-project-ref.supabase.co/auth/v1/verify?redirect_to=/app/app.html`
+    // This tells Supabase where to redirect the user after they click the verification link in their email.
+    const { data, error: authError } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          name: name,
+          business: business,
+          cell: cell,
+          current_plan: plan,
+          subscription_status: 'trial',
+          trial_ends_at: trialEnds.toISOString(),
+          full_features: true
+        },
+        // IMPORTANT: Set this in your Supabase project settings for email templates as well!
+        // This 'redirect_to' URL must be configured in your Supabase Auth settings
+        // under "Email Templates" for "Signup Confirmation".
+        redirectTo: `${window.location.origin}/app/app.html` // Dynamic redirect to your app
+      }
+    });
+
+    if (authError) {
+      alert(`Signup failed: ${authError.message}`);
+      return;
+    }
+
+    // IMPORTANT: Client-side insertion into 'profiles' table is removed.
+    // This should now be handled by a PostgreSQL trigger in your Supabase database
+    // AFTER the user's email has been confirmed.
+    
+    if (isTrial) {
+        // For trial, inform the user to check email and redirect to login page with success message
+        alert(`Account created successfully! Please check your email to verify your account and then log in.`);
+        window.location.href = `login.html?email=${encodeURIComponent(email)}&signup=success`;
+    } else {
+        // For paid plan, inform user to verify email, then proceed to checkout after verification.
+        // User will be redirected to checkout.html *after* email verification via the redirectTo URL.
+        alert(`Account created! Please check your email to verify your account. After verification, you will be redirected to the checkout page.`);
+        // Note: The redirectTo above handles taking them to app/app.html, you'd then need to prompt for payment there or route them to checkout.
+        // For now, if they chose a paid plan directly, they'd verify then land in the app, then you'd guide them to checkout from inside the app.
+        // Or you can configure Supabase to redirect directly to checkout.html after verification.
+        // For this scenario, I'll stick to a message and let the redirectTo handle it if configured.
+        window.location.href = `login.html?email=${encodeURIComponent(email)}&signup=success`; // Still go to login with success message
+    }
+
+  } catch (error) {
+    console.error('Signup error:', error);
+    alert(`Signup failed: ${error.message}`);
+  }
+};
+</script>
+</body>
+</html>

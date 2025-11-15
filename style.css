@@ -1,0 +1,1064 @@
+/* style.css — ZandeBooks */
+
+:root {
+  --zande-primary: #0B1F3A;
+  --zande-green: #3DBE7D;
+  --zande-gold: #F5A623;
+  --zande-bg: #F9FAFB;
+  --zande-text: #1D1D1D;
+  --zande-gray: #EDEFF2;
+  --zande-navy: #0B1F3A;
+  --zande-white: #F9FAFB;
+  --zande-font: 'Inter', Arial, sans-serif;
+  --zande-light: #f8fafc;
+  --zande-light-gray: #e2e8f0;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--zande-bg);
+  color: var(--zande-text);
+  margin: 0;
+  padding: 20px;
+}
+
+header {
+  background-color: var(--zande-primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+nav button {
+  background-color: var(--zande-green);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+nav button:hover {
+  background-color: var(--zande-gold);
+}
+
+
+section {
+  background-color: white;
+  border: 1px solid var(--zande-gray);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Marketing Home Styles */
+#marketingHome {
+  min-height: 100vh;
+  background: var(--zande-white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+.marketing-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3.5rem 0 2.5rem 0;
+  background: linear-gradient(90deg, #f9fafb 60%, #eafaf3 100%);
+  border-radius: 0 0 32px 32px;
+  box-shadow: 0 2px 16px rgba(11,31,58,0.04);
+  min-height: 340px;
+  gap: 2rem;
+}
+
+.marketing-content {
+  max-width: 480px;
+}
+
+.marketing-content h1 {
+  font-size: 2.7rem;
+  font-weight: 800;
+  margin-bottom: 1.1rem;
+  color: var(--zande-navy);
+  letter-spacing: -1px;
+}
+
+.marketing-content p {
+  font-size: 1.25rem;
+  color: #3a4a5a;
+  margin-bottom: 2rem;
+}
+
+.marketing-actions {
+  display: flex;
+  gap: 1.2rem;
+}
+
+
+.marketing-btn {
+  padding: 14px 32px;
+  font-size: 1.1em;
+  border-radius: 8px;
+  background: var(--zande-green);
+  color: var(--zande-white);
+  border: none;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.marketing-btn.secondary {
+  background: var(--zande-navy);
+  color: var(--zande-white);
+  border: 1.5px solid var(--zande-navy);
+}
+
+.marketing-btn:not(.secondary) {
+  background: var(--zande-green);
+  color: var(--zande-white);
+  border: 1.5px solid var(--zande-green);
+}
+
+.marketing-btn:hover {
+  background: var(--zande-gold);
+  color: var(--zande-navy);
+  border-color: var(--zande-gold);
+}
+
+.marketing-graphic img {
+  max-width: 220px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(11,31,58,0.08);
+}
+
+.marketing-features {
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  margin: 3.5rem 0 2.5rem 0;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(11,31,58,0.06);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  text-align: center;
+  flex: 1 1 220px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.feature-card:hover {
+  box-shadow: 0 6px 24px rgba(61,190,125,0.13);
+  transform: translateY(-4px) scale(1.03);
+}
+
+
+.feature-icon {
+  font-size: 2.2em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+
+.feature-card h3 {
+  color: var(--zande-navy);
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.feature-card p {
+  color: var(--zande-green);
+  font-size: 1em;
+}
+
+/* Marketing Topbar */
+.marketing-topbar {
+  width: 100%;
+  background: var(--zande-white);
+  color: var(--zande-navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(11,31,58,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  min-height: 56px;
+}
+.marketing-logo {
+  display: flex;
+  align-items: center;
+}
+.marketing-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+}
+.marketing-nav a {
+  color: var(--zande-navy);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1em;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.marketing-nav a:hover {
+  background: var(--zande-green);
+  color: var(--zande-white);
+}
+.marketing-btn {
+  background: var(--zande-green);
+  color: var(--zande-white);
+  border: none;
+  font-weight: bold;
+  padding: 10px 22px;
+  border-radius: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.marketing-btn.secondary {
+  background: var(--zande-navy);
+  color: var(--zande-white);
+}
+.marketing-plans {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 3.5rem 0 2.5rem 0;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(11,31,58,0.06);
+  padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+  min-width: 220px;
+  flex: 1 1 220px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.plan-card.popular {
+  border-color: var(--zande-green);
+  box-shadow: 0 6px 24px rgba(61,190,125,0.13);
+}
+
+.plan-card .badge {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--zande-gold);
+  color: var(--zande-navy);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.3em 1.1em;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(245,166,35,0.08);
+}
+
+.plan-card h3 {
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--zande-navy);
+  margin-bottom: 0.5em;
+}
+
+.plan-card p {
+  font-size: 2.1rem;
+  color: var(--zande-green);
+  margin: 0.7rem 0;
+}
+
+
+.plan-card ul {
+   list-style: none;
+  padding: 0;
+  font-size: 1.01rem;
+  color: #3a4a5a;
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+footer {
+  background: var(--zande-navy);
+  color: var(--zande-white);
+  text-align: center;
+  padding: 2rem 0 1.2rem 0;
+  font-size: 1.05rem;
+  margin-top: 3rem;
+  border-radius: 24px 24px 0 0;
+  letter-spacing: 0.01em;
+}
+
+/* Add to style.css */
+.dark-theme {
+  background: #181a1b;
+  color: #f1f1f1;
+}
+.dark-theme input,
+.dark-theme select,
+.dark-theme button,
+.dark-theme textarea {
+  background: #222;
+  color: #f1f1f1;
+  border-color: #333;
+}
+
+
+/* Modern icon buttons */
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 1.1em;
+  vertical-align: middle;
+  transition: color 0.2s;
+}
+.icon-btn.delete { color: #e74c3c; }
+.icon-btn.archive { color: #bfa100; }
+.icon-btn:hover { opacity: 0.7; }
+
+
+
+.zande-btn-green:hover,
+.zande-btn-navy:hover {
+  background: var(--zande-gold);
+  color: var(--zande-navy);
+}
+
+@media (max-width: 900px) {
+  .marketing-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 0 1.5rem 0;
+  }
+  .marketing-graphic img {
+    margin: 0 auto;
+  }
+  .marketing-features, .marketing-plans {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+.zande-stock-highlight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  background: linear-gradient(90deg, #f9fafb 60%, #eafaf3 100%);
+  border-radius: 24px;
+  box-shadow: 0 2px 16px rgba(11,31,58,0.04);
+  margin: 3rem 0 2.5rem 0;
+  padding: 2.5rem 2rem;
+}
+
+.zande-stock-img img {
+  width: 320px;
+  max-width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(11,31,58,0.08);
+  object-fit: cover;
+}
+
+.zande-stock-text {
+  max-width: 420px;
+}
+
+.zande-stock-text h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--zande-navy);
+  margin-bottom: 1rem;
+}
+
+.zande-stock-text p {
+  font-size: 1.18rem;
+  color: #3a4a5a;
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .zande-stock-highlight {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+    gap: 1.5rem;
+  }
+  .zande-stock-img img {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
+
+.zande-testimonials {
+  margin: 3.5rem 0 2.5rem 0;
+  text-align: center;
+}
+.zande-testimonials h2 {
+  font-size: 2rem;
+  color: var(--zande-navy);
+  margin-bottom: 2rem;
+  font-weight: 800;
+}
+.zande-testimonial-cards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.zande-testimonial-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(11,31,58,0.07);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  max-width: 320px;
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.zande-testimonial-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid var(--zande-green);
+}
+.zande-testimonial-card p {
+  font-size: 1.08rem;
+  color: #3a4a5a;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.zande-testimonial-name {
+  color: var(--zande-gold);
+  font-weight: 600;
+  font-size: 1em;
+}
+@media (max-width: 900px) {
+  .zande-testimonial-cards {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+}
+
+.zande-footer {
+  background-color: var(--zande-navy);
+  color: var(--zande-white);
+  padding: 3rem 0 1.5rem;
+  margin-top: 4rem;
+}
+
+.zande-footer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.zande-footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.zande-footer-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.zande-footer-brand img {
+  height: 38px;
+  margin-right: 10px;
+  border-radius: 8px;
+}
+
+.zande-footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.zande-footer-links a {
+  color: var(--zande-white);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.zande-footer-links a:hover {
+  opacity: 0.8;
+}
+
+.zande-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  flex-wrap: wrap;
+}
+
+/* Responsive Footer Adjustments */
+@media (max-width: 768px) {
+  .zande-footer-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .zande-footer-links {
+    justify-content: center;
+  }
+  
+  .zande-footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
+
+/* Dropdown Menu Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropbtn {
+  background: none;
+  border: none;
+  color: var(--zande-navy);
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  outline: none;
+  position: relative;
+  z-index: 2;
+}
+.dropbtn .arrow {
+  font-size: 0.8em;
+  margin-left: 4px;
+}
+.dropbtn:hover,
+.dropdown.open .dropbtn,
+.dropdown:focus-within .dropbtn {
+  background: var(--zande-green);
+  color: var(--zande-white);
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  min-width: 220px;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(11,31,58,0.13);
+  border-radius: 12px;
+  padding: 0.5em 0;
+  z-index: 1001;
+  animation: fadeIn 0.2s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.dropdown-content a {
+  color: var(--zande-navy);
+  padding: 12px 28px;
+  text-decoration: none;
+  display: block;
+  font-size: 1em;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+  font-weight: 500;
+}
+.dropdown-content a:hover {
+  background: var(--zande-green);
+  color: var(--zande-white);
+}
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+  display: block;
+}
+@media (max-width: 900px) {
+  .marketing-nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .dropdown-content {
+    left: 0;
+    right: auto;
+    min-width: 180px;
+  }
+}
+
+.marketing-nav, .marketing-topbar {
+  overflow: visible !important;
+}
+.dropdown-content {
+  z-index: 9999 !important;
+}
+
+.hero-proof {
+  display: block;
+  margin-top: 1rem;
+  color: var(--zande-green);
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+/* ADDED CONTAINER STYLES */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.comparison-table {
+  margin: 3rem 0;
+  text-align: center;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--zande-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+.comparison-table th, .comparison-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--zande-light-gray);
+}
+.comparison-table th {
+  background: var(--zande-green);
+  color: #fff;
+  font-weight: 700;
+}
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
+.cta-banner {
+  background: var(--zande-green);
+  color: #fff;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-radius: 16px;
+  margin: 3rem 0;
+}
+.cta-banner h2 {
+  margin-bottom: 1rem;
+}
+.cta-banner .zande-btn {
+  background: #fff;
+  color: var(--zande-green);
+  font-weight: 700;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1em;
+}
+.cta-banner .zande-btn:hover {
+  background: var(--zande-gold);
+  color: var(--zande-navy);
+}
+
+.faq-section {
+  margin: 3rem 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.faq-item {
+  margin-bottom: 2rem;
+}
+.faq-item h3 {
+  color: var(--zande-green);
+  margin-bottom: 0.5rem;
+}
+
+.marketing-logo img,
+.zande-footer-brand img {
+  height: 32px;
+  max-width: 120px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 10px;
+}
+
+body {
+  font-family: var(--zande-font);
+  background-color: var(--zande-bg);
+  color: var(--zande-text);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.hero-bg-accountant {
+  background: url('Accountant-hero.jpg') center center/cover no-repeat;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  padding: 3rem 0;
+  border-radius: 18px;
+  position: relative;
+}
+.hero-bg-accountant .marketing-content {
+  background: rgba(255,255,255,0.88);
+  padding: 2.5rem 2rem;
+  border-radius: 14px;
+  max-width: 480px;
+  margin-left: 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+@media (max-width: 700px) {
+  .hero-bg-accountant {
+    min-height: 220px;
+    padding: 1.5rem 0;
+  }
+  .hero-bg-accountant .marketing-content {
+    margin-left: 0;
+    padding: 1.2rem 1rem;
+    max-width: 100%;
+  }
+}
+
+.zande-modal {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(11,31,58,0.35);
+  align-items: center;
+  justify-content: center;
+}
+.zande-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(11,31,58,0.13);
+  position: relative;
+  animation: fadeIn 0.2s;
+}
+.zande-modal-content h2 {
+  color: var(--zande-green);
+  margin-top: 0;
+}
+.zande-modal-content ul {
+  margin: 1rem 0 0 1.2rem;
+  padding: 0;
+  color: var(--zande-navy);
+}
+.zande-modal-close {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  font-size: 1.5rem;
+  color: var(--zande-navy);
+  cursor: pointer;
+  font-weight: bold;
+}
+@media (max-width: 600px) {
+  .zande-modal-content {
+    padding: 1.2rem 0.7rem;
+    max-width: 98vw;
+  }
+}
+
+.plan-desc {
+  color: #3DBE7D;
+  font-size: 1em;
+  margin-bottom: 0.7em;
+  font-weight: 500;
+}
+.plan-addons {
+  margin: 2.5rem auto 0 auto;
+  max-width: 700px;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(11,31,58,0.04);
+  padding: 1.5rem 1.2rem;
+  text-align: left;
+}
+.plan-addons h4 {
+  margin-top: 0;
+  color: #0B1F3A;
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.plan-addons ul {
+  margin: 0 0 1em 1.2em;
+  padding: 0;
+  color: #0B1F3A;
+  font-size: 1em;
+}
+.plan-offer {
+  margin-top: 1.2em;
+  background: #fffbe6;
+  border-left: 4px solid #F5A623;
+  padding: 1em;
+  border-radius: 8px;
+  font-size: 1.05em;
+}
+
+.plan-offer-badge {
+  background: #F5A623;
+  color: #fff;
+  font-size: 0.98em;
+  font-weight: 700;
+  padding: 0.35em 1em;
+  border-radius: 16px;
+  margin-bottom: 1em;
+  display: inline-block;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(245,166,35,0.10);
+}
+.price-original {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1.1rem;
+  font-weight: 500;
+  vertical-align: middle;
+  margin-right: 0.5em;
+  opacity: 0.85;
+}
+.price-discounted {
+  color: #3DBE7D;
+  font-size: 2.1rem;
+  font-weight: 800;
+  margin-right: 0.2em;
+  vertical-align: middle;
+  letter-spacing: -1px;
+}
+.per-month {
+  font-size: 1rem;
+  color: var(--zande-gray);
+  vertical-align: baseline;
+}
+.discount-note {
+  color: var(--zande-green);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.plan-card .price {
+  margin: 0.7em 0 0.7em 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+}
+.plan-card .price span {
+  display: inline-block;
+}
+.per-month {
+  font-size: 1rem;
+  color: var(--zande-gray);
+  vertical-align: baseline;
+}
+.discount-note {
+  color: var(--zande-green);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.pricing-cards {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin: 3.5rem 0 2.5rem 0;
+  flex-wrap: wrap;
+}
+.pricing-card {
+    background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(11,31,58,0.06);
+  padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+  min-width: 220px;
+  flex: 1 1 220px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+  margin-bottom: 2rem;
+}
+.pricing-card.featured {
+  border-color: var(--zande-green);
+  box-shadow: 0 6px 24px rgba(61,190,125,0.13);
+}
+.pricing-card .badge {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--zande-gold);
+  color: var(--zande-navy);
+  font-size: 0.92rem;
+  font-weight: 700;
+  padding: 0.3em 1.1em;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(245,166,35,0.08);
+}
+.pricing-card h4 {
+  font-size: 1.18rem;
+  font-weight: 600;
+  color: var(--zande-navy);
+ }
+ .pricing-card .price {
+  margin: 0.7em 0 0.7em 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  justify-content: center;
+}
+.pricing-card .price span {
+  display: inline-block;
+}
+.pricing-card ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.01rem;
+  color: #3a4a5a;
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+.pricing-card ul li {
+  margin-bottom: 0.5em;
+  padding-left: 0.5em;
+}
+.pricing-card a.zande-btn {
+  margin-top: 1em;
+}
+
+@media (max-width: 900px) {
+  .marketing-plans, .pricing-cards {
+    flex-direction: column !important;
+    gap: 2rem;
+    align-items: center;
+    display: flex !important;
+  }
+  .plan-card, .pricing-card {
+    max-width: 98vw;
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .price-discounted {
+    font-size: 1.5rem;
+  }
+  .price-original {
+    font-size: 0.95rem;
+  }
+}
+
+.otp-choice {
+  display: flex;
+  gap: 1.5em;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  color: #0B1F3A;
+}
+.otp-choice label {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Add to style.css */
+.zande-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.zande-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.zande-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.zande-input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}

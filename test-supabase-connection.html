@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Connection Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #0A1628;
+            color: #fff;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10B981;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #EF4444;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3B82F6;
+        }
+        pre {
+            background: #1E293B;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        button {
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Supabase Connection Diagnostics</h1>
+    
+    <div id="status"></div>
+    
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="listTables()">List Tables</button>
+    <button onclick="checkCustomers()">Check Customers Table</button>
+    <button onclick="checkSuppliers()">Check Suppliers Table</button>
+    <button onclick="checkProducts()">Check Products Table</button>
+    
+    <div id="output"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://xfimvzdadqtlzwvlesrx.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhmaW12emRhZHF0bHp3dmxlc3J4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk4NDM4NTcsImV4cCI6MjA2NTQxOTg1N30.E5saIeM0tF02g-jnMYlU0F5mCRCYM-UFWeHybHgu0y4';
+        
+        const { createClient } = supabase;
+        const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        function log(message, type = 'info') {
+            const status = document.getElementById('status');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            status.appendChild(div);
+        }
+        
+        function output(title, data) {
+            const outputDiv = document.getElementById('output');
+            const section = document.createElement('div');
+            section.innerHTML = `
+                <h3>${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            outputDiv.appendChild(section);
+        }
+        
+        async function testConnection() {
+            try {
+                log('Testing Supabase connection...', 'info');
+                
+                // Try to fetch from a system table
+                const { data, error } = await client
+                    .from('customers')
+                    .select('count')
+                    .limit(1);
+                
+                if (error) {
+                    log(`❌ Connection Error: ${error.message}`, 'error');
+                    output('Error Details', error);
+                } else {
+                    log('✅ Connected to Supabase successfully!', 'success');
+                    output('Connection Test Result', { status: 'connected', data });
+                }
+            } catch (err) {
+                log(`❌ Exception: ${err.message}`, 'error');
+                output('Exception Details', err);
+            }
+        }
+        
+        async function listTables() {
+            try {
+                log('Attempting to list available tables...', 'info');
+                
+                const tables = [
+                    'companies',
+                    'users', 
+                    'customers',
+                    'suppliers',
+                    'products',
+                    'invoices',
+                    'invoice_items',
+                    'purchases',
+                    'expenses',
+                    'chart_of_accounts',
+                    'general_ledger',
+                    'bank_accounts',
+                    'bank_transactions'
+                ];
+                
+                const results = {};
+                
+                for (const table of tables) {
+                    try {
+                        const { data, error, count } = await client
+                            .from(table)
+                            .select('*', { count: 'exact', head: true });
+                        
+                        if (error) {
+                            results[table] = { exists: false, error: error.message };
+                        } else {
+                            results[table] = { exists: true, count: count || 0 };
+                        }
+                    } catch (err) {
+                        results[table] = { exists: false, error: err.message };
+                    }
+                }
+                
+                output('Tables Status', results);
+                
+                const existingTables = Object.entries(results)
+                    .filter(([_, v]) => v.exists)
+                    .map(([k, _]) => k);
+                
+                const missingTables = Object.entries(results)
+                    .filter(([_, v]) => !v.exists)
+                    .map(([k, _]) => k);
+                
+                if (existingTables.length > 0) {
+                    log(`✅ Found ${existingTables.length} tables: ${existingTables.join(', ')}`, 'success');
+                }
+                
+                if (missingTables.length > 0) {
+                    log(`⚠️ Missing ${missingTables.length} tables: ${missingTables.join(', ')}`, 'error');
+                }
+                
+            } catch (err) {
+                log(`❌ Error listing tables: ${err.message}`, 'error');
+                output('Error', err);
+            }
+        }
+        
+        async function checkCustomers() {
+            try {
+                log('Checking customers table...', 'info');
+                const { data, error, count } = await client
+                    .from('customers')
+                    .select('*', { count: 'exact' })
+                    .limit(5);
+                
+                if (error) {
+                    log(`❌ Customers table error: ${error.message}`, 'error');
+                    output('Customers Error', error);
+                } else {
+                    log(`✅ Customers table exists with ${count || 0} records`, 'success');
+                    output('Sample Customers', data);
+                }
+            } catch (err) {
+                log(`❌ Exception: ${err.message}`, 'error');
+            }
+        }
+        
+        async function checkSuppliers() {
+            try {
+                log('Checking suppliers table...', 'info');
+                const { data, error, count } = await client
+                    .from('suppliers')
+                    .select('*', { count: 'exact' })
+                    .limit(5);
+                
+                if (error) {
+                    log(`❌ Suppliers table error: ${error.message}`, 'error');
+                    output('Suppliers Error', error);
+                } else {
+                    log(`✅ Suppliers table exists with ${count || 0} records`, 'success');
+                    output('Sample Suppliers', data);
+                }
+            } catch (err) {
+                log(`❌ Exception: ${err.message}`, 'error');
+            }
+        }
+        
+        async function checkProducts() {
+            try {
+                log('Checking products table...', 'info');
+                const { data, error, count } = await client
+                    .from('products')
+                    .select('*', { count: 'exact' })
+                    .limit(5);
+                
+                if (error) {
+                    log(`❌ Products table error: ${error.message}`, 'error');
+                    output('Products Error', error);
+                } else {
+                    log(`✅ Products table exists with ${count || 0} records`, 'success');
+                    output('Sample Products', data);
+                }
+            } catch (err) {
+                log(`❌ Exception: ${err.message}`, 'error');
+            }
+        }
+        
+        // Auto-run connection test on load
+        window.addEventListener('load', () => {
+            log('🚀 Starting diagnostics...', 'info');
+            setTimeout(testConnection, 500);
+        });
+    </script>
+</body>
+</html>

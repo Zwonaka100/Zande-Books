@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resources | ZandeBooks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', Arial, sans-serif; background: #F9FAFB; color: #0B1F3A; margin: 0; }
+    .container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 1px 8px rgba(11,31,58,0.04); padding: 2rem; }
+    h1 { font-size: 1.7rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
+    .resource-card { background: #f6f8f7; border-radius: 10px; box-shadow: 0 1px 8px rgba(11,31,58,0.04); padding: 1.2rem; text-align: left; display: flex; flex-direction: column; }
+    .resource-card img { width: 100%; border-radius: 8px; margin-bottom: 1rem; object-fit: cover; height: 140px; }
+    .resource-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .resource-card p { font-size: 0.97rem; color: #3a4a5a; margin-bottom: 1rem; }
+    .resource-card a { color: #3DBE7D; text-decoration: underline; font-weight: 500; }
+    .back-link { display: inline-block; margin-bottom: 1.5rem; color: #3DBE7D; text-decoration: underline; }
+    @media (max-width: 700px) {
+      .container { padding: 1rem; }
+      .resources-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<!-- Marketing Topbar -->
+<div id="marketingTopbar" class="marketing-topbar">
+  <a href="index.html" class="marketing-logo">
+    <img src="logo.png" alt="ZandeBooks Logo">
+    <span>Zande Books</span>
+  </a>
+  <nav class="marketing-nav">
+    <div class="dropdown">
+      <button class="dropbtn" type="button">For Business <span class="arrow">&#9662;</span></button>
+      <div class="dropdown-content">
+        <a href="business.html#overview">Overview</a>
+        <a href="business.html#invoicing">Invoicing</a>
+        <a href="business.html#vat">VAT & Compliance</a>
+        <a href="business.html#mobile">Mobile App</a>
+        <a href="plans.html" id="showPricing">Pricing</a>
+      </div>
+    </div>
+  2
+    <div class="dropdown">
+      <button class="dropbtn" type="button">For Accountants <span class="arrow">&#9662;</span></button>
+      <div class="dropdown-content">
+        <a href="accountants.html#portal">Accountant Portal</a>
+        <a href="accountants.html#afs">AFS Builder</a>
+        <a href="accountants.html#collab">Client Collaboration</a>
+        <a href="accountants.html#partner">Partner Program</a>
+        <a href="accountants.html#resources">Resources</a>
+      </div>
+    </div>
+    <a href="plans.html" id="pricingNav">Pricing & Plans</a>
+    <a href="resources.html" id="resourcesNav">Resources</a>
+    <a href="support.html" id="supportNav">Support</a>
+    <a href="app.html?register=1" class="zande-btn">Get Started</a>
+    <a href="app.html?login=1" class="zande-btn secondary">Login</a>
+  </nav>
+</div>
+<body>
+  <div class="container">
+    <section>
+    <h1>Resources</h1>
+    <p>Find guides, templates, and tools to help you get the most out of ZandeBooks.</p>
+    <a href="index.html" class="back-link">&larr; Back to Home</a>
+    <h1>Business Resources & Guides</h1>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80" alt="Small business tips">
+        <h3>Small Business Success in South Africa</h3>
+        <p>Practical tips and local insights to help your business thrive in the South African market. Learn about compliance, cash flow, and growth strategies.</p>
+        <a href="#">Read Guide</a>
+      </div>
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="VAT explained">
+        <h3>VAT Made Simple</h3>
+        <p>Understand South African VAT, how to register, calculate, and submit returns. Includes a free downloadable checklist for your business.</p>
+        <a href="#">Download Checklist</a>
+      </div>
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Cash flow management">
+        <h3>Mastering Cash Flow</h3>
+        <p>Discover proven methods to manage your cash flow, avoid common pitfalls, and keep your business healthy—even in tough times.</p>
+        <a href="#">Read Article</a>
+      </div>
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1515168833906-d2a3b82b302b?auto=format&fit=crop&w=600&q=80" alt="B-BBEE for SMEs">
+        <h3>B-BBEE for SMEs</h3>
+        <p>A beginner’s guide to B-BBEE compliance for small businesses. Learn what it means, why it matters, and how ZandeBooks helps you stay compliant.</p>
+        <a href="#">Learn More</a>
+      </div>
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Startup funding">
+        <h3>Startup Funding in Africa</h3>
+        <p>Explore funding options for African entrepreneurs, from grants to angel investors. Includes a list of local funding resources.</p>
+        <a href="#">See Funding List</a>
+      </div>
+      <div class="resource-card">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Digital tools for business">
+        <h3>Digital Tools for Modern Businesses</h3>
+        <p>Our top picks for apps and tools to streamline your business, boost productivity, and stay ahead of the competition.</p>
+        <a href="#">View Tools</a>
+      </div>
+    </div>
+    </section>  
+  </div>
+</body>
+</html>

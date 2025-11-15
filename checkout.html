@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - ZandeBooks</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout-container {
+      max-width: 500px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .plan-summary {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .payment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .payment-form input {
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    
+    .card-group {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .card-group > div {
+      flex: 1;
+    }
+    
+    .bank-group {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-container">
+    <h2>Complete Your Purchase</h2>
+    
+    <div class="plan-summary">
+      <h3 id="planName">Starter Plan</h3>
+      <p id="planPrice">R49.50/month</p>
+      <p>Save 50% for 3 months</p>
+    </div>
+    
+    <form id="paymentForm" action="https://www.payfast.co.za/eng/process" method="POST">
+      <input type="hidden" name="merchant_id" value="20083304">
+      <input type="hidden" name="merchant_key" value="wfed1ngetpyzp">
+      <input type="hidden" name="return_url" value="https://yourdomain.com/success.html">
+      <input type="hidden" name="cancel_url" value="https://yourdomain.com/cancel.html">
+      <input type="hidden" name="notify_url" value="https://yourdomain.com/api/payfast-webhook">
+  
+      <input type="hidden" name="amount" id="payfastAmount" value="">
+      <input type="hidden" name="item_name" id="payfastItem" value="">
+      <input type="hidden" name="email_address" id="payfastEmail" value="">
+  
+     <!-- Add user details -->
+     <input type="text" name="name_first" placeholder="First Name" required>
+     <input type="text" name="name_last" placeholder="Last Name" required>
+  
+     <button type="submit" class="zande-btn">Pay with Payfast</button>
+    </form>
+  </div>
+
+<script>
+  // Set Payfast values
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan');
+  const email = params.get('email');
+  
+  document.getElementById('payfastEmail').value = email;
+  document.getElementById('payfastItem').value = `${plan} Plan`;
+  
+  // Set amount based on plan
+  const planPrices = { starter: 49.50, business: 124.50, pro: 249.50 };
+  document.getElementById('payfastAmount').value = planPrices[plan];
+</script>
+
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zande Books | Built to multiply 🇿🇦</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables */
+    :root {
+      --zande-green: #3DBE7D;
+      --zande-navy: #0B1F3A;
+      --zande-gold: #FFD166;
+      --zande-light: #F9FAFB;
+      --zande-white: #FFFFFF;
+      --zande-gray: #6B7280;
+      --zande-light-gray: #E5E7EB;
+      --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-radius: 12px;
+    }
+    
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: var(--zande-white);
+      color: var(--zande-navy);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+    }
+    
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    /* Buttons */
+    .zande-btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--zande-green);
+      color: var(--zande-white);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+    
+    .zande-btn:hover {
+      background-color: #2fa369;
+      transform: translateY(-2px);
+    }
+    
+    .zande-btn.secondary {
+      background-color: transparent;
+      color: var(--zande-navy);
+      border: 2px solid var(--zande-light-gray);
+    }
+    
+    .zande-btn.secondary:hover {
+      background-color: var(--zande-light);
+      border-color: var(--zande-green);
+      color: var(--zande-green);
+    }
+    
+    /* Topbar */
+    .marketing-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: var(--zande-white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .marketing-logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .marketing-logo img {
+      height: 36px;
+      margin-right: 10px;
+    }
+    
+    .marketing-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    .marketing-nav a {
+      text-decoration: none;
+      color: var(--zande-navy);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .marketing-nav a:hover {
+      color: var(--zande-green);
+    }
+    
+    /* Hero Section */
+    .marketing-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5rem 0;
+      gap: 3rem;
+    }
+    
+    .marketing-content {
+      flex: 1;
+    }
+    
+    .marketing-content h1 {
+      margin-bottom: 1.5rem;
+      font-size: 3rem;
+      line-height: 1.1;
+    }
+    
+    .marketing-content p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+    
+    .marketing-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .marketing-graphic {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .marketing-graphic img {
+      max-width: 100%;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    /* Stock Highlight */
+    .zande-stock-highlight {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+      padding: 4rem 0;
+    }
+    
+    .zande-stock-img {
+      flex: 1;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .zande-stock-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    .zande-stock-text {
+      flex: 1;
+    }
+    
+    .zande-stock-text h2 {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Features Section */
+    .marketing-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 4rem 0;
+    }
+    
+    .feature-card {
+      background-color: var(--zande-light);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    
+    /* Plans Section */
+    .marketing-plans {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 4rem 0;
+    }
+    
+    .plan-card {
+      background-color: var(--zande-white);
+      border-radius: var(--border-radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+      border: 1px solid var(--zande-light-gray);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .plan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    
+    .plan-card.popular {
+      border: 2px solid var(--zande-green);
+      transform: scale(1.03);
+    }
+    
+    .plan-card.popular:hover {
+      transform: scale(1.05);
+    }
+    
+    .badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--zande-green);
+      color: var(--zande-white);
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .plan-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .plan-card .price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--zande-green);
+      margin-bottom: 1.5rem;
+    }
+    
+    .plan-card ul {
+      list-style: none;
+      margin-bottom: 2rem;
+      text-align: left;
+      padding-left: 1rem;
+    }
+    
+    .plan-card ul li {
+      margin-bottom: 0.75rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    
+    .plan-card ul li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--zande-green);
+      font-weight: bold;
+    }
+    
+    /* Testimonials */
+    .zande-testimonials {
+      padding: 4rem 0;
+      background-color: var(--zande-light);
+      margin: 4rem 0;
+    }
+    
+    .zande-testimonial-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .zande-testimonial-card {
+      background-color: var(--zande-white);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .zande-testimonial-card img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      object-fit: cover;
+    }
+    
+    .zande-testimonial-card p {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    
+    .zande-testimonial-name {
+      font-weight: 600;
+      color: var(--zande-green);
+      display: block;
+    }
+    
+    /* Footer */
+    .zande-footer {
+      background-color: var(--zande-navy);
+      color: var(--zande-white);
+      padding: 3rem 0 1.5rem;
+      margin-top: 4rem;
+    }
+    
+    .zande-footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .zande-footer-brand {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .zande-footer-brand img {
+      height: 38px;
+      margin-right: 10px;
+      border-radius: 8px;
+    }
+    
+    .zande-footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .zande-footer-links a {
+      color: var(--zande-white);
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+    
+    .zande-footer-links a:hover {
+      opacity: 0.8;
+    }
+    
+    .zande-footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+      .marketing-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 3rem 0;
+      }
+      
+      .marketing-content p {
+        margin: 0 auto 2rem;
+      }
+      
+      .marketing-actions {
+        justify-content: center;
+      }
+      
+      .zande-stock-highlight {
+        flex-direction: column;
+        padding: 3rem 0;
+      }
+      
+      .zande-stock-text h2 {
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .marketing-topbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      
+      .marketing-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .marketing-content h1 {
+        font-size: 2.2rem;
+      }
+      
+      .marketing-content p {
+        font-size: 1.1rem;
+      }
+      
+      .zande-footer-content {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .zande-footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .zande-footer-bottom {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .marketing-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .marketing-nav {
+        gap: 0.75rem;
+      }
+      
+      .feature-card, .plan-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* NEW ADDITIONS FOR UNIFIED STYLING */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 3rem 0;
+      background: var(--zande-light);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .comparison-table th, .comparison-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--zande-light-gray);
+    }
+    
+    .comparison-table th {
+      background: var(--zande-green);
+      color: var(--zande-white);
+      font-weight: 700;
+    }
+    
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .cta-banner {
+      background: var(--zande-green);
+      color: var(--zande-white);
+      text-align: center;
+      padding: 3rem 1rem;
+      border-radius: var(--border-radius);
+      margin: 3rem 0;
+    }
+    
+    .cta-banner h2 {
+      color: var(--zande-white);
+      margin-bottom: 1.5rem;
+    }
+    
+    .faq-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 0;
+    }
+    
+    .faq-item {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--zande-light);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+    
+    .faq-item h3 {
+      color: var(--zande-green);
+      margin-bottom: 0.5rem;
+    }
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--zande-white);
+      min-width: 220px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      z-index: 1;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+    
+    .dropdown-content a {
+      color: var(--zande-navy);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: var(--zande-green);
+      color: var(--zande-white);
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    
+    .dropbtn {
+      background: none;
+      border: none;
+      color: var(--zande-navy);
+      font-weight: 500;
+      font-size: 1em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .dropbtn:hover {
+      color: var(--zande-green);
+    }
+  </style>
+  <script type="module">
+    // Corrected import path for supabase.js
+    import { supabase } from './scripts/supabase.js';
+    window.supabase = supabase;
+  </script>
+</head>
+
+<body>
+  <div id="marketingTopbar" class="marketing-topbar">
+    <div class="marketing-logo">
+      <img src="logo.png" alt="ZandeBooks Logo">
+      <span>Zande Books</span>
+    </div>
+    <nav class="marketing-nav">
+      <div class="dropdown">
+        <button class="dropbtn">For Business <span class="arrow">▼</span></button>
+        <div class="dropdown-content">
+          <a href="business.html#overview">Overview</a>
+          <a href="business.html#invoicing">Invoicing</a>
+          <a href="business.html#vat">VAT & Compliance</a>
+          <a href="business.html#mobile">Mobile App</a>
+          <a href="business.html#pricing">Pricing</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">For Accountants <span class="arrow">▼</span></button>
+        <div class="dropdown-content">
+          <a href="accountants.html#portal">Accountant Portal</a>
+          <a href="accountants.html#afs">AFS Builder</a>
+          <a href="accountants.html#collab">Client Collaboration</a>
+          <a href="accountants.html#partner">Partner Program</a>
+          <a href="accountants.html#resources">Resources</a>
+        </div>
+      </div>
+      <a href="plans.html" id="pricingNav">Pricing & Plans</a>
+      <a href="resources.html" id="resourcesNav">Resources</a>
+      <a href="support.html" id="supportNav">Support</a>
+      <a href="plans.html" class="zande-btn">Get Started</a>
+      <a href="login.html" id="loginNavBtn" class="zande-btn secondary">Login</a>
+    </nav>
+  </div>
+
+  <!-- Main Content Container -->
+  <div class="container">
+    <section id="marketingHome">
+      <div class="marketing-hero">
+        <div class="marketing-content">
+          <h1>Built to multiply your business</h1>
+          <p>Simple, powerful accounting for South Africa.<br>
+            <span style="color:var(--zande-green);font-weight:600;">Trusted by South African entrepreneurs & SMEs</span>
+          </p>
+          <div class="marketing-actions">
+            <a href="Plans.html" class="zande-btn">Get Started Free</a>
+            <a href="login.html" id="loginHomeBtn" class="zande-btn secondary">Login</a> <!-- Changed id from loginNavBtn to loginHomeBtn to avoid conflict -->
+          </div>
+        </div>
+        <div class="marketing-graphic">
+          <img src="close-up-young-businesswoman.jpg" alt="ZandeBooks Dashboard">
+        </div>
+      </div>
+      
+      <section class="zande-stock-highlight">
+        <div class="zande-stock-img">
+          <img src="close-up-young-businesswoman-laptop.jpg">
+        </div>
+        <div class="zande-stock-text">
+          <h2>Empowering South African Businesses</h2>
+          <p>
+            ZandeBooks is built for local entrepreneurs and SMEs.<br>
+            <span style="color:var(--zande-green);font-weight:600;">Grow, manage, and thrive with tools made for you.</span>
+          </p>
+        </div>
+      </section>
+      
+      <div class="marketing-features">
+        <div class="feature-card">
+          <span class="feature-icon">💸</span>
+          <h3>Easy Invoicing</h3>
+          <p>Create and send professional invoices in seconds.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">📊</span>
+          <h3>Real-Time Dashboard</h3>
+          <p>See your business performance at a glance.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3>Secure & Local</h3>
+          <p>Your data is safe and hosted in South Africa.</p>
+        </div>
+      </div>
+      
+<div class="marketing-plans">
+  <div class="plan-card">
+    <h3>🟢 Starter</h3>
+    <p class="price">
+      <span class="original-price">R99</span> 
+      <span class="discounted-price">R49.50</span>
+      <span class="per-month">/month</span>
+   </p>
+   <div class="discount-note">Save 50% for first 3 months</div>
+    <p class="plan-desc">Perfect for new businesses getting started.</p>
+
+    <ul>
+      <li>Track income & expenses</li>
+      <li>Send invoices & quotes (unlimited)</li>
+      <li>Connect 1 bank account</li>
+      <li>Auto-VAT calculations (incl. 15% rules)</li>
+      <li>150 accounts in Chart of Accounts</li>
+      <li>Download reports (P&amp;L, TB, BS)</li>
+      <li>1 user + your accountant (view-only)</li>
+      <li>Upload receipts</li>
+    </ul>
+    <a href="signup.html?plan=starter" class="zande-btn">Choose Plan</a>
+  </div>
+
+  <div class="plan-card popular">
+    <div class="badge">Most Popular</div>
+    <h3>🔵 Business</h3>
+    <p class="price">
+      <span class="original-price">R249</span> 
+      <span class="discounted-price">R124.50</span>
+      <span class="per-month">/month</span>
+    </p>
+    <div class="discount-note">Save 50% for first 3 months</div>
+    <p class="plan-desc">Run your operations &amp; team like a pro.</p>
+    <ul>
+      <li>Everything in Starter, plus:</li>
+      <li>3 bank accounts</li>
+      <li>Recurring invoices & bills</li>
+      <li>Inventory tracking</li>
+      <li>250 Chart of Accounts items</li>
+      <li>Multi-user access (up to 5 users)</li>
+      <li>Roles & permissions</li>
+      <li>Smart reports (Cash Flow, Budgeting)</li>
+      <li>Export full AFS &amp; audit reports</li>
+      <li>Connect your accountant with write access</li>
+    </ul>
+    <a href="signup.html?plan=business" class="zande-btn">Choose Plan</a>
+  </div>
+
+  <div class="plan-card">
+    <h3>🟡 Pro</h3>
+    <p class="price">
+      <span class="original-price">R499</span> 
+      <span class="discounted-price">R249.50</span>
+      <span class="per-month">/month</span>
+    </p>
+    <div class="discount-note">Save 50% for first 3 months</div>
+    <p class="plan-desc">Built for growing businesses with deeper needs.</p>
+    <ul>
+      <li>Everything in Business, plus:</li>
+      <li>UNLIMITED users</li>
+      <li>UNLIMITED accounts in Chart of Accounts</li>
+      <li>Multi-currency support</li>
+      <li>Payroll integration</li>
+      <li>Custom dashboards & reports</li>
+      <li>Data sync with Excel/Google Sheets</li>
+      <li>Approvals workflow</li>
+      <li>Audit log &amp; history</li>
+      <li>Document storage (up to 10GB)</li>
+      <li>AI assistant (beta)</li>
+      <li>Dedicated support</li>
+      <li>🛡️ Auditor Mode – Invite auditors, provide view-only access, track audit trail, upload supporting docs</li>
+    </ul>
+    <a href="signup.html?plan=pro" class="zande-btn">Choose Plan</a>
+  </div>
+</div>
+
+<div class="plan-addons">
+  <h4>💸 Optional Add-ons</h4>
+  <ul>
+    <li>Payroll (R49/user/mo)</li>
+    <li>Additional Document Storage (R29/month per 10GB)</li>
+    <li>Zande Academy Pro – Learn Business, Tax &amp; Finance (R99/month)</li>
+  </ul>
+  <div class="plan-offer">
+    <strong>🔥 Power Up Offer:</strong> All plans FREE for 30 days, then <span style="color:var(--zande-green); font-weight:600;">50% off for 3 months</span><br>
+    <span style="color:var(--zande-green); font-weight:600;">No credit card required to start.</span>
+  </div>
+</div>
+
+    
+      
+      <!-- Comparison Table -->
+      <section>
+        <h2>Why Choose Zande Books?</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Zande Books</th>
+              <th>Traditional Software</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Invoicing</td>
+              <td>✔️ Fast, branded, online</td>
+              <td>❌ Manual, slow</td>
+            </tr>
+            <tr>
+              <td>VAT & Compliance</td>
+              <td>✔️ Automated, SARS-ready</td>
+              <td>❌ Manual, error-prone</td>
+            </tr>
+            <tr>
+              <td>Mobile App</td>
+              <td>✔️ Yes</td>
+              <td>❌ No</td>
+            </tr>
+            <tr>
+              <td>Support</td>
+              <td>✔️ Local, friendly</td>
+              <td>❌ Overseas, slow</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      
+      <section class="zande-testimonials">
+        <h2>What South African Entrepreneurs Say</h2>
+        <div class="zande-testimonial-cards">
+          <div class="zande-testimonial-card">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer">
+            <p>“ZandeBooks made my accounting so much easier. I can focus on my business, not my books!”</p>
+            <span class="zande-testimonial-name">Sipho M., Cape Town</span>
+          </div>
+          <div class="zande-testimonial-card">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Customer">
+            <p>“The dashboard and invoicing are world-class. Highly recommended for any SME.”</p>
+            <span class="zande-testimonial-name">Lerato K., Johannesburg</span>
+          </div>
+          <div class="zande-testimonial-card">
+            <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="Customer">
+            <p>“Local support and easy VAT tools—ZandeBooks is built for South Africans!”</p>
+            <span class="zande-testimonial-name">Thabo N., Durban</span>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CTA Banner -->
+      <section class="cta-banner">
+        <h2>Ready to simplify your business finances?</h2>
+        <a href="signup.html" class="zande-btn">Get Started Free</a> <!-- Changed to signup.html -->
+      </section>
+      
+      <!-- FAQ Section -->
+      <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+          <h3>Is Zande Books easy to use?</h3>
+          <p>Yes! Zande Books is designed for South African entrepreneurs, with a simple, intuitive interface.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I use Zande Books on my phone?</h3>
+          <p>Absolutely. Our mobile app lets you manage your business anywhere, anytime.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is my data secure?</h3>
+          <p>Yes, your data is encrypted and stored securely in South Africa.</p>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <!-- Add this modal at the bottom of body -->
+<!-- This modal is for a marketing site login. The primary app login is in login.html.
+     If you need an in-page modal, ensure its logic uses Supabase. -->
+<!-- <div id="loginModal" class="zande-modal" style="display:none;">
+  <div class="zande-modal-content">
+    <span class="zande-modal-close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+    <h2>Login to ZandeBooks</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required class="zande-input">
+      <input type="password" id="loginPassword" placeholder="Password" required class="zande-input">
+      <button type="submit" class="zande-btn">Login</button>
+    </form>
+  </div>
+</div> -->
+
+  <footer class="zande-footer">
+    <div class="container">
+      <div class="zande-footer-content">
+        <div class="zande-footer-brand">
+          <img src="logo.png" alt="ZandeBooks Logo">
+          <span>ZandeBooks</span>
+        </div>
+        <nav class="zande-footer-links">
+          <a href="plans.html">Plans</a>
+          <a href="resources.html">Resources</a>
+          <a href="support.html">Support</a>
+          <a href="mailto:support@zandebooks.co.za">Contact</a>
+        </nav>
+      </div>
+      <div class="zande-footer-bottom">
+        <span>&copy; 2025 Zande Technologies. Built in South Africa.</span>
+        <span>Made with <span style="color:var(--zande-gold);">❤️</span> for SA SMEs</span>
+      </div>
+    </div>
+  </footer>
+<!-- In index.html -->
+<!-- The script below was using local storage and duplicates authentication logic.
+     It's removed as Supabase authentication handles this and paths were incorrect. -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="path/to/supabase.js"></script> -->
+  <script>
+    // Navigation functionality - ensuring correct redirects to login.html or signup.html
+    document.getElementById('loginHomeBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = "login.html"; // Redirect to login page
+    });
+    
+    document.getElementById('loginNavBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = "login.html"; // Redirect to login page
+    });
+    
+    // Note: "Get Started" buttons link to Plans.html or Signup.html directly.
+    // The previous getStartedBtn and getStartedNav might refer to elements not in this Index.html anymore,
+    // or their IDs were duplicates. Adjusted to common elements.
+
+    // Animation on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.feature-card, .plan-card, .zande-testimonial-card');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = 1;
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      elements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+      });
+    });
+    
+    // Dropdown functionality
+    const dropdowns = document.querySelectorAll('.dropdown');
+    dropdowns.forEach(dropdown => {
+      dropdown.addEventListener('mouseover', () => {
+        dropdown.querySelector('.dropdown-content').style.display = 'block';
+      });
+      
+      dropdown.addEventListener('mouseout', () => {
+        dropdown.querySelector('.dropdown-content').style.display = 'none';
+      });
+    });
+  </script>
+</body>
+</html>

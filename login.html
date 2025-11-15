@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - ZandeBooks</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    
+    .auth-tab.active {
+      border-bottom: 3px solid var(--zande-green);
+      color: var(--zande-green);
+    }
+    
+    .auth-form {
+      display: none;
+    }
+    
+    .auth-form.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    button[type="submit"] {
+      width: 100%;
+      padding: 1rem;
+      background: var(--zande-green);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+  </style>
+
+  <script type="module">
+    // Corrected import path for supabase.js
+    import { supabase } from './scripts/supabase.js';
+    window.supabase = supabase;
+  </script>
+</head>
+<body>
+  <div class="marketing-topbar">
+    <a href="index.html" class="marketing-logo">
+      <img src="logo.png" alt="ZandeBooks Logo">
+      <span>Zande Books</span>
+    </a>
+  </div>
+
+  <div class="auth-container">
+    <h2 style="text-align: center; margin-bottom: 1.5rem;">Login to Zande Books</h2>
+    
+    <!-- Login Form -->
+    <form id="loginForm" class="auth-form active">
+      <div class="form-group">
+        <label for="loginEmail">Email Address</label>
+        <input type="email" id="loginEmail" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+      
+      <div style="text-align: center; margin-top: 1rem;">
+        <a href="#" id="forgotPassword">Forgot password?</a>
+      </div>
+
+      <div style="text-align: center; margin-top: 1.5rem;">
+       <p>Don't have an account? 
+        <a href="Plans.html" id="signupLink">Sign up here</a>
+       </p>
+      </div>
+     </div>
+    </form>
+    
+
+
+  <script>
+    // Tab switching (if tabs were present, keeping for structure)
+    document.querySelectorAll('.auth-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update tabs
+        document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update forms
+        document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+        document.getElementById(`${tab.dataset.tab}Form`).classList.add('active');
+      });
+    });
+  </script>
+
+<!-- Script for handling login form submission -->
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    // IMPORTANT: For production, replace alert with a custom modal/message box
+    alert(`Login failed: ${error.message}`);
+  } else {
+    // On successful login, redirect to the app
+    window.location.href = "app/app.html";
+  }
+});
+</script>
+
+<!-- Script for handling signup success message and trial status check -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+  
+  if (params.get('signup') === 'success') {
+    const email = params.get('email');
+    // IMPORTANT: For production, replace alert with a custom modal/message box
+    alert(`Account created successfully! Please check your email to verify your account.`);
+    
+    // Pre-fill email field if available
+    if (email) {
+      document.getElementById('loginEmail').value = email;
+    }
+  }
+});
+
+async function checkTrialStatus() {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('is_trial, trial_ends_at') // Corrected column name from trial_ends to trial_ends_at
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.is_trial && new Date(profile.trial_ends_at) < new Date()) { // Corrected column name
+    await supabase
+      .from('profiles')
+      .update({ is_trial: false })
+      .eq('id', user.id);
+  }
+}
+
+// Call this after login (or initial page load if user is already logged in)
+// This will update the user's trial status if it has expired.
+checkTrialStatus();
+</script>
+
+  <!-- Include Supabase and other scripts -->
+  <!-- Note: Supabase is already imported as a module at the top of the <head> -->
+  <!-- Ensure script.js only contains utility functions and no duplicate form handlers -->
+  <script src="script.js"></script>
+</body>
+</html>
