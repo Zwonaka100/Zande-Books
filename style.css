@@ -3,7 +3,7 @@
 :root {
   --zande-primary: #0B1F3A;
   --zande-green: #3DBE7D;
-  --zande-gold: #F5A623;
+  --zande-purple: #8B5CF6;
   --zande-bg: #F9FAFB;
   --zande-text: #1D1D1D;
   --zande-gray: #EDEFF2;
@@ -51,7 +51,7 @@ nav button {
 }
 
 nav button:hover {
-  background-color: var(--zande-gold);
+  background-color: var(--zande-purple);
 }
 
 
@@ -138,9 +138,9 @@ section {
 }
 
 .marketing-btn:hover {
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   color: var(--zande-navy);
-  border-color: var(--zande-gold);
+  border-color: var(--zande-purple);
 }
 
 .marketing-graphic img {
@@ -275,7 +275,7 @@ section {
   top: -18px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   color: var(--zande-navy);
   font-size: 0.92rem;
   font-weight: 700;
@@ -351,7 +351,7 @@ footer {
 
 .zande-btn-green:hover,
 .zande-btn-navy:hover {
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   color: var(--zande-navy);
 }
 
@@ -462,7 +462,7 @@ footer {
   font-style: italic;
 }
 .zande-testimonial-name {
-  color: var(--zande-gold);
+  color: var(--zande-purple);
   font-weight: 600;
   font-size: 1em;
 }
@@ -708,7 +708,7 @@ footer {
   font-size: 1.1em;
 }
 .cta-banner .zande-btn:hover {
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   color: var(--zande-navy);
 }
 
@@ -846,14 +846,14 @@ body {
 .plan-offer {
   margin-top: 1.2em;
   background: #fffbe6;
-  border-left: 4px solid #F5A623;
+  border-left: 4px solid #8B5CF6;
   padding: 1em;
   border-radius: 8px;
   font-size: 1.05em;
 }
 
 .plan-offer-badge {
-  background: #F5A623;
+  background: #8B5CF6;
   color: #fff;
   font-size: 0.98em;
   font-weight: 700;
@@ -945,7 +945,7 @@ body {
   top: -18px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   color: var(--zande-navy);
   font-size: 0.92rem;
   font-weight: 700;

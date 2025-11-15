@@ -38,7 +38,7 @@
   --zande-text: #F8FAFC;
   --zande-gray: #2D3548;
   --zande-green: #10B981;
-  --zande-gold: #F59E0B;
+  --zande-purple: #8B5CF6;
   
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -1521,7 +1521,7 @@ select:focus {
 
 .gl-modern-btn:hover,
 .coa-modern-btn:hover {
-  background: var(--zande-gold);
+  background: var(--zande-purple);
   transform: translateY(-1px);
 }
 
@@ -1680,7 +1680,7 @@ select:focus {
 .gl-account-type-expense,
 .coa-account-type-expense { 
   background: #fff8e8; 
-  color: var(--zande-gold); 
+  color: var(--zande-purple); 
 }
 
 .normal-balance-badge {
@@ -1775,7 +1775,7 @@ select:focus {
 
 .gl-source-purchases { 
   background: #fef3c7; 
-  color: var(--zande-gold); 
+  color: var(--zande-purple); 
 }
 
 .gl-source-banking { 
